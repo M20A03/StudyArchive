@@ -1,0 +1,243 @@
+@use 'variables' as *;
+
+.my-resources-page {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+        font-size: 32px;
+        font-weight: 800;
+        color: $text-main;
+        margin-bottom: 8px;
+    }
+
+    p {
+        color: $text-secondary;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+
+        i {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+
+.table-container {
+    overflow: hidden;
+    border-radius: $border-radius-lg;
+    @include glassmorphism;
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+
+    th {
+        padding: 16px 24px;
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 13px;
+        font-weight: 700;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    td {
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 14px;
+        color: $text-secondary;
+        vertical-align: middle;
+    }
+
+    tr:hover td {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.resource-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .resource-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        @include flex-center;
+
+        i {
+            width: 20px;
+            height: 20px;
+            color: $accent-blue;
+        }
+    }
+
+    .res-title {
+        font-weight: 700;
+        color: $text-main;
+        margin-bottom: 4px;
+    }
+
+    .res-subject {
+        font-size: 12px;
+        color: $text-muted;
+    }
+}
+
+.res-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-secondary;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        i {
+            width: 14px;
+            height: 14px;
+        }
+    }
+}
+
+.visibility-toggle {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-secondary;
+    cursor: pointer;
+    @include smooth-transition;
+
+    i {
+        width: 14px;
+        height: 14px;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: $accent-blue;
+        color: $accent-blue;
+    }
+
+    &.private {
+        background: rgba(0, 0, 0, 0.2);
+        color: $text-muted;
+        border-color: transparent;
+
+        i {
+            color: $text-muted;
+        }
+    }
+}
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        @include flex-center;
+        cursor: pointer;
+        @include smooth-transition;
+        color: $text-muted;
+
+        i {
+            width: 16px;
+            height: 16px;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: $accent-blue;
+            border-color: $accent-blue;
+        }
+
+        &.delete:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: $soft-red;
+            border-color: $soft-red;
+        }
+    }
+}
+
+.empty-state {
+    padding: 80px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    i {
+        width: 64px;
+        height: 64px;
+        color: $text-muted;
+    }
+
+    h3 {
+        font-size: 20px;
+        color: $text-main;
+    }
+
+    p {
+        color: $text-secondary;
+        max-width: 300px;
+        margin-bottom: 16px;
+    }
+
+    h1 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+
+    p {
+        color: #64748b;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+
+        i {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}

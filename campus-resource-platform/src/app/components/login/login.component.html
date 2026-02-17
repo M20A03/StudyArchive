@@ -1,0 +1,45 @@
+<div class="login-container">
+    <div class="animated-bg"></div>
+
+    <div class="login-card animate-fade-in glass-panel">
+        <h1>Log in to CampusShare</h1>
+        <p class="subtitle">Course Management & Resource Sharing</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="text" formControlName="username" placeholder=" " id="username"
+                        [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                    <label for="username">Username</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="password" formControlName="password" placeholder=" " id="password"
+                        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">Log in</span>
+                    <div *ngIf="isLoading" class="loader"></div>
+                </button>
+                <p class="signup-prompt">Don't have an account? <a routerLink="/signup">Sign up</a></p>
+                <a href="#" class="lost-password" (click)="showLostPasswordHelp($event)">Lost password?</a>
+            </div>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <div class="footer-section">
+            <p>Is this your first time here?</p>
+            <a href="#" class="manual-link" (click)="openUserManual($event)">User Manual</a>
+            <button class="btn-outline" (click)="showCookiesNotice()">Cookies notice</button>
+        </div>
+    </div>
+</div>

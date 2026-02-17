@@ -1,0 +1,114 @@
+<div class="content-body animate-fade-in">
+    <header class="profile-header glass-panel">
+        <div class="profile-main">
+            <img [src]="'https://ui-avatars.com/api/?name=' + userProfile.name + '&background=fbbf24&color=1e293b&size=128'"
+                [alt]="userProfile.name" class="profile-img">
+            <div class="profile-text">
+                <h2>Welcome back, {{userProfile.name}}!</h2>
+                <p>{{userProfile.university}} • {{userProfile.department}} • {{userProfile.semester}}</p>
+            </div>
+        </div>
+        <button class="btn-primary" (click)="openEditModal()">Edit Profile</button>
+    </header>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="close-btn" (click)="closeEditModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" [(ngModel)]="editForm.name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>University</label>
+                    <input type="text" [(ngModel)]="editForm.university" placeholder="University name">
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" [(ngModel)]="editForm.department" placeholder="Department">
+                </div>
+                <div class="form-group">
+                    <label>Semester</label>
+                    <input type="text" [(ngModel)]="editForm.semester" placeholder="Current semester">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" (click)="closeEditModal()">Cancel</button>
+                <button class="btn-primary" (click)="saveProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div *ngFor="let stat of stats" class="stat-card glass-panel" [style.border-left-color]="stat.color">
+            <div class="stat-icon" [style.background]="stat.color + '15'">
+                <i [attr.data-lucide]="stat.icon" [style.color]="stat.color"></i>
+            </div>
+            <div class="stat-details">
+                <span class="stat-label">{{stat.label}}</span>
+                <span class="stat-value">{{stat.value}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <section class="resource-section glass-panel">
+            <div class="section-header">
+                <h3>Recent Resources</h3>
+                <button class="btn-link">View All</button>
+            </div>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Subject</th>
+                        <th>Privacy</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of recentResources">
+                        <td>{{res.title}}</td>
+                        <td>{{res.subject}}</td>
+                        <td>
+                            <span class="badge" [class.public]="res.privacy === 'Public'"
+                                [class.private]="res.privacy === 'Private'">
+                                {{res.privacy}}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="rating-box">
+                                <i data-lucide="star" class="star-icon"></i>
+                                {{res.rating}}
+                            </div>
+                        </td>
+                        <td class="table-actions">
+                            <button class="icon-btn"><i data-lucide="edit-2"></i></button>
+                            <button class="icon-btn danger"><i data-lucide="trash-2"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="activity-section glass-panel">
+            <div class="section-header">
+                <h3>Recent Activity</h3>
+            </div>
+            <div class="activity-list">
+                <div *ngFor="let act of activities" class="activity-item">
+                    <div class="activity-dot"></div>
+                    <div class="activity-content">
+                        <p><strong>{{act.user}}</strong> {{act.action}} <span>{{act.resource}}</span></p>
+                        <small>{{act.time}}</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

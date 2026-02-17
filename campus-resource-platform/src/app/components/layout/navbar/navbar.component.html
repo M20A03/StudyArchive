@@ -1,0 +1,54 @@
+<nav class="navbar glass-panel">
+    <div class="nav-left">
+        <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" [(ngModel)]="searchValue" (keydown.enter)="goToSearch()"
+                placeholder="Search resources, topics, or subjects...">
+            <button type="button" class="search-hint" (click)="goToSearch()">Go</button>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <button class="nav-icon-btn" type="button" (click)="toggleTheme()">
+            <i [attr.data-lucide]="isLightTheme ? 'sun' : 'moon'"></i>
+        </button>
+        <button class="nav-icon-btn" type="button" (click)="toggleNotifications()">
+            <i data-lucide="bell"></i>
+            <span class="notification-dot" *ngIf="!showNotifications"></span>
+        </button>
+
+        <div class="account-menu-wrap">
+            <button class="profile-dropdown" type="button" (click)="toggleAccountMenu($event)">
+                <img [src]="'https://ui-avatars.com/api/?name=' + (userProfile.name || 'User') + '&background=1e40af&color=fff'"
+                    alt="Profile" class="avatar">
+                <div class="user-info">
+                    <span class="user-name">{{userProfile.email || userProfile.name}}</span>
+                </div>
+                <i data-lucide="chevron-down"></i>
+            </button>
+
+            <div class="account-menu glass-panel" *ngIf="showAccountMenu" (click)="$event.stopPropagation()">
+                <button type="button" class="menu-item" (click)="openProfileEditor()">
+                    <i data-lucide="user"></i>
+                    My Account
+                </button>
+                <div class="theme-row">
+                    <button type="button" class="theme-btn" [class.active]="!isLightTheme" (click)="setTheme('dark')">
+                        Dark
+                    </button>
+                    <button type="button" class="theme-btn" [class.active]="isLightTheme" (click)="setTheme('light')">
+                        Light
+                    </button>
+                </div>
+                <button type="button" class="menu-item" (click)="changeAccount()">
+                    <i data-lucide="refresh-cw"></i>
+                    Change Account
+                </button>
+                <button type="button" class="menu-item danger" (click)="logout()">
+                    <i data-lucide="log-out"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>

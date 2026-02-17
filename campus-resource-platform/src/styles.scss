@@ -1,0 +1,231 @@
+@use 'variables' as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: $light-bg;
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: $text-main;
+    overflow-x: hidden;
+    line-height: 1.5;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 35%),
+        radial-gradient(500px 280px at 10% 12%, rgba(255, 255, 255, 0.12), transparent 70%),
+        radial-gradient(680px 320px at 90% 85%, rgba(88, 200, 255, 0.08), transparent 72%);
+    z-index: -1;
+    transition: transform 0.4s ease;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: -18%;
+    pointer-events: none;
+    background:
+        radial-gradient(460px 380px at 14% 26%, rgba(109, 124, 255, 0.16), transparent 72%),
+        radial-gradient(500px 410px at 84% 22%, rgba(242, 197, 109, 0.14), transparent 74%),
+        radial-gradient(560px 430px at 52% 82%, rgba(84, 185, 247, 0.16), transparent 74%);
+    filter: blur(18px);
+    animation: auraFloat 16s ease-in-out infinite alternate;
+    z-index: -2;
+}
+
+body.light-theme {
+    color-scheme: light;
+    background:
+        radial-gradient(1000px 560px at -5% -10%, rgba(109, 124, 255, 0.14), transparent 55%),
+        radial-gradient(920px 520px at 105% -5%, rgba(242, 197, 109, 0.16), transparent 55%),
+        linear-gradient(155deg, #e8edf8 0%, #dce5f5 42%, #cfd9ee 100%);
+}
+
+body.light-theme::before {
+    background:
+        radial-gradient(640px 360px at 8% 16%, rgba(255, 255, 255, 0.62), transparent 70%),
+        radial-gradient(680px 360px at 88% 82%, rgba(255, 255, 255, 0.48), transparent 70%);
+}
+
+body.light-theme .sidebar {
+    background: rgba(242, 246, 255, 0.85) !important;
+    border-right-color: rgba(65, 85, 135, 0.22) !important;
+}
+
+body.light-theme .navbar {
+    background: rgba(244, 248, 255, 0.86) !important;
+    border-bottom-color: rgba(65, 85, 135, 0.2) !important;
+}
+
+body.light-theme .sidebar .menu-item,
+body.light-theme .nav-icon-btn,
+body.light-theme .search-box i {
+    color: #4f618f !important;
+}
+
+body.light-theme .sidebar .menu-item:hover,
+body.light-theme .nav-icon-btn:hover {
+    color: #3456a8 !important;
+    background: rgba(109, 124, 255, 0.12) !important;
+}
+
+body.light-theme .search-box input,
+body.light-theme .profile-dropdown,
+body.light-theme .account-menu,
+body.light-theme .resource-section,
+body.light-theme .activity-section,
+body.light-theme .table-container,
+body.light-theme .upload-container,
+body.light-theme .filter-panel,
+body.light-theme .login-card {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(236, 243, 255, 0.92)) !important;
+    color: #2a3b63 !important;
+    border-color: rgba(90, 112, 168, 0.18) !important;
+}
+
+body.light-theme .user-name,
+body.light-theme .section-header h3,
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4 {
+    color: #25355d !important;
+}
+
+body.light-theme p,
+body.light-theme td,
+body.light-theme th,
+body.light-theme .stat-label,
+body.light-theme .subject,
+body.light-theme .res-subject {
+    color: #4f618f !important;
+}
+
+body:hover::before {
+    transform: scale(1.03);
+}
+
+a {
+    color: $accent-blue;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+.glass-panel {
+    position: relative;
+    overflow: visible;
+    @include glassmorphism;
+}
+
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: -120% 20% auto -30%;
+    height: 240%;
+    background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.12) 52%, transparent 62%);
+    transform: rotate(8deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.glass-panel:hover::before {
+    opacity: 1;
+}
+
+.btn-primary {
+    padding: 12px 28px;
+    background: linear-gradient(128deg, #6d7cff 0%, #54b9f7 52%, #f2c56d 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: $border-radius-md;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    @include smooth-transition;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+
+    &:hover {
+        background: linear-gradient(128deg, #6072ff 0%, #44adee 52%, #e8ba5f 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &.public {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    &.private {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+}
+
+@keyframes auraFloat {
+    0% {
+        transform: translate3d(-2%, 0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate3d(2%, 2%, 0) scale(1.06);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}

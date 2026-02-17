@@ -1,0 +1,62 @@
+// Colors - softer mixed light/dark palette
+$primary-blue: #6d7cff;
+$accent-blue: #54b9f7;
+$accent-yellow: #f2c56d;
+$light-yellow: #f6edd9;
+$warm-yellow: #c0933b;
+$success-green: #42c69a;
+$soft-red: #f28692;
+$light-bg:
+    radial-gradient(1200px 680px at -10% -20%, rgba(138, 171, 255, 0.2), transparent 58%),
+    radial-gradient(860px 520px at 104% -4%, rgba(242, 197, 109, 0.2), transparent 58%),
+    radial-gradient(900px 680px at 52% 114%, rgba(84, 185, 247, 0.16), transparent 64%),
+    linear-gradient(150deg, #121a2f 0%, #1b2542 40%, #f2f5fb 165%);
+
+// Text Colors
+$text-main: #e9efff;
+$text-secondary: #c6d3f1;
+$text-muted: #97a8cd;
+
+// Border & Radius
+$border-radius-sm: 8px;
+$border-radius-md: 12px;
+$border-radius-lg: 18px;
+
+// Shadows
+$shadow-soft: 0 10px 24px rgba(7, 14, 35, 0.22);
+$shadow-medium: 0 20px 40px rgba(7, 14, 35, 0.3);
+$shadow-strong: 0 30px 54px rgba(7, 14, 35, 0.38);
+
+// Glassmorphism - Dark
+$white-glass: linear-gradient(145deg, rgba(35, 47, 77, 0.64), rgba(18, 27, 46, 0.7));
+$shadow-glass: 0 20px 46px rgba(7, 14, 35, 0.32);
+
+
+// Mixins
+@mixin glassmorphism {
+    background: $white-glass;
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    border: 1px solid rgba(185, 203, 243, 0.2);
+    box-shadow: $shadow-glass;
+    color: $text-main;
+}
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin smooth-transition {
+    transition: all 0.3s ease-in-out;
+}
+
+@mixin hover-lift {
+    @include smooth-transition;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(4, 10, 26, 0.4);
+    }
+}

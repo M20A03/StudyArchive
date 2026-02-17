@@ -1,0 +1,72 @@
+<div class="my-resources-page animate-fade-in">
+    <div class="header">
+        <div class="header-content">
+            <h1>My Resources</h1>
+            <p>Manage and track the performance of your shared content.</p>
+        </div>
+        <button class="btn-primary" routerLink="/dashboard/upload">
+            <i data-lucide="plus"></i>
+            Upload New
+        </button>
+    </div>
+
+    <div class="resources-grid">
+        <div class="table-container glass-panel">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th>Resource Details</th>
+                        <th>Uploaded Date</th>
+                        <th>Stats</th>
+                        <th>Visibility</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of myResources">
+                        <td>
+                            <div class="resource-info">
+                                <div class="resource-icon">
+                                    <i data-lucide="file-text"></i>
+                                </div>
+                                <div>
+                                    <div class="res-title">{{res.title}}</div>
+                                    <div class="res-subject">{{res.subject}}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{res.date}}</td>
+                        <td>
+                            <div class="res-stats">
+                                <span><i data-lucide="download"></i> {{res.downloads}}</span>
+                                <span><i data-lucide="star"></i> {{res.rating}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="visibility-toggle" [class.private]="res.privacy === 'Private'"
+                                (click)="togglePrivacy(res)">
+                                <i [attr.data-lucide]="res.privacy === 'Public' ? 'eye' : 'eye-off'"></i>
+                                {{res.privacy}}
+                            </button>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <button class="icon-btn edit" (click)="editResource(res)" title="Edit"><i
+                                        data-lucide="edit-3"></i></button>
+                                <button class="icon-btn delete" (click)="deleteResource(res)" title="Delete"><i
+                                        data-lucide="trash-2"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="empty-state" *ngIf="myResources.length === 0">
+                <i data-lucide="folder-open"></i>
+                <h3>No resources found</h3>
+                <p>You haven't uploaded any resources yet. Start sharing today!</p>
+                <button class="btn-primary" routerLink="/dashboard/upload">Upload Now</button>
+            </div>
+        </div>
+    </div>
+</div>

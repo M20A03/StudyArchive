@@ -1,0 +1,76 @@
+<div class="login-container">
+    <div class="animated-bg"></div>
+
+    <div class="login-card animate-fade-in glass-panel signup-card">
+        <h1>Create Account</h1>
+        <p class="subtitle">Join CampusShare and start collaborating</p>
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="fullName" placeholder=" " id="fullName">
+                        <label for="fullName">Full Name</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" formControlName="email" placeholder=" " id="email">
+                        <label for="email">Email Address</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="college" placeholder=" " id="college">
+                        <label for="college">College / University</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="department" placeholder=" " id="department">
+                        <label for="department">Department</label>
+                    </div>
+                </div>
+
+                <div class="form-group select-wrapper">
+                    <label for="semester">Semester</label>
+                    <select id="semester" formControlName="semester">
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>3rd Semester</option>
+                        <option>4th Semester</option>
+                        <option>5th Semester</option>
+                        <option>6th Semester</option>
+                        <option>7th Semester</option>
+                        <option>8th Semester</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" formControlName="password" placeholder=" " id="password">
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" formControlName="confirmPassword" placeholder=" " id="confirmPassword">
+                        <label for="confirmPassword">Confirm Password</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" [disabled]="signupForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">Sign Up</span>
+                    <div *ngIf="isLoading" class="loader"></div>
+                </button>
+                <p class="login-link">Already have an account? <a routerLink="/login">Log in</a></p>
+            </div>
+        </form>
+    </div>
+</div>

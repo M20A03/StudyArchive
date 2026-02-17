@@ -1,0 +1,26 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+        <div class="logo">
+            <i data-lucide="graduation-cap"></i>
+            <span *ngIf="!isCollapsed">CampusShare</span>
+        </div>
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i [attr.data-lucide]="isCollapsed ? 'chevron-right' : 'chevron-left'"></i>
+        </button>
+    </div>
+
+    <div class="menu">
+        <a *ngFor="let item of menuItems" [routerLink]="item.path" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }" class="menu-item">
+            <i [attr.data-lucide]="item.icon"></i>
+            <span *ngIf="!isCollapsed">{{item.label}}</span>
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <button type="button" class="menu-item logout" (click)="logout()">
+            <i data-lucide="log-out"></i>
+            <span *ngIf="!isCollapsed">Logout</span>
+        </button>
+    </div>
+</div>

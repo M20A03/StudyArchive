@@ -1,0 +1,223 @@
+@use 'variables' as *;
+
+.login-container {
+    min-height: 100vh;
+    width: 100%;
+    @include flex-center;
+    position: relative;
+    overflow: hidden;
+    padding: 24px;
+}
+
+.animated-bg {
+    position: absolute;
+    inset: -45%;
+    background:
+        radial-gradient(circle at 24% 28%, rgba(109, 124, 255, 0.3) 0%, transparent 36%),
+        radial-gradient(circle at 72% 72%, rgba(84, 185, 247, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(242, 197, 109, 0.14) 0%, transparent 46%);
+    animation: rotate 24s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.login-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 460px;
+    padding: 40px;
+    border-radius: $border-radius-lg;
+    text-align: center;
+    @include glassmorphism;
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: $text-main;
+        font-weight: 800;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        color: $text-secondary;
+        margin-bottom: 32px;
+    }
+}
+
+.form-group {
+    margin-bottom: 22px;
+    text-align: left;
+}
+
+.input-wrapper {
+    position: relative;
+
+    input {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid rgba(185, 203, 243, 0.2);
+        border-radius: $border-radius-md;
+        background: rgba(19, 28, 47, 0.54);
+        color: $text-main;
+        outline: none;
+        @include smooth-transition;
+
+        &:focus {
+            border-color: $accent-blue;
+            box-shadow: 0 0 0 4px rgba(84, 185, 247, 0.16);
+            background: rgba(24, 35, 59, 0.74);
+        }
+
+        &.error {
+            border-color: $soft-red;
+        }
+
+        &:focus+label,
+        &:not(:placeholder-shown)+label {
+            top: -10px;
+            left: 12px;
+            font-size: 12px;
+            background: rgba(18, 27, 46, 0.95);
+            padding: 0 6px;
+            color: $accent-blue;
+            border-radius: 4px;
+        }
+    }
+
+    label {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        color: $text-muted;
+        pointer-events: none;
+        @include smooth-transition;
+    }
+}
+
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 28px;
+
+    button {
+        height: 50px;
+        @include flex-center;
+    }
+
+    .lost-password {
+        font-size: 14px;
+        color: $accent-blue;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .signup-prompt {
+        font-size: 14px;
+        color: $text-secondary;
+
+        a {
+            color: $accent-yellow;
+            font-weight: 700;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.divider {
+    margin: 28px 0;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: rgba(185, 203, 243, 0.2);
+    }
+
+    span {
+        position: relative;
+        background: rgba(23, 34, 56, 0.9);
+        padding: 0 14px;
+        color: $text-muted;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+    }
+}
+
+.footer-section {
+    p {
+        font-size: 14px;
+        color: $text-secondary;
+        margin-bottom: 12px;
+    }
+
+    .manual-link {
+        display: block;
+        color: $accent-blue;
+        font-weight: 600;
+        margin-bottom: 14px;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .btn-outline {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(185, 203, 243, 0.2);
+        padding: 8px 16px;
+        border-radius: $border-radius-sm;
+        font-size: 12px;
+        cursor: pointer;
+        color: $text-muted;
+        @include smooth-transition;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: $text-main;
+        }
+    }
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(201, 213, 241, 0.55);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
