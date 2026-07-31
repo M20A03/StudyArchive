@@ -210,12 +210,12 @@ body.light-theme {
 
     .stat-value { color: $text-light-primary !important; }
 
-    .btn-signin {
-        background: $gradient-brand !important;
-        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
-        &:hover {
-            box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45) !important;
-        }
+    .dashboard-layout {
+        background: $light-bg-primary !important;
+    }
+    .main-content,
+    .content-body {
+        background: transparent !important;
     }
 }
 
