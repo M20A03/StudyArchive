@@ -75,6 +75,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
             this.resourceService.resources$.subscribe((res) => {
                 this.resources = res;
                 this.calculateStats();
+                this.calculateScholarXp();
                 this.recentResources = res.slice(0, 4);
                 this.generateActivities();
                 this.onResourcesUpdated(res);
@@ -94,6 +95,22 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
     togglePrivacy(id: string) {
         this.resourceService.togglePrivacy(id);
+    }
+
+    private calculateScholarXp() {
+        const totalUploads = this.resources.length;
+        const totalDownloads = this.resources.reduce((sum, r) => sum + (r.downloads || 0), 0);
+        const ratedResources = this.resources.filter(r => r.rating > 0);
+
+        const totalXpEarned = 100 + (totalUploads * 150) + (totalDownloads * 5) + (ratedResources.length * 40);
+        const xpPerLevel = 500;
+
+        this.scholarLevel = Math.floor(totalXpEarned / xpPerLevel) + 1;
+        this.currentXp = totalXpEarned % xpPerLevel;
+        this.targetXp = xpPerLevel;
+
+        const distinctDates = new Set(this.resources.map(r => r.date)).size;
+        this.streakCount = Math.max(1, Math.min(30, distinctDates + (totalUploads > 0 ? 3 : 1)));
     }
 
     private calculateStats() {

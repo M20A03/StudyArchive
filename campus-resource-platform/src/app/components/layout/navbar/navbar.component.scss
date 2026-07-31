@@ -430,29 +430,69 @@ body.light-theme {
 }
 
 @media (max-width: 768px) {
-    .navbar { padding: 10px 12px; }
+    .navbar {
+        padding: 8px 10px;
+        gap: 8px;
+    }
 
     .mobile-menu-btn {
         display: flex !important;
     }
 
     .nav-left {
-        max-width: calc(100% - 90px);
+        flex: 1;
+        max-width: none;
+        gap: 8px;
     }
 
     .search-box {
-        max-width: 100%;
-        padding: 6px 10px;
+        padding: 6px 8px;
+
+        svg {
+            cursor: pointer;
+        }
 
         input {
-            font-size: 13px;
+            font-size: 12px;
+            width: 100%;
         }
 
         .search-hint {
-            padding: 4px 10px;
-            font-size: 11px;
+            display: none !important;
+        }
+    }
+
+    .nav-right {
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .nav-icon-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .btn-signin {
+        padding: 7px 10px;
+        font-size: 12px;
+        flex-shrink: 0;
+        white-space: nowrap;
+
+        .signin-text {
+            display: inline-block;
         }
     }
 
     .profile-dropdown .user-info { display: none; }
+}
+
+@media (max-width: 420px) {
+    .btn-signin {
+        padding: 8px 10px;
+        .signin-text {
+            display: none !important;
+        }
+    }
 }
