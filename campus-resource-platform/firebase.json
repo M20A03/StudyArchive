@@ -6,6 +6,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "site": "study-archive-moodle",
     "public": "dist/campus-resource-platform/browser",
     "ignore": [
       "firebase.json",

@@ -10,67 +10,80 @@
     &::before {
         content: '';
         position: absolute;
-        top: -20%;
+        top: -15%;
         left: -10%;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+        width: 550px;
+        height: 550px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(139, 92, 246, 0.1) 45%, transparent 70%);
         pointer-events: none;
+        animation: orbFloat1 12s ease-in-out infinite alternate;
     }
 
     &::after {
         content: '';
         position: absolute;
-        bottom: -20%;
+        bottom: -15%;
         right: -10%;
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, rgba(236, 72, 153, 0.1) 45%, transparent 70%);
         pointer-events: none;
+        animation: orbFloat2 15s ease-in-out infinite alternate;
     }
+}
+
+@keyframes orbFloat1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 20px) scale(1.1); }
+}
+
+@keyframes orbFloat2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-25px, -20px) scale(1.08); }
 }
 
 body.light-theme .login-container {
     background: $light-bg-primary;
 
     &::before {
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
     }
 
     &::after {
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
     }
 
     .login-card {
-        background: $light-bg-card;
+        background: #ffffff;
         border-color: $light-border;
-        box-shadow: $shadow-light-lg;
+        box-shadow: $shadow-3d-light-hover;
 
         h1 { color: $text-light-primary; }
         .subtitle { color: $text-light-secondary; }
 
         .btn-google {
-            background: $light-bg-card;
-            border: 1px solid rgba(0,0,0,0.15);
+            background: #ffffff;
+            border: 1px solid rgba(99, 102, 241, 0.2);
             color: $text-light-primary;
-            box-shadow: $shadow-light-sm;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08);
             &:hover {
-                background: $light-bg-secondary;
-                box-shadow: $shadow-light-md;
+                background: #f8fafc;
+                border-color: $accent-indigo;
+                box-shadow: 0 6px 20px rgba(99, 102, 241, 0.16);
             }
         }
 
         .btn-guest {
-            background: $light-bg-secondary;
+            background: rgba(99, 102, 241, 0.06);
             color: $text-light-secondary;
             &:hover {
-                background: rgba(226, 232, 240, 0.8);
+                background: rgba(99, 102, 241, 0.12);
                 color: $text-light-primary;
             }
         }
 
         .divider span {
-            background: $light-bg-card;
+            background: #ffffff;
             color: $text-light-muted;
         }
 
@@ -82,41 +95,55 @@ body.light-theme .login-container {
         .error-banner {
             background: rgba(244, 63, 94, 0.08);
             border-color: rgba(244, 63, 94, 0.2);
-            color: $accent-rose;
+            color: #ef4444;
         }
     }
 }
 
 .login-card {
     width: 100%;
-    max-width: 440px;
+    max-width: 450px;
     padding: 48px 40px;
-    @include card-dark;
+    @include card-4d-dark;
     border-radius: $radius-xl;
     position: relative;
     z-index: 1;
     text-align: center;
+    @include transition-physics;
+
+    &:hover {
+        transform: translateY(-4px) translateZ(0);
+        box-shadow: 0 24px 50px -10px rgba(99, 102, 241, 0.4), 0 0 30px rgba(139, 92, 246, 0.25);
+        border-color: rgba(139, 92, 246, 0.5);
+    }
 
     .brand-badge {
         @include flex-center;
         gap: 10px;
         margin-bottom: 28px;
         color: $accent-indigo;
-        font-size: 18px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
 
         svg {
             color: $accent-indigo;
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+        }
+
+        span {
+            background: $gradient-brand;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     }
 
     h1 {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 800;
         color: $text-dark-primary;
         margin-bottom: 8px;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
     }
 
     .subtitle {
@@ -135,7 +162,7 @@ body.light-theme .login-container {
     background: rgba(244, 63, 94, 0.1);
     border: 1px solid rgba(244, 63, 94, 0.25);
     border-radius: $radius-md;
-    color: $accent-rose;
+    color: #f43f5e;
     font-size: 13px;
     margin-bottom: 20px;
     text-align: left;
@@ -155,20 +182,21 @@ body.light-theme .login-container {
     gap: 12px;
     width: 100%;
     padding: 14px 24px;
-    background: $dark-bg-elevated;
-    border: 1px solid $dark-border;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(99, 102, 241, 0.25);
     border-radius: $radius-md;
     color: $text-dark-primary;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    @include transition-fast;
+    @include transition-physics;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 
     &:hover {
-        border-color: $dark-border-hover;
-        background: #283548;
-        transform: translateY(-1px);
-        box-shadow: $shadow-dark-md;
+        border-color: $accent-indigo;
+        background: rgba(30, 41, 59, 0.95);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
     }
 
     &:active {
@@ -205,11 +233,12 @@ body.light-theme .login-container {
         position: relative;
         padding: 0 16px;
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: $text-dark-muted;
-        background: $dark-bg-card;
+        background: $dark-bg-secondary;
+        border-radius: 4px;
     }
 }
 
@@ -220,18 +249,19 @@ body.light-theme .login-container {
     gap: 10px;
     width: 100%;
     padding: 13px 24px;
-    background: rgba(148, 163, 184, 0.08);
-    border: 1px solid transparent;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.15);
     border-radius: $radius-md;
     color: $text-dark-secondary;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    @include transition-fast;
+    @include transition-physics;
 
     &:hover {
-        background: rgba(148, 163, 184, 0.14);
+        background: rgba(99, 102, 241, 0.16);
         color: $text-dark-primary;
+        border-color: rgba(99, 102, 241, 0.35);
     }
 }
 
@@ -252,8 +282,8 @@ body.light-theme .login-container {
 
         a {
             color: $accent-indigo;
-            font-weight: 600;
-            &:hover { color: $accent-indigo-hover; }
+            font-weight: 700;
+            &:hover { color: $accent-violet; }
         }
     }
 }

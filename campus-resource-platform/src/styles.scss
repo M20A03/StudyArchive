@@ -1,12 +1,12 @@
 @use 'variables' as *;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -17,31 +17,86 @@ html {
 
 body {
     margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: $dark-bg-primary;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    background-color: $dark-bg-primary;
     min-height: 100vh;
     color: $text-dark-primary;
     overflow-x: hidden;
     line-height: 1.6;
-    @include transition-medium;
+    position: relative;
+    @include transition-physics;
 }
 
-// ─── Light Theme ───
+// ─── 4D Glowing Background Mesh (Zero Lag, Pure CSS) ───
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 40%);
+    z-index: -2;
+    animation: ambientMeshPulse 18s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+@keyframes ambientMeshPulse {
+    0% {
+        transform: scale(1) translate3d(0, 0, 0);
+        opacity: 0.85;
+    }
+    50% {
+        transform: scale(1.05) translate3d(15px, -10px, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.98) translate3d(-10px, 15px, 0);
+        opacity: 0.9;
+    }
+}
+
+// ─── Light Theme 4D ───
 body.light-theme {
     color-scheme: light;
-    background: $light-bg-primary;
+    background-color: $light-bg-primary;
     color: $text-light-primary;
 
+    &::before {
+        background:
+            radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+            radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 45%),
+            radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+    }
+
+    &::after {
+        background-image: radial-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+        opacity: 0.8;
+    }
+
     .sidebar {
-        background: $light-bg-card !important;
+        background: rgba(255, 255, 255, 0.9) !important;
         border-right-color: $light-border !important;
-        box-shadow: $shadow-light-sm !important;
+        box-shadow: 4px 0 24px rgba(99, 102, 241, 0.06) !important;
 
         .menu-item {
             color: $text-light-secondary !important;
             &:hover, &.active {
                 color: $accent-indigo !important;
-                background: rgba(99, 102, 241, 0.08) !important;
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.08)) !important;
+                box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2) !important;
             }
         }
 
@@ -51,14 +106,15 @@ body.light-theme {
 
         .toggle-btn {
             color: $text-light-secondary !important;
-            &:hover { background: rgba(0,0,0,0.05) !important; }
+            &:hover { background: rgba(99, 102, 241, 0.08) !important; }
         }
     }
 
     .navbar {
-        background: $light-bg-card !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(12px) !important;
         border-bottom-color: $light-border !important;
-        box-shadow: $shadow-light-sm !important;
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06) !important;
     }
 
     .nav-icon-btn {
@@ -70,8 +126,9 @@ body.light-theme {
     }
 
     .search-box {
-        background: $light-bg-secondary !important;
-        border-color: $light-border !important;
+        background: #ffffff !important;
+        border-color: rgba(99, 102, 241, 0.18) !important;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.06) !important;
         svg { color: $text-light-muted !important; }
         input {
             color: $text-light-primary !important;
@@ -80,16 +137,17 @@ body.light-theme {
     }
 
     .profile-dropdown {
-        background: rgba(0,0,0,0.03) !important;
-        border-color: $light-border !important;
+        background: #ffffff !important;
+        border-color: rgba(99, 102, 241, 0.18) !important;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.06) !important;
         .user-name { color: $text-light-primary !important; }
         .user-email { color: $text-light-secondary !important; }
     }
 
     .account-menu {
-        background: $light-bg-card !important;
+        background: #ffffff !important;
         border-color: $light-border !important;
-        box-shadow: $shadow-light-lg !important;
+        box-shadow: $shadow-3d-light-hover !important;
 
         .menu-header {
             strong { color: $text-light-primary !important; }
@@ -100,21 +158,21 @@ body.light-theme {
             color: $text-light-secondary !important;
             &:hover {
                 color: $text-light-primary !important;
-                background: rgba(0,0,0,0.04) !important;
+                background: rgba(99, 102, 241, 0.06) !important;
             }
-            &.danger { color: $accent-rose !important; }
+            &.danger { color: #ef4444 !important; }
         }
 
         .menu-divider { background: $light-border !important; }
 
         .theme-row {
-            background: $light-bg-secondary !important;
+            background: rgba(99, 102, 241, 0.06) !important;
             .theme-btn {
                 color: $text-light-secondary !important;
                 &.active {
-                    background: $light-bg-card !important;
+                    background: #ffffff !important;
                     color: $text-light-primary !important;
-                    box-shadow: $shadow-light-sm !important;
+                    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12) !important;
                 }
             }
         }
@@ -128,10 +186,15 @@ body.light-theme {
     .login-card,
     .stat-card,
     .glass-panel {
-        background: $light-bg-card !important;
+        background: $gradient-light-card !important;
         color: $text-light-primary !important;
         border-color: $light-border !important;
-        box-shadow: $shadow-light-md !important;
+        box-shadow: $shadow-3d-light !important;
+
+        &:hover {
+            box-shadow: $shadow-3d-light-hover !important;
+            border-color: $light-border-hover !important;
+        }
     }
 
     .user-name,
@@ -148,17 +211,20 @@ body.light-theme {
     .stat-value { color: $text-light-primary !important; }
 
     .btn-signin {
-        background: $accent-indigo !important;
-        &:hover { background: $accent-indigo-hover !important; }
+        background: $gradient-brand !important;
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
+        &:hover {
+            box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45) !important;
+        }
     }
 }
 
 // ─── Links ───
 a {
-    color: $accent-blue;
+    color: $accent-indigo;
     text-decoration: none;
-    @include transition-fast;
-    &:hover { color: $accent-indigo; }
+    @include transition-physics;
+    &:hover { color: $accent-violet; }
 }
 
 // ─── Inputs ───
@@ -166,62 +232,95 @@ button, input, select, textarea {
     font: inherit;
 }
 
-// ─── Glass Panel (used by cards) ───
+// ─── 4D Glass Panel ───
 .glass-panel {
-    @include card-dark;
-    @include transition-fast;
+    @include card-4d-dark;
+    @include transition-physics;
+
+    &:hover {
+        transform: translateY(-4px) translateZ(0);
+        box-shadow: $shadow-3d-dark-hover;
+        border-color: $dark-border-hover;
+    }
 }
 
 body.light-theme .glass-panel {
-    @include card-light;
+    @include card-4d-light;
+    &:hover {
+        transform: translateY(-4px) translateZ(0);
+        box-shadow: $shadow-3d-light-hover;
+        border-color: $light-border-hover;
+    }
 }
 
-// ─── Primary Button ───
+// ─── Glow Primary Button ───
 .btn-primary {
     padding: 12px 28px;
-    background: $accent-indigo;
+    background: $gradient-brand;
     color: white;
     border: none;
     border-radius: $radius-md;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 15px;
     cursor: pointer;
-    @include transition-fast;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    letter-spacing: -0.01em;
+    @include transition-physics;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35), 0 0 12px rgba(139, 92, 246, 0.2);
 
     &:hover {
-        background: $accent-indigo-hover;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5), 0 0 20px rgba(217, 70, 239, 0.3);
     }
 
     &:active {
-        transform: translateY(0);
+        transform: translateY(0) scale(0.99);
     }
 
     &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         transform: none;
+        box-shadow: none;
     }
 }
 
-// ─── Badges ───
+// ─── Glowing Badges ───
 .badge {
-    padding: 4px 12px;
+    padding: 5px 14px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 
     &.public {
-        background: rgba(16, 185, 129, 0.12);
-        color: $accent-emerald;
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
     }
 
     &.private {
-        background: rgba(244, 63, 94, 0.12);
-        color: $accent-rose;
+        background: rgba(236, 72, 153, 0.15);
+        color: #f472b6;
+        border: 1px solid rgba(236, 72, 153, 0.3);
+        box-shadow: 0 0 10px rgba(236, 72, 153, 0.15);
+    }
+}
+
+body.light-theme .badge {
+    &.public {
+        background: rgba(16, 185, 129, 0.12);
+        color: #059669;
+        border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    &.private {
+        background: rgba(225, 29, 72, 0.12);
+        color: #e11d48;
+        border-color: rgba(225, 29, 72, 0.25);
     }
 }
 
@@ -235,19 +334,19 @@ body.light-theme .glass-panel {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.2);
+    background: rgba(99, 102, 241, 0.25);
     border-radius: 10px;
 
     &:hover {
-        background: rgba(148, 163, 184, 0.35);
+        background: rgba(139, 92, 246, 0.45);
     }
 }
 
-// ─── Animations (GPU-accelerated) ───
+// ─── Animations (GPU-Accelerated) ───
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(12px) translateZ(0);
+        transform: translateY(14px) translateZ(0);
     }
     to {
         opacity: 1;
@@ -258,7 +357,7 @@ body.light-theme .glass-panel {
 @keyframes fadeInScale {
     from {
         opacity: 0;
-        transform: scale(0.96) translateZ(0);
+        transform: scale(0.95) translateZ(0);
     }
     to {
         opacity: 1;
@@ -266,23 +365,12 @@ body.light-theme .glass-panel {
     }
 }
 
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(16px) translateZ(0);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0) translateZ(0);
-    }
-}
-
 .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     will-change: opacity, transform;
 }
 
-// ─── Loader Spinner ───
+// ─── Spinner ───
 .loader {
     width: 20px;
     height: 20px;
