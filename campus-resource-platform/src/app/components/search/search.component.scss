@@ -229,45 +229,74 @@
 // ─── Light theme ───
 body.light-theme {
     .search-hero {
-        background: $light-bg-card;
-        border-color: $light-border;
-        h1 { color: $text-light-primary; }
-        p { color: $text-light-secondary; }
+        @include card-4d-light;
+        h1 {
+            color: $text-light-primary;
+        }
+        p {
+            color: $text-light-secondary;
+        }
     }
 
-    .large-search input {
-        background: $light-bg-secondary;
-        border-color: $light-border;
-        color: $text-light-primary;
-        &:focus { border-color: $accent-indigo; }
+    .large-search {
+        svg, i { color: $text-light-muted; }
+        input {
+            background: #ffffff;
+            border-color: rgba(99, 102, 241, 0.2);
+            color: $text-light-primary;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.05);
+            &:focus {
+                border-color: $accent-indigo;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 4px 20px rgba(99, 102, 241, 0.08);
+            }
+        }
     }
 
     .filter-panel {
-        @include card-light;
+        @include card-4d-light;
         h3 { color: $text-light-primary; }
     }
 
     .filter-group {
-        label { color: $text-light-muted; }
+        label { color: $text-light-secondary; }
         select {
-            background: $light-bg-secondary;
+            background: #ffffff;
             border-color: $light-border;
             color: $text-light-primary;
+            &:focus {
+                border-color: $accent-indigo;
+            }
+        }
+    }
+
+    .btn-outline-primary {
+        color: $accent-indigo;
+        border-color: rgba(99, 102, 241, 0.3);
+        &:hover {
+            background: rgba(99, 102, 241, 0.06);
+            border-color: $accent-indigo;
         }
     }
 
     .results-header p { color: $text-light-secondary; }
 
     .view-toggles {
-        background: $light-bg-card;
+        background: #ffffff;
         border-color: $light-border;
         button {
             color: $text-light-muted;
-            &.active { color: $accent-indigo; background: rgba(99,102,241,0.08); }
+            &.active {
+                color: $accent-indigo;
+                background: rgba(99, 102, 241, 0.08);
+            }
+            &:hover:not(.active) {
+                color: $text-light-secondary;
+            }
         }
     }
 
     .empty-state {
+        .empty-icon { color: $text-light-muted; }
         h3 { color: $text-light-primary; }
         p { color: $text-light-secondary; }
     }

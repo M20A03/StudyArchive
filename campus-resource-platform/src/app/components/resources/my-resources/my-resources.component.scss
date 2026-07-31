@@ -221,35 +221,66 @@ body.light-theme {
         p { color: $text-light-secondary; }
     }
 
-    .table-container { @include card-light; }
+    .table-container {
+        @include card-4d-light;
+    }
 
     .premium-table {
-        th { color: $text-light-muted; border-bottom-color: $light-border; background: rgba(0,0,0,0.02); }
-        td { color: $text-light-secondary; border-bottom-color: rgba(0,0,0,0.04); }
-        tr:hover td { background: rgba(0,0,0,0.02); }
+        th {
+            color: $text-light-muted;
+            border-bottom-color: $light-border;
+            background: rgba(99, 102, 241, 0.03);
+        }
+        td {
+            color: $text-light-secondary;
+            border-bottom-color: rgba(0, 0, 0, 0.04);
+        }
+        tr:hover td {
+            background: rgba(99, 102, 241, 0.03);
+        }
     }
 
     .resource-info {
-        .resource-icon { background: rgba(99,102,241,0.06); }
+        .resource-icon {
+            background: rgba(99, 102, 241, 0.06);
+        }
         .res-title { color: $text-light-primary; }
         .res-subject { color: $text-light-muted; }
     }
 
     .visibility-toggle {
-        border-color: $light-border;
+        border-color: rgba(99, 102, 241, 0.18);
         color: $text-light-secondary;
-        background: rgba(0,0,0,0.02);
+        background: #ffffff;
+        &:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: $accent-indigo;
+            color: $accent-indigo;
+        }
+        &.private {
+            background: rgba(99, 102, 241, 0.04);
+            color: $text-light-muted;
+        }
     }
 
     .row-actions .icon-btn {
         border-color: $light-border;
-        background: rgba(0,0,0,0.02);
+        background: #ffffff;
         color: $text-light-muted;
-        &:hover { color: $accent-indigo; background: rgba(99,102,241,0.06); }
-        &.delete:hover { color: $accent-rose; background: rgba(244,63,94,0.06); }
+        &:hover {
+            color: $accent-indigo;
+            background: rgba(99, 102, 241, 0.06);
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+        &.delete:hover {
+            color: $accent-rose;
+            background: rgba(244, 63, 94, 0.06);
+            border-color: rgba(244, 63, 94, 0.25);
+        }
     }
 
     .empty-state {
+        svg, i { color: $text-light-muted; }
         h3 { color: $text-light-primary; }
         p { color: $text-light-secondary; }
     }

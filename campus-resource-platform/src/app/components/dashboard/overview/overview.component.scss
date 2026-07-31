@@ -372,37 +372,79 @@
 
 // ─── Light Theme overrides ───
 body.light-theme {
-    .profile-header .profile-main {
-        .profile-img { border-color: $light-border; }
-        .profile-text h2 { color: $text-light-primary; }
-        .profile-text p { color: $text-light-secondary; }
+    .profile-header {
+        @include card-4d-light;
+        .profile-main {
+            .profile-img { border-color: rgba(99, 102, 241, 0.2); }
+            .profile-text h2 { color: $text-light-primary; }
+            .profile-text p { color: $text-light-secondary; }
+        }
     }
 
     .stat-card {
-        &:hover { box-shadow: $shadow-light-lg; }
-        .stat-label { color: $text-light-muted; }
+        @include card-4d-light;
+        &:hover {
+            box-shadow: $shadow-3d-light-hover;
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px) scale(1.02);
+        }
+        .stat-label { color: $text-light-secondary; }
         .stat-value { color: $text-light-primary; }
     }
 
+    .resource-section {
+        @include card-4d-light;
+        .section-header h3 { color: $text-light-primary; }
+    }
+
     .resource-table {
-        th { color: $text-light-muted; border-bottom-color: $light-border; }
-        td { color: $text-light-secondary; border-bottom-color: rgba(0,0,0,0.04); }
-        tr:hover { background: rgba(0,0,0,0.02); }
+        th {
+            color: $text-light-muted;
+            border-bottom-color: $light-border;
+            background: rgba(99, 102, 241, 0.03);
+        }
+        td {
+            color: $text-light-secondary;
+            border-bottom-color: rgba(0, 0, 0, 0.04);
+        }
+        tr:hover td {
+            background: rgba(99, 102, 241, 0.03);
+        }
     }
 
     .icon-btn {
-        color: $text-light-muted;
-        background: rgba(0,0,0,0.04);
-        &:hover { color: $text-light-primary; background: rgba(0,0,0,0.08); }
-        &.danger:hover { color: $accent-rose; background: rgba(244,63,94,0.08); }
+        color: $text-light-secondary;
+        background: rgba(99, 102, 241, 0.05);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        &:hover {
+            color: $accent-indigo;
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+        &.danger:hover {
+            color: $accent-rose;
+            background: rgba(244, 63, 94, 0.08);
+            border-color: rgba(244, 63, 94, 0.25);
+        }
+    }
+
+    .activity-section {
+        @include card-4d-light;
+        .section-header h3 { color: $text-light-primary; }
     }
 
     .activity-content p { color: $text-light-secondary; }
     .activity-content p strong { color: $text-light-primary; }
     .activity-content small { color: $text-light-muted; }
 
-    .modal-content { @include card-light; }
-    .modal-header { border-bottom-color: $light-border; h3 { color: $text-light-primary; } }
+    .modal-content {
+        @include card-4d-light;
+        box-shadow: $shadow-3d-light-hover;
+    }
+    .modal-header {
+        border-bottom-color: $light-border;
+        h3 { color: $text-light-primary; }
+    }
     .modal-body .form-group {
         label { color: $text-light-secondary; }
         input {

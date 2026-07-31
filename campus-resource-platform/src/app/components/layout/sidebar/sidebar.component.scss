@@ -9,7 +9,7 @@
     flex-direction: column;
     position: sticky;
     top: 0;
-    @include transition-medium;
+    @include transition-physics;
     overflow: hidden;
     flex-shrink: 0;
 
@@ -43,8 +43,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        color: $accent-indigo;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 16px;
         letter-spacing: -0.01em;
         white-space: nowrap;
@@ -52,10 +51,13 @@
         svg {
             flex-shrink: 0;
             color: $accent-indigo;
+            filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.4));
         }
 
         span {
-            color: $text-dark-primary;
+            background: $gradient-brand;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     }
 
@@ -68,11 +70,11 @@
         border-radius: $radius-sm;
         color: $text-dark-muted;
         cursor: pointer;
-        @include transition-fast;
+        @include transition-physics;
 
         &:hover {
-            background: rgba(148, 163, 184, 0.1);
-            color: $text-dark-secondary;
+            background: rgba(99, 102, 241, 0.1);
+            color: $accent-indigo;
         }
     }
 }
@@ -81,8 +83,8 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    padding: 12px 8px;
+    gap: 4px;
+    padding: 14px 10px;
     overflow-y: auto;
 }
 
@@ -90,32 +92,32 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 14px;
+    padding: 11px 14px;
     color: $text-dark-muted;
     text-decoration: none;
     border-radius: $radius-sm;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    @include transition-fast;
+    @include transition-physics;
     white-space: nowrap;
     border: none;
     background: transparent;
     width: 100%;
     text-align: left;
 
-    svg {
-        flex-shrink: 0;
-    }
+    svg { flex-shrink: 0; }
 
     &:hover {
-        background: rgba(148, 163, 184, 0.08);
+        background: rgba(99, 102, 241, 0.08);
         color: $text-dark-secondary;
     }
 
     &.active {
-        background: rgba(99, 102, 241, 0.1);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
         color: $accent-indigo;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        box-shadow: 0 0 12px rgba(99, 102, 241, 0.12);
 
         svg { color: $accent-indigo; }
     }
@@ -130,9 +132,60 @@
 }
 
 .sidebar-footer {
-    padding: 8px;
+    padding: 10px;
     border-top: 1px solid $dark-border;
     margin-top: auto;
+}
+
+// ─── Light Theme ───
+body.light-theme {
+    .sidebar {
+        background: rgba(255, 255, 255, 0.92);
+        border-right-color: $light-border;
+        backdrop-filter: blur(12px);
+        box-shadow: 4px 0 24px rgba(99, 102, 241, 0.06);
+    }
+
+    .sidebar-header {
+        border-bottom-color: $light-border;
+
+        .logo svg {
+            filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.3));
+        }
+
+        .toggle-btn {
+            color: $text-light-muted;
+            &:hover {
+                color: $accent-indigo;
+                background: rgba(99, 102, 241, 0.08);
+            }
+        }
+    }
+
+    .menu-item {
+        color: $text-light-secondary;
+
+        &:hover {
+            color: $accent-indigo;
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        &.active {
+            color: $accent-indigo;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.06));
+            border-color: rgba(99, 102, 241, 0.18);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.08);
+        }
+
+        &.logout {
+            color: $text-light-muted;
+            &:hover { color: $accent-rose; background: rgba(244, 63, 94, 0.06); }
+        }
+    }
+
+    .sidebar-footer {
+        border-top-color: $light-border;
+    }
 }
 
 @media (max-width: 768px) {

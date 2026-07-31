@@ -214,40 +214,61 @@ body.light-theme {
         p { color: $text-light-secondary; }
     }
 
-    .upload-container { @include card-light; }
+    .upload-container {
+        @include card-4d-light;
+    }
 
     .dropzone {
-        border-color: $light-border;
-        background: rgba(0,0,0,0.02);
+        border-color: rgba(99, 102, 241, 0.25);
+        background: rgba(99, 102, 241, 0.02);
         &:hover {
             border-color: $accent-indigo;
-            background: rgba(99,102,241,0.03);
+            background: rgba(99, 102, 241, 0.06);
+        }
+        &.has-file {
+            border-color: $accent-emerald;
+            background: rgba(16, 185, 129, 0.04);
         }
         .drop-text h3 { color: $text-light-primary; }
         .drop-text p { color: $text-light-muted; }
+        svg, i { color: $text-light-muted; }
     }
 
     .form-group {
         label { color: $text-light-secondary; }
         input, select {
-            background: $light-bg-secondary;
-            border-color: $light-border;
+            background: #ffffff;
+            border-color: rgba(99, 102, 241, 0.18);
             color: $text-light-primary;
-            &:focus { border-color: $accent-indigo; }
+            &:focus {
+                border-color: $accent-indigo;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            }
+            option {
+                background: #ffffff;
+                color: $text-light-primary;
+            }
         }
     }
 
     .toggle-group {
-        background: rgba(0,0,0,0.03);
-        .toggle-option input:checked + span {
-            background: $light-bg-card;
-            box-shadow: $shadow-light-sm;
+        background: rgba(99, 102, 241, 0.05);
+        .toggle-option {
+            span { color: $text-light-secondary; }
+            input:checked + span {
+                background: #ffffff;
+                color: $accent-indigo;
+                box-shadow: $shadow-light-sm;
+            }
         }
     }
 
     .form-actions .btn-secondary {
         border-color: $light-border;
         color: $text-light-secondary;
-        &:hover { background: rgba(0,0,0,0.03); color: $text-light-primary; }
+        &:hover {
+            background: rgba(99, 102, 241, 0.05);
+            color: $text-light-primary;
+        }
     }
 }
