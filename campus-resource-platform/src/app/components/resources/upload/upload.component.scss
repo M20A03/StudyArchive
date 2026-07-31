@@ -122,35 +122,6 @@
     }
 }
 
-.toggle-group {
-    display: flex;
-    background: rgba(148, 163, 184, 0.06);
-    padding: 3px;
-    border-radius: 8px;
-    width: fit-content;
-
-    .toggle-option {
-        cursor: pointer;
-
-        input { display: none; }
-
-        span {
-            display: block;
-            padding: 7px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: $text-dark-muted;
-            @include transition-fast;
-        }
-
-        input:checked + span {
-            background: $dark-bg-elevated;
-            color: $accent-indigo;
-            box-shadow: $shadow-dark-sm;
-        }
-    }
-}
 
 .upload-progress {
     margin-bottom: 28px;
@@ -251,17 +222,6 @@ body.light-theme {
         }
     }
 
-    .toggle-group {
-        background: rgba(99, 102, 241, 0.05);
-        .toggle-option {
-            span { color: $text-light-secondary; }
-            input:checked + span {
-                background: #ffffff;
-                color: $accent-indigo;
-                box-shadow: $shadow-light-sm;
-            }
-        }
-    }
 
     .form-actions .btn-secondary {
         border-color: $light-border;
