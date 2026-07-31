@@ -1,0 +1,438 @@
+@use '../../../../styles/variables' as *;
+
+.content-body {
+    max-width: 1200px;
+}
+
+// ─── Profile Header ───
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    border-radius: $radius-lg;
+    gap: 20px;
+
+    .profile-main {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .profile-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid $dark-border;
+        }
+
+        .profile-text {
+            h2 {
+                font-size: 22px;
+                font-weight: 700;
+                color: $text-dark-primary;
+                letter-spacing: -0.02em;
+                margin-bottom: 4px;
+            }
+
+            p {
+                font-size: 14px;
+                color: $text-dark-secondary;
+            }
+        }
+    }
+}
+
+// ─── Stats Grid ───
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-left: 3px solid transparent;
+    @include transition-fast;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-dark-lg;
+    }
+
+    .stat-icon {
+        @include flex-center;
+        width: 44px;
+        height: 44px;
+        border-radius: $radius-md;
+        flex-shrink: 0;
+    }
+
+    .stat-details {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: $text-dark-muted;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: $text-dark-primary;
+            letter-spacing: -0.02em;
+        }
+    }
+}
+
+// ─── Dashboard Grid ───
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+// ─── Resource Section ───
+.resource-section {
+    padding: 24px;
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: $text-dark-primary;
+        }
+
+        .btn-link {
+            background: transparent;
+            border: none;
+            color: $accent-indigo;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            @include transition-fast;
+
+            &:hover {
+                color: $accent-indigo-hover;
+            }
+        }
+    }
+}
+
+.resource-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        text-align: left;
+        padding: 10px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: $text-dark-muted;
+        border-bottom: 1px solid $dark-border;
+    }
+
+    td {
+        padding: 12px;
+        font-size: 14px;
+        color: $text-dark-secondary;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    }
+
+    tr {
+        @include transition-fast;
+        &:hover {
+            background: rgba(148, 163, 184, 0.04);
+        }
+    }
+}
+
+.rating-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    color: $accent-amber;
+
+    .star-icon {
+        width: 14px;
+        height: 14px;
+        color: $accent-amber;
+    }
+}
+
+.table-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.icon-btn {
+    @include flex-center;
+    width: 32px;
+    height: 32px;
+    background: rgba(148, 163, 184, 0.08);
+    border: none;
+    border-radius: $radius-sm;
+    color: $text-dark-muted;
+    cursor: pointer;
+    @include transition-fast;
+
+    &:hover {
+        background: rgba(148, 163, 184, 0.14);
+        color: $text-dark-primary;
+    }
+
+    &.danger:hover {
+        background: rgba(244, 63, 94, 0.1);
+        color: $accent-rose;
+    }
+}
+
+// ─── Activity Section ───
+.activity-section {
+    padding: 24px;
+
+    .section-header h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: $text-dark-primary;
+        margin-bottom: 16px;
+    }
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.activity-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+
+    .activity-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $accent-indigo;
+        margin-top: 6px;
+        flex-shrink: 0;
+    }
+
+    .activity-content {
+        p {
+            font-size: 14px;
+            color: $text-dark-secondary;
+            line-height: 1.5;
+
+            strong { color: $text-dark-primary; }
+            span { color: $accent-indigo; }
+        }
+
+        small {
+            font-size: 12px;
+            color: $text-dark-muted;
+        }
+    }
+}
+
+// ─── Edit Profile Modal ───
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    @include flex-center;
+    z-index: 500;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 480px;
+    @include card-dark;
+    border-radius: $radius-xl;
+    padding: 0;
+    animation: fadeInScale 0.25s ease-out;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid $dark-border;
+
+    h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: $text-dark-primary;
+    }
+
+    .close-btn {
+        @include flex-center;
+        width: 32px;
+        height: 32px;
+        background: transparent;
+        border: none;
+        border-radius: $radius-sm;
+        color: $text-dark-muted;
+        cursor: pointer;
+        @include transition-fast;
+
+        &:hover {
+            background: rgba(148, 163, 184, 0.1);
+            color: $text-dark-secondary;
+        }
+    }
+}
+
+.modal-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: $text-dark-secondary;
+        }
+
+        input {
+            padding: 10px 14px;
+            background: $dark-bg-primary;
+            border: 1px solid $dark-border;
+            border-radius: $radius-sm;
+            color: $text-dark-primary;
+            font-size: 14px;
+            outline: none;
+            @include transition-fast;
+
+            &:focus {
+                border-color: $accent-indigo;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            }
+
+            &::placeholder {
+                color: $text-dark-muted;
+            }
+        }
+    }
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid $dark-border;
+}
+
+.btn-secondary {
+    padding: 10px 20px;
+    background: transparent;
+    color: $text-dark-secondary;
+    border: 1px solid $dark-border;
+    border-radius: $radius-sm;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    @include transition-fast;
+
+    &:hover {
+        background: rgba(148, 163, 184, 0.08);
+        color: $text-dark-primary;
+    }
+}
+
+// ─── Light Theme overrides ───
+body.light-theme {
+    .profile-header .profile-main {
+        .profile-img { border-color: $light-border; }
+        .profile-text h2 { color: $text-light-primary; }
+        .profile-text p { color: $text-light-secondary; }
+    }
+
+    .stat-card {
+        &:hover { box-shadow: $shadow-light-lg; }
+        .stat-label { color: $text-light-muted; }
+        .stat-value { color: $text-light-primary; }
+    }
+
+    .resource-table {
+        th { color: $text-light-muted; border-bottom-color: $light-border; }
+        td { color: $text-light-secondary; border-bottom-color: rgba(0,0,0,0.04); }
+        tr:hover { background: rgba(0,0,0,0.02); }
+    }
+
+    .icon-btn {
+        color: $text-light-muted;
+        background: rgba(0,0,0,0.04);
+        &:hover { color: $text-light-primary; background: rgba(0,0,0,0.08); }
+        &.danger:hover { color: $accent-rose; background: rgba(244,63,94,0.08); }
+    }
+
+    .activity-content p { color: $text-light-secondary; }
+    .activity-content p strong { color: $text-light-primary; }
+    .activity-content small { color: $text-light-muted; }
+
+    .modal-content { @include card-light; }
+    .modal-header { border-bottom-color: $light-border; h3 { color: $text-light-primary; } }
+    .modal-body .form-group {
+        label { color: $text-light-secondary; }
+        input {
+            background: $light-bg-secondary;
+            border-color: $light-border;
+            color: $text-light-primary;
+            &:focus { border-color: $accent-indigo; }
+        }
+    }
+    .modal-footer { border-top-color: $light-border; }
+    .btn-secondary {
+        border-color: $light-border;
+        color: $text-light-secondary;
+        &:hover { background: rgba(0,0,0,0.03); color: $text-light-primary; }
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

@@ -1,0 +1,297 @@
+@use 'variables' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: $dark-bg-primary;
+    min-height: 100vh;
+    color: $text-dark-primary;
+    overflow-x: hidden;
+    line-height: 1.6;
+    @include transition-medium;
+}
+
+// ─── Light Theme ───
+body.light-theme {
+    color-scheme: light;
+    background: $light-bg-primary;
+    color: $text-light-primary;
+
+    .sidebar {
+        background: $light-bg-card !important;
+        border-right-color: $light-border !important;
+        box-shadow: $shadow-light-sm !important;
+
+        .menu-item {
+            color: $text-light-secondary !important;
+            &:hover, &.active {
+                color: $accent-indigo !important;
+                background: rgba(99, 102, 241, 0.08) !important;
+            }
+        }
+
+        .logo span {
+            color: $text-light-primary !important;
+        }
+
+        .toggle-btn {
+            color: $text-light-secondary !important;
+            &:hover { background: rgba(0,0,0,0.05) !important; }
+        }
+    }
+
+    .navbar {
+        background: $light-bg-card !important;
+        border-bottom-color: $light-border !important;
+        box-shadow: $shadow-light-sm !important;
+    }
+
+    .nav-icon-btn {
+        color: $text-light-secondary !important;
+        &:hover {
+            color: $accent-indigo !important;
+            background: rgba(99, 102, 241, 0.08) !important;
+        }
+    }
+
+    .search-box {
+        background: $light-bg-secondary !important;
+        border-color: $light-border !important;
+        svg { color: $text-light-muted !important; }
+        input {
+            color: $text-light-primary !important;
+            &::placeholder { color: $text-light-muted !important; }
+        }
+    }
+
+    .profile-dropdown {
+        background: rgba(0,0,0,0.03) !important;
+        border-color: $light-border !important;
+        .user-name { color: $text-light-primary !important; }
+        .user-email { color: $text-light-secondary !important; }
+    }
+
+    .account-menu {
+        background: $light-bg-card !important;
+        border-color: $light-border !important;
+        box-shadow: $shadow-light-lg !important;
+
+        .menu-header {
+            strong { color: $text-light-primary !important; }
+            span { color: $text-light-secondary !important; }
+        }
+
+        .menu-item {
+            color: $text-light-secondary !important;
+            &:hover {
+                color: $text-light-primary !important;
+                background: rgba(0,0,0,0.04) !important;
+            }
+            &.danger { color: $accent-rose !important; }
+        }
+
+        .menu-divider { background: $light-border !important; }
+
+        .theme-row {
+            background: $light-bg-secondary !important;
+            .theme-btn {
+                color: $text-light-secondary !important;
+                &.active {
+                    background: $light-bg-card !important;
+                    color: $text-light-primary !important;
+                    box-shadow: $shadow-light-sm !important;
+                }
+            }
+        }
+    }
+
+    .resource-section,
+    .activity-section,
+    .table-container,
+    .upload-container,
+    .filter-panel,
+    .login-card,
+    .stat-card,
+    .glass-panel {
+        background: $light-bg-card !important;
+        color: $text-light-primary !important;
+        border-color: $light-border !important;
+        box-shadow: $shadow-light-md !important;
+    }
+
+    .user-name,
+    .section-header h3,
+    h1, h2, h3, h4 {
+        color: $text-light-primary !important;
+    }
+
+    p, td, th,
+    .stat-label, .subject, .res-subject {
+        color: $text-light-secondary !important;
+    }
+
+    .stat-value { color: $text-light-primary !important; }
+
+    .btn-signin {
+        background: $accent-indigo !important;
+        &:hover { background: $accent-indigo-hover !important; }
+    }
+}
+
+// ─── Links ───
+a {
+    color: $accent-blue;
+    text-decoration: none;
+    @include transition-fast;
+    &:hover { color: $accent-indigo; }
+}
+
+// ─── Inputs ───
+button, input, select, textarea {
+    font: inherit;
+}
+
+// ─── Glass Panel (used by cards) ───
+.glass-panel {
+    @include card-dark;
+    @include transition-fast;
+}
+
+body.light-theme .glass-panel {
+    @include card-light;
+}
+
+// ─── Primary Button ───
+.btn-primary {
+    padding: 12px 28px;
+    background: $accent-indigo;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    @include transition-fast;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+
+    &:hover {
+        background: $accent-indigo-hover;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+}
+
+// ─── Badges ───
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+
+    &.public {
+        background: rgba(16, 185, 129, 0.12);
+        color: $accent-emerald;
+    }
+
+    &.private {
+        background: rgba(244, 63, 94, 0.12);
+        color: $accent-rose;
+    }
+}
+
+// ─── Scrollbar ───
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+
+    &:hover {
+        background: rgba(148, 163, 184, 0.35);
+    }
+}
+
+// ─── Animations (GPU-accelerated) ───
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) translateZ(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) translateZ(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateZ(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateZ(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(16px) translateZ(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateZ(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+    will-change: opacity, transform;
+}
+
+// ─── Loader Spinner ───
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

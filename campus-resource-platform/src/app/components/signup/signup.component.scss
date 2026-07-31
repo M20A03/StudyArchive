@@ -1,0 +1,25 @@
+@use '../../../styles/variables' as *;
+
+// Reuse login styles via shared login-container / login-card classes
+@use '../login/login.component' as *;
+
+.signup-card {
+    max-width: 460px;
+}
+
+.login-link {
+    font-size: 14px;
+    color: $text-dark-secondary;
+    margin-top: 4px;
+
+    a {
+        color: $accent-indigo;
+        font-weight: 600;
+        text-decoration: none;
+        @include transition-fast;
+
+        &:hover {
+            color: $accent-indigo-hover;
+        }
+    }
+}

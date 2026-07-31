@@ -1,0 +1,256 @@
+@use '../../../../styles/variables' as *;
+
+.my-resources-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        color: $text-dark-primary;
+        margin-bottom: 6px;
+        letter-spacing: -0.02em;
+    }
+
+    p {
+        color: $text-dark-secondary;
+        font-size: 15px;
+    }
+
+    .btn-primary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+
+        svg, i { width: 18px; height: 18px; }
+    }
+}
+
+.table-container {
+    overflow: hidden;
+    @include card-dark;
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+
+    th {
+        padding: 14px 22px;
+        background: rgba(148, 163, 184, 0.04);
+        font-size: 11px;
+        font-weight: 600;
+        color: $text-dark-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid $dark-border;
+    }
+
+    td {
+        padding: 16px 22px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+        font-size: 14px;
+        color: $text-dark-secondary;
+        vertical-align: middle;
+    }
+
+    tr {
+        @include transition-fast;
+        &:hover td {
+            background: rgba(148, 163, 184, 0.04);
+        }
+    }
+}
+
+.resource-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .resource-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(99, 102, 241, 0.08);
+        border-radius: $radius-sm;
+        @include flex-center;
+
+        svg, i {
+            width: 18px;
+            height: 18px;
+            color: $accent-indigo;
+        }
+    }
+
+    .res-title {
+        font-weight: 600;
+        color: $text-dark-primary;
+        margin-bottom: 2px;
+    }
+
+    .res-subject {
+        font-size: 12px;
+        color: $text-dark-muted;
+    }
+}
+
+.res-stats {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $text-dark-secondary;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        svg, i { width: 14px; height: 14px; }
+    }
+}
+
+.visibility-toggle {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid $dark-border;
+    background: rgba(148, 163, 184, 0.04);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-dark-secondary;
+    cursor: pointer;
+    @include transition-fast;
+
+    svg, i { width: 14px; height: 14px; }
+
+    &:hover {
+        background: rgba(99, 102, 241, 0.06);
+        border-color: $accent-indigo;
+        color: $accent-indigo;
+    }
+
+    &.private {
+        background: rgba(148, 163, 184, 0.06);
+        color: $text-dark-muted;
+        border-color: transparent;
+    }
+}
+
+.row-actions {
+    display: flex;
+    gap: 6px;
+
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: $radius-sm;
+        border: 1px solid $dark-border;
+        background: rgba(148, 163, 184, 0.04);
+        @include flex-center;
+        cursor: pointer;
+        @include transition-fast;
+        color: $text-dark-muted;
+
+        svg, i { width: 15px; height: 15px; }
+
+        &:hover {
+            background: rgba(99, 102, 241, 0.08);
+            color: $accent-indigo;
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        &.delete:hover {
+            background: rgba(244, 63, 94, 0.08);
+            color: $accent-rose;
+            border-color: rgba(244, 63, 94, 0.3);
+        }
+    }
+}
+
+.empty-state {
+    padding: 64px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    svg, i {
+        width: 56px;
+        height: 56px;
+        color: $text-dark-muted;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: $text-dark-primary;
+    }
+
+    p {
+        color: $text-dark-secondary;
+        max-width: 300px;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .btn-primary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        svg, i { width: 18px; height: 18px; }
+    }
+}
+
+// ─── Light theme ───
+body.light-theme {
+    .header {
+        h1 { color: $text-light-primary; }
+        p { color: $text-light-secondary; }
+    }
+
+    .table-container { @include card-light; }
+
+    .premium-table {
+        th { color: $text-light-muted; border-bottom-color: $light-border; background: rgba(0,0,0,0.02); }
+        td { color: $text-light-secondary; border-bottom-color: rgba(0,0,0,0.04); }
+        tr:hover td { background: rgba(0,0,0,0.02); }
+    }
+
+    .resource-info {
+        .resource-icon { background: rgba(99,102,241,0.06); }
+        .res-title { color: $text-light-primary; }
+        .res-subject { color: $text-light-muted; }
+    }
+
+    .visibility-toggle {
+        border-color: $light-border;
+        color: $text-light-secondary;
+        background: rgba(0,0,0,0.02);
+    }
+
+    .row-actions .icon-btn {
+        border-color: $light-border;
+        background: rgba(0,0,0,0.02);
+        color: $text-light-muted;
+        &:hover { color: $accent-indigo; background: rgba(99,102,241,0.06); }
+        &.delete:hover { color: $accent-rose; background: rgba(244,63,94,0.06); }
+    }
+
+    .empty-state {
+        h3 { color: $text-light-primary; }
+        p { color: $text-light-secondary; }
+    }
+}

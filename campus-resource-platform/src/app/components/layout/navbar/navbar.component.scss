@@ -1,0 +1,320 @@
+@use '../../../../styles/variables' as *;
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background: $dark-bg-secondary;
+    border-bottom: 1px solid $dark-border;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    @include transition-fast;
+}
+
+.nav-left {
+    flex: 1;
+    max-width: 520px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: $dark-bg-primary;
+    border: 1px solid $dark-border;
+    border-radius: $radius-md;
+    @include transition-fast;
+
+    &:focus-within {
+        border-color: $accent-indigo;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    svg {
+        color: $text-dark-muted;
+        flex-shrink: 0;
+    }
+
+    input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: $text-dark-primary;
+        font-size: 14px;
+
+        &::placeholder {
+            color: $text-dark-muted;
+        }
+    }
+
+    .search-hint {
+        padding: 4px 12px;
+        background: $accent-indigo;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        @include transition-fast;
+        opacity: 0.9;
+
+        &:hover {
+            opacity: 1;
+            background: $accent-indigo-hover;
+        }
+    }
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-icon-btn {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    border-radius: $radius-md;
+    color: $text-dark-secondary;
+    cursor: pointer;
+    @include transition-fast;
+    position: relative;
+
+    &:hover {
+        background: rgba(148, 163, 184, 0.1);
+        color: $text-dark-primary;
+    }
+}
+
+.btn-signin {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: $accent-indigo;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    @include transition-fast;
+
+    &:hover {
+        background: $accent-indigo-hover;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+// ─── Profile Dropdown ───
+.account-menu-wrap {
+    position: relative;
+}
+
+.profile-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px 6px 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $dark-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    @include transition-fast;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: $dark-border-hover;
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        max-width: 160px;
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: $text-dark-primary;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-email {
+            font-size: 11px;
+            color: $text-dark-muted;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    svg {
+        color: $text-dark-muted;
+        flex-shrink: 0;
+    }
+}
+
+// ─── Account Menu ───
+.account-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 280px;
+    background: $dark-bg-card;
+    border: 1px solid $dark-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-dark-lg;
+    padding: 8px;
+    z-index: 200;
+    animation: fadeInScale 0.2s ease-out;
+    transform-origin: top right;
+
+    .menu-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: $radius-md;
+
+        .menu-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+
+            strong {
+                font-size: 14px;
+                font-weight: 600;
+                color: $text-dark-primary;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            span {
+                font-size: 12px;
+                color: $text-dark-muted;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .menu-divider {
+        height: 1px;
+        background: $dark-border;
+        margin: 4px 8px;
+    }
+
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 12px;
+        background: transparent;
+        border: none;
+        border-radius: $radius-sm;
+        color: $text-dark-secondary;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        @include transition-fast;
+        text-align: left;
+
+        svg { flex-shrink: 0; }
+
+        &:hover {
+            background: rgba(148, 163, 184, 0.08);
+            color: $text-dark-primary;
+        }
+
+        &.danger {
+            color: $accent-rose;
+            &:hover {
+                background: rgba(244, 63, 94, 0.08);
+            }
+        }
+    }
+
+    .theme-row {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        margin: 4px 8px;
+        background: rgba(148, 163, 184, 0.06);
+        border-radius: $radius-sm;
+
+        .theme-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: $text-dark-muted;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            @include transition-fast;
+
+            &.active {
+                background: $dark-bg-elevated;
+                color: $text-dark-primary;
+                box-shadow: $shadow-dark-sm;
+            }
+
+            &:hover:not(.active) {
+                color: $text-dark-secondary;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 16px;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .profile-dropdown .user-info {
+        display: none;
+    }
+}

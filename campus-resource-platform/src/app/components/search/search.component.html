@@ -1,0 +1,77 @@
+<div class="search-page animate-fade-in">
+    <section class="search-hero glass-panel">
+        <h1>Find the Perfect Resources</h1>
+        <p>Browse through thousands of student-contributed notes, papers, and guides.</p>
+
+        <div class="large-search">
+            <i data-lucide="search"></i>
+            <input type="text" [(ngModel)]="searchQuery" placeholder="Search by title, subject, or keyword...">
+            <button class="btn-primary" (click)="runSearch()">Search</button>
+        </div>
+    </section>
+
+    <div class="search-layout">
+        <aside class="filter-panel glass-panel">
+            <h3>Filters</h3>
+
+            <div class="filter-group">
+                <label>Subject</label>
+                <select [(ngModel)]="filters.subject">
+                    <option>All Subjects</option>
+                    <option>Computer Science</option>
+                    <option>Physics</option>
+                    <option>Mathematics</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Semester</label>
+                <select [(ngModel)]="filters.semester">
+                    <option>All Semesters</option>
+                    <option>1st Semester</option>
+                    <option>2nd Semester</option>
+                    <option>6th Semester</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Resource Type</label>
+                <select [(ngModel)]="filters.type">
+                    <option>All Types</option>
+                    <option>Handwritten Notes</option>
+                    <option>Exam Papers</option>
+                    <option>Reference Books</option>
+                </select>
+            </div>
+
+            <button class="btn-outline-primary" (click)="clearFilters()">Clear All Filters</button>
+        </aside>
+
+        <main class="results-content">
+            <div class="results-header">
+                <p>Showing {{filteredResources().length}} resources</p>
+                <div class="view-toggles">
+                    <button (click)="viewMode = 'grid'" [class.active]="viewMode === 'grid'">
+                        <i data-lucide="grid"></i>
+                    </button>
+                    <button (click)="viewMode = 'list'" [class.active]="viewMode === 'list'">
+                        <i data-lucide="list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-grid" [class.list-view]="viewMode === 'list'" *ngIf="filteredResources().length > 0">
+                <app-resource-card *ngFor="let res of filteredResources()" [resource]="res"
+                    (download)="onDownloadResource($event)">
+                </app-resource-card>
+            </div>
+
+            <div class="empty-state glass-panel" *ngIf="filteredResources().length === 0">
+                <i data-lucide="search-x" class="empty-icon"></i>
+                <h3>No resources found</h3>
+                <p>Try adjusting your search or filters to find what you're looking for.</p>
+                <button class="btn-primary" (click)="searchQuery = ''">Clear Search</button>
+            </div>
+        </main>
+    </div>
+</div>

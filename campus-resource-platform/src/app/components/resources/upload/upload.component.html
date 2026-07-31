@@ -1,0 +1,99 @@
+<div class="upload-page animate-fade-in">
+    <div class="header">
+        <h1>Upload Resource</h1>
+        <p>Share your knowledge with the campus community.</p>
+    </div>
+
+    <div class="upload-container glass-panel">
+        <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+            <div class="dropzone" [class.has-file]="selectedFile" (click)="fileInput.click()">
+                <input type="file" #fileInput (change)="onFileSelected($event)" hidden>
+                <i data-lucide="upload-cloud" *ngIf="!selectedFile"></i>
+                <i data-lucide="file-check" *ngIf="selectedFile" class="success-icon"></i>
+                <div class="drop-text" *ngIf="!selectedFile">
+                    <h3>Click or drag file to upload</h3>
+                    <p>Support PDF, DOCX, PPTX (Max 25MB)</p>
+                </div>
+                <div class="drop-text" *ngIf="selectedFile">
+                    <h3>{{selectedFile.name}}</h3>
+                    <p>{{(selectedFile.size / 1024 / 1024).toFixed(2)}} MB &bull; Ready to upload</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Resource Title</label>
+                    <input type="text" formControlName="title" placeholder="e.g. Quantum Mechanics Lecture Notes">
+                </div>
+
+                <div class="form-group">
+                    <label>Subject</label>
+                    <select formControlName="subject">
+                        <option value="" disabled selected>Select Subject</option>
+                        <option>Computer Science</option>
+                        <option>Physics</option>
+                        <option>Mathematics</option>
+                        <option>Economics</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Semester</label>
+                    <select formControlName="semester">
+                        <option value="" disabled selected>Select Semester</option>
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>4th Semester</option>
+                        <option>6th Semester</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Branch / Department</label>
+                    <select formControlName="branch">
+                        <option value="" disabled selected>Select Branch</option>
+                        <option>B.Tech CS</option>
+                        <option>B.Sc Physics</option>
+                        <option>BA Economics</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Privacy Level</label>
+                    <div class="toggle-group">
+                        <label class="toggle-option">
+                            <input type="radio" formControlName="privacy" value="Public" checked>
+                            <span>Public</span>
+                        </label>
+                        <label class="toggle-option">
+                            <input type="radio" formControlName="privacy" value="Private">
+                            <span>Private</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tags (Comma separated)</label>
+                    <input type="text" formControlName="tags" placeholder="e.g. quantum, physics, notes">
+                </div>
+            </div>
+
+            <div class="upload-progress" *ngIf="isUploading">
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+                </div>
+                <span>Uploading... {{uploadProgress}}%</span>
+            </div>
+
+            <p *ngIf="uploadError" class="upload-error">{{uploadError}}</p>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" (click)="cancelUpload()">Cancel</button>
+                <button type="submit" class="btn-primary" [disabled]="uploadForm.invalid || !selectedFile || isUploading">
+                    <span *ngIf="!isUploading">Publish Resource</span>
+                    <span *ngIf="isUploading">Uploading...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

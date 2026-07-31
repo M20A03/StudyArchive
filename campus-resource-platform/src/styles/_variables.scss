@@ -1,0 +1,98 @@
+// ─── Professional Dark Mode Palette ───
+$dark-bg-primary: #0b0f19;
+$dark-bg-secondary: #111827;
+$dark-bg-card: #1e293b;
+$dark-bg-elevated: #1e293b;
+$dark-border: rgba(148, 163, 184, 0.12);
+$dark-border-hover: rgba(148, 163, 184, 0.22);
+
+// ─── Professional Light Mode Palette ───
+$light-bg-primary: #f8fafc;
+$light-bg-secondary: #f1f5f9;
+$light-bg-card: #ffffff;
+$light-bg-elevated: #ffffff;
+$light-border: rgba(15, 23, 42, 0.08);
+$light-border-hover: rgba(15, 23, 42, 0.16);
+
+// ─── Accent Colors ───
+$accent-indigo: #6366f1;
+$accent-indigo-hover: #4f46e5;
+$accent-blue: #3b82f6;
+$accent-emerald: #10b981;
+$accent-amber: #f59e0b;
+$accent-rose: #f43f5e;
+
+// ─── Text Colors (Dark) ───
+$text-dark-primary: #f8fafc;
+$text-dark-secondary: #94a3b8;
+$text-dark-muted: #64748b;
+
+// ─── Text Colors (Light) ───
+$text-light-primary: #0f172a;
+$text-light-secondary: #475569;
+$text-light-muted: #94a3b8;
+
+// ─── Border Radius ───
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+
+// ─── Shadows (Dark) ───
+$shadow-dark-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+$shadow-dark-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+$shadow-dark-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+// ─── Shadows (Light) ───
+$shadow-light-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+$shadow-light-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+$shadow-light-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+// ─── Mixins ───
+@mixin card-dark {
+    background: $dark-bg-card;
+    border: 1px solid $dark-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-dark-md;
+    color: $text-dark-primary;
+}
+
+@mixin card-light {
+    background: $light-bg-card;
+    border: 1px solid $light-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-light-md;
+    color: $text-light-primary;
+}
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin transition-fast {
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+@mixin transition-medium {
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+@mixin hover-lift {
+    @include transition-fast;
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-dark-lg;
+    }
+}
+
+// ─── Glassmorphism (used sparingly) ───
+@mixin glassmorphism {
+    background: rgba(30, 41, 59, 0.65);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid $dark-border;
+    box-shadow: $shadow-dark-md;
+    color: $text-dark-primary;
+}
