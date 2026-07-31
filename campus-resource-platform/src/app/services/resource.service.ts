@@ -40,7 +40,8 @@ const DEFAULT_CAMPUS_RESOURCES: Resource[] = [
         downloads: 1240,
         rating: 4.9,
         date: 'Jul 28, 2026',
-        tags: ['Graphs', 'Trees', 'Sorting']
+        tags: ['Graphs', 'Trees', 'Sorting'],
+        ownerId: 'campus-community'
     },
     {
         id: 'res-quantum-phys',
@@ -52,7 +53,8 @@ const DEFAULT_CAMPUS_RESOURCES: Resource[] = [
         downloads: 850,
         rating: 4.8,
         date: 'Jul 29, 2026',
-        tags: ['Quantum', 'Optics']
+        tags: ['Quantum', 'Optics'],
+        ownerId: 'campus-community'
     },
     {
         id: 'res-discrete-math',
@@ -64,7 +66,8 @@ const DEFAULT_CAMPUS_RESOURCES: Resource[] = [
         downloads: 620,
         rating: 4.7,
         date: 'Jul 30, 2026',
-        tags: ['Logic', 'Sets']
+        tags: ['Logic', 'Sets'],
+        ownerId: 'campus-community'
     },
     {
         id: 'res-ml-handbook',
@@ -76,7 +79,8 @@ const DEFAULT_CAMPUS_RESOURCES: Resource[] = [
         downloads: 1980,
         rating: 5.0,
         date: 'Jul 31, 2026',
-        tags: ['Neural Nets', 'Python', 'AI']
+        tags: ['Neural Nets', 'Python', 'AI'],
+        ownerId: 'campus-community'
     }
 ];
 
@@ -118,6 +122,10 @@ export class ResourceService {
         });
     }
 
+    getActiveUserId(): string {
+        return this.activeUserId;
+    }
+
     async addResource(resource: Omit<Resource, 'id' | 'date' | 'downloads' | 'rating'>) {
         const uid = this.activeUserId;
         const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -130,9 +138,12 @@ export class ResourceService {
             rating: 5.0
         };
 
-        const optimistic = [localResource, ...this.resourcesSubject.value];
-        this.resourcesSubject.next(optimistic);
-        this.saveLocalResources(uid, optimistic);
+        const currentLocal = this.getUserPersonalLocalResources(uid);
+        const nextLocal = [localResource, ...currentLocal];
+        this.saveLocalResources(uid, nextLocal);
+
+        const combined = [...nextLocal, ...DEFAULT_CAMPUS_RESOURCES];
+        this.resourcesSubject.next(combined);
 
         if (this.userService.isAuthenticated()) {
             try {
@@ -152,9 +163,12 @@ export class ResourceService {
 
     async deleteResource(id: string) {
         const uid = this.activeUserId;
-        const next = this.resourcesSubject.value.filter((resource) => resource.id !== id);
-        this.resourcesSubject.next(next);
-        this.saveLocalResources(uid, next);
+        const currentLocal = this.getUserPersonalLocalResources(uid);
+        const nextLocal = currentLocal.filter((resource) => resource.id !== id);
+        this.saveLocalResources(uid, nextLocal);
+
+        const combined = [...nextLocal, ...DEFAULT_CAMPUS_RESOURCES.filter(r => r.id !== id)];
+        this.resourcesSubject.next(combined);
 
         if (this.userService.isAuthenticated() && !id.startsWith('local-') && !id.startsWith('res-')) {
             try {
@@ -167,17 +181,20 @@ export class ResourceService {
 
     async togglePrivacy(id: string) {
         const uid = this.activeUserId;
-        const next: Resource[] = this.resourcesSubject.value.map((resource) => {
+        const currentLocal = this.getUserPersonalLocalResources(uid);
+        const nextLocal = currentLocal.map((resource) => {
             if (resource.id !== id) return resource;
             return {
                 ...resource,
                 privacy: (resource.privacy === 'Public' ? 'Private' : 'Public') as 'Public' | 'Private'
             };
         });
-        this.resourcesSubject.next(next);
-        this.saveLocalResources(uid, next);
+        this.saveLocalResources(uid, nextLocal);
 
-        const changed = next.find((resource) => resource.id === id);
+        const combined = [...nextLocal, ...DEFAULT_CAMPUS_RESOURCES];
+        this.resourcesSubject.next(combined);
+
+        const changed = nextLocal.find((resource) => resource.id === id);
         if (!changed || id.startsWith('local-') || id.startsWith('res-') || !this.userService.isAuthenticated()) return;
 
         try {
@@ -189,13 +206,15 @@ export class ResourceService {
 
     updateResource(id: string, changes: Partial<Pick<Resource, 'title' | 'subject' | 'semester' | 'branch' | 'tags'>>) {
         const uid = this.activeUserId;
-        const next = this.resourcesSubject.value.map((resource) => {
+        const currentLocal = this.getUserPersonalLocalResources(uid);
+        const nextLocal = currentLocal.map((resource) => {
             if (resource.id !== id) return resource;
             return { ...resource, ...changes };
         });
+        this.saveLocalResources(uid, nextLocal);
 
-        this.resourcesSubject.next(next);
-        this.saveLocalResources(uid, next);
+        const combined = [...nextLocal, ...DEFAULT_CAMPUS_RESOURCES];
+        this.resourcesSubject.next(combined);
 
         if (id.startsWith('local-') || id.startsWith('res-') || !this.userService.isAuthenticated()) return;
 
@@ -204,15 +223,21 @@ export class ResourceService {
 
     incrementDownloads(id: string) {
         const uid = this.activeUserId;
-        const next = this.resourcesSubject.value.map((resource) => {
+        const currentLocal = this.getUserPersonalLocalResources(uid);
+        const nextLocal = currentLocal.map((resource) => {
             if (resource.id !== id) return resource;
             return { ...resource, downloads: (resource.downloads || 0) + 1 };
         });
-        this.resourcesSubject.next(next);
-        this.saveLocalResources(uid, next);
+        this.saveLocalResources(uid, nextLocal);
+
+        const combined = this.resourcesSubject.value.map(r => {
+            if (r.id === id) return { ...r, downloads: (r.downloads || 0) + 1 };
+            return r;
+        });
+        this.resourcesSubject.next(combined);
 
         if (id.startsWith('local-') || id.startsWith('res-') || !this.userService.isAuthenticated()) return;
-        const changed = next.find((resource) => resource.id === id);
+        const changed = combined.find((resource) => resource.id === id);
         if (!changed) return;
 
         updateDoc(doc(this.firestore, 'resources', id), { downloads: changed.downloads }).catch(() => {});
@@ -243,7 +268,6 @@ export class ResourceService {
 
                 const combined = [...firestoreDocs, ...DEFAULT_CAMPUS_RESOURCES];
                 this.resourcesSubject.next(combined);
-                this.saveLocalResources(uid, combined);
             });
         } catch {
             // Local storage fallback
@@ -257,25 +281,23 @@ export class ResourceService {
         }
     }
 
-    private loadLocalResources(uid: string) {
-        if (!this.isBrowser) return;
+    private getUserPersonalLocalResources(uid: string): Resource[] {
+        if (!this.isBrowser) return [];
         const raw = localStorage.getItem(this.storageKey(uid));
-        if (!raw) {
-            this.resourcesSubject.next(DEFAULT_CAMPUS_RESOURCES);
-            this.saveLocalResources(uid, DEFAULT_CAMPUS_RESOURCES);
-            return;
-        }
-
+        if (!raw) return [];
         try {
             const parsed = JSON.parse(raw) as Resource[];
-            if (Array.isArray(parsed) && parsed.length > 0) {
-                this.resourcesSubject.next(parsed);
-            } else {
-                this.resourcesSubject.next(DEFAULT_CAMPUS_RESOURCES);
-            }
+            return Array.isArray(parsed) ? parsed : [];
         } catch {
-            this.resourcesSubject.next(DEFAULT_CAMPUS_RESOURCES);
+            return [];
         }
+    }
+
+    private loadLocalResources(uid: string) {
+        if (!this.isBrowser) return;
+        const userLocal = this.getUserPersonalLocalResources(uid);
+        const combined = [...userLocal, ...DEFAULT_CAMPUS_RESOURCES];
+        this.resourcesSubject.next(combined);
     }
 
     private saveLocalResources(uid: string, resources: Resource[]) {
@@ -294,6 +316,6 @@ export class ResourceService {
     }
 
     private storageKey(uid: string): string {
-        return `resources_${uid}`;
+        return `user_uploads_${uid}`;
     }
 }

@@ -18,11 +18,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private sub = new Subscription();
     private previousResourceCount = 0;
 
-    // Gamification & Streak
-    streakCount = 7;
-    scholarLevel = 3;
-    currentXp = 780;
-    targetXp = 1000;
+    // Gamification & Streak (Calculated Live from Real Personal Data)
+    streakCount = 1;
+    scholarLevel = 1;
+    currentXp = 100;
+    targetXp = 500;
 
     stats = [
         { label: 'Total Uploads', value: '0', icon: 'upload', color: '#6366f1' },
@@ -74,10 +74,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
         this.sub.add(
             this.resourceService.resources$.subscribe((res) => {
                 this.resources = res;
-                this.calculateStats();
-                this.calculateScholarXp();
-                this.recentResources = res.slice(0, 4);
-                this.generateActivities();
+                this.calculateStatsAndXp();
+                const uid = this.resourceService.getActiveUserId();
+                const myUploads = res.filter(r => r.ownerId === uid || r.id.startsWith('local-'));
+                this.recentResources = myUploads.length > 0 ? myUploads.slice(0, 4) : res.slice(0, 4);
+                this.generateActivities(myUploads);
                 this.onResourcesUpdated(res);
             })
         );
@@ -97,26 +98,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
         this.resourceService.togglePrivacy(id);
     }
 
-    private calculateScholarXp() {
-        const totalUploads = this.resources.length;
-        const totalDownloads = this.resources.reduce((sum, r) => sum + (r.downloads || 0), 0);
-        const ratedResources = this.resources.filter(r => r.rating > 0);
+    private calculateStatsAndXp() {
+        const uid = this.resourceService.getActiveUserId();
+        // Personal uploads belonging to this specific user
+        const myUploads = this.resources.filter(r => r.ownerId === uid || r.id.startsWith('local-'));
 
-        const totalXpEarned = 100 + (totalUploads * 150) + (totalDownloads * 5) + (ratedResources.length * 40);
-        const xpPerLevel = 500;
-
-        this.scholarLevel = Math.floor(totalXpEarned / xpPerLevel) + 1;
-        this.currentXp = totalXpEarned % xpPerLevel;
-        this.targetXp = xpPerLevel;
-
-        const distinctDates = new Set(this.resources.map(r => r.date)).size;
-        this.streakCount = Math.max(1, Math.min(30, distinctDates + (totalUploads > 0 ? 3 : 1)));
-    }
-
-    private calculateStats() {
-        const totalUploads = this.resources.length;
-        const totalDownloads = this.resources.reduce((acc, curr) => acc + (curr.downloads || 0), 0);
-        const ratedResources = this.resources.filter(r => r.rating > 0);
+        const totalUploads = myUploads.length;
+        const totalDownloads = myUploads.reduce((acc, curr) => acc + (curr.downloads || 0), 0);
+        const ratedResources = myUploads.filter(r => r.rating > 0);
         const totalReviews = ratedResources.length;
 
         let avgRating = 0;
@@ -125,30 +114,45 @@ export class OverviewComponent implements OnInit, OnDestroy {
             avgRating = Math.round((sum / totalReviews) * 10) / 10;
         }
 
+        // Stats cards reflect the current user's actual personal data
         this.stats = [
             { label: 'Total Uploads', value: totalUploads.toString(), icon: 'upload', color: '#6366f1' },
             { label: 'Total Downloads', value: totalDownloads >= 1000 ? (totalDownloads / 1000).toFixed(1) + 'k' : totalDownloads.toString(), icon: 'download', color: '#06b6d4' },
             { label: 'Total Reviews', value: totalReviews.toString(), icon: 'star', color: '#10b981' },
-            { label: 'Avg Rating', value: avgRating > 0 ? avgRating.toFixed(1) : '5.0', icon: 'zap', color: '#f59e0b' }
+            { label: 'Avg Rating', value: avgRating > 0 ? avgRating.toFixed(1) : '0.0', icon: 'zap', color: '#f59e0b' }
         ];
+
+        // Scholar XP Calculation based strictly on real personal activity:
+        // Base welcome = 100 XP
+        // +150 XP per uploaded note
+        // +5 XP per download received
+        // +40 XP per rated note
+        const totalXpEarned = 100 + (totalUploads * 150) + (totalDownloads * 5) + (totalReviews * 40);
+        const xpPerLevel = 500;
+
+        this.scholarLevel = Math.floor(totalXpEarned / xpPerLevel) + 1;
+        this.currentXp = totalXpEarned % xpPerLevel;
+        this.targetXp = xpPerLevel;
+
+        const distinctDates = new Set(myUploads.map(r => r.date)).size;
+        this.streakCount = Math.max(1, distinctDates + (totalUploads > 0 ? 1 : 0));
     }
 
-    private generateActivities() {
+    private generateActivities(myUploads: Resource[]) {
         const name = this.userProfile.name || 'Guest User';
-        this.activities = this.resources.slice(0, 4).map((r, i) => {
-            const actions = ['uploaded', 'shared', 'downloaded', 'published'];
-            const action = actions[i % actions.length];
-            return {
-                user: i % 2 === 0 ? name : 'Campus Student',
-                action: action,
-                resource: r.title,
-                time: r.date || 'Just now'
-            };
-        });
-
-        if (this.activities.length === 0) {
+        if (myUploads.length > 0) {
+            this.activities = myUploads.slice(0, 4).map((r, i) => {
+                const actions = ['uploaded', 'shared', 'updated', 'published'];
+                return {
+                    user: name,
+                    action: actions[i % actions.length],
+                    resource: r.title,
+                    time: r.date || 'Just now'
+                };
+            });
+        } else {
             this.activities = [
-                { user: name, action: 'joined the workspace', resource: 'Explore StudyArchive', time: 'Just now' }
+                { user: name, action: 'joined StudyArchive', resource: 'Explore Campus Notes', time: 'Just now' }
             ];
         }
     }
@@ -214,7 +218,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
             const query = text.toLowerCase();
             let response = '';
 
-            // Search uploaded resources in repository
             const matchedResources = this.resources.filter(r => {
                 const tagStr = Array.isArray(r.tags) ? r.tags.join(' ') : `${r.tags || ''}`;
                 const searchable = `${r.title} ${r.subject} ${r.semester || ''} ${r.branch || ''} ${tagStr}`.toLowerCase();
