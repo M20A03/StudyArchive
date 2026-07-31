@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { UserService, UserProfile } from '../../../services/user.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-navbar',
@@ -20,7 +21,11 @@ export class NavbarComponent {
     searchValue = '';
     showAccountMenu = false;
 
-    constructor(private userService: UserService, private router: Router) {
+    constructor(
+        private userService: UserService,
+        private sidebarService: SidebarService,
+        private router: Router
+    ) {
         this.userProfile = this.userService.getProfile();
         this.userService.userProfile$.subscribe((profile: UserProfile) => {
             this.userProfile = profile;
@@ -33,6 +38,10 @@ export class NavbarComponent {
             this.isLightTheme = localStorage.getItem('theme') === 'light';
             this.applyTheme();
         }
+    }
+
+    toggleMobileMenu() {
+        this.sidebarService.toggleMobile();
     }
 
     async loginWithGoogle() {

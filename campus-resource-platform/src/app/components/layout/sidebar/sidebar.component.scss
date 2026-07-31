@@ -1,5 +1,32 @@
 @use '../../../../styles/variables' as *;
 
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 15, 25, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 450;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.mobile-close-btn {
+    display: none;
+    @include flex-center;
+    width: 32px;
+    height: 32px;
+    background: rgba(99, 102, 241, 0.1);
+    border: none;
+    border-radius: $radius-sm;
+    color: $text-dark-primary;
+    cursor: pointer;
+    @include transition-fast;
+
+    &:hover {
+        background: rgba(244, 63, 94, 0.15);
+        color: $accent-rose;
+    }
+}
+
 .sidebar {
     width: 260px;
     height: 100vh;
@@ -12,6 +39,7 @@
     @include transition-physics;
     overflow: hidden;
     flex-shrink: 0;
+    z-index: 200;
 
     &.collapsed {
         width: 72px;
@@ -92,7 +120,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 11px 14px;
+    padding: 12px 14px;
     color: $text-dark-muted;
     text-decoration: none;
     border-radius: $radius-sm;
@@ -140,10 +168,15 @@
 // ─── Light Theme ───
 body.light-theme {
     .sidebar {
-        background: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.96);
         border-right-color: $light-border;
         backdrop-filter: blur(12px);
         box-shadow: 4px 0 24px rgba(99, 102, 241, 0.06);
+    }
+
+    .mobile-close-btn {
+        color: $text-light-primary;
+        background: rgba(99, 102, 241, 0.08);
     }
 
     .sidebar-header {
@@ -189,14 +222,35 @@ body.light-theme {
 }
 
 @media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-close-btn {
+        display: flex !important;
+    }
+
     .sidebar {
         position: fixed;
-        z-index: 50;
-        transform: translateX(0);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 500;
+        width: 280px;
+        transform: translateX(-100%);
+        box-shadow: 8px 0 30px rgba(0, 0, 0, 0.3);
+
+        &.mobile-open {
+            transform: translateX(0) !important;
+        }
 
         &.collapsed {
             transform: translateX(-100%);
-            width: 260px;
+            width: 280px;
+
+            span {
+                display: inline-block !important;
+            }
         }
     }
 }
