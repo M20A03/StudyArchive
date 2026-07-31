@@ -86,6 +86,22 @@ body.light-theme {
         opacity: 0.8;
     }
 
+    // ── Global Form Elements & Inputs ──
+    input, select, textarea {
+        background-color: #ffffff !important;
+        color: $text-light-primary !important;
+        border-color: rgba(99, 102, 241, 0.2) !important;
+
+        &::placeholder {
+            color: $text-light-muted !important;
+        }
+
+        option {
+            background-color: #ffffff !important;
+            color: $text-light-primary !important;
+        }
+    }
+
     .sidebar {
         background: rgba(255, 255, 255, 0.9) !important;
         border-right-color: $light-border !important;
@@ -117,6 +133,19 @@ body.light-theme {
         box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06) !important;
     }
 
+    .btn-signin {
+        background: #ffffff !important;
+        color: $text-light-primary !important;
+        border: 1px solid rgba(99, 102, 241, 0.25) !important;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08) !important;
+
+        &:hover {
+            background: #f8fafc !important;
+            border-color: $accent-indigo !important;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.16) !important;
+        }
+    }
+
     .nav-icon-btn {
         color: $text-light-secondary !important;
         &:hover {
@@ -133,6 +162,72 @@ body.light-theme {
         input {
             color: $text-light-primary !important;
             &::placeholder { color: $text-light-muted !important; }
+        }
+    }
+
+    // ── Search Hero & Search Bar ──
+    .search-hero {
+        background: #ffffff !important;
+        border-color: rgba(99, 102, 241, 0.15) !important;
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.06) !important;
+
+        h1 { color: $text-light-primary !important; }
+        p { color: $text-light-secondary !important; }
+    }
+
+    .large-search {
+        input {
+            background: #ffffff !important;
+            color: $text-light-primary !important;
+            border-color: rgba(99, 102, 241, 0.2) !important;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.05) !important;
+
+            &::placeholder {
+                color: $text-light-muted !important;
+            }
+
+            &:focus {
+                border-color: $accent-indigo !important;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+            }
+        }
+
+        svg, i {
+            color: $text-light-muted !important;
+        }
+    }
+
+    // ── Filter Panel & View Toggles ──
+    .filter-panel, .filter-group {
+        background: #ffffff !important;
+        border-color: $light-border !important;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.05) !important;
+
+        h3 { color: $text-light-primary !important; }
+        label { color: $text-light-secondary !important; }
+
+        select, input {
+            background: #ffffff !important;
+            color: $text-light-primary !important;
+            border-color: rgba(99, 102, 241, 0.2) !important;
+
+            option {
+                background: #ffffff !important;
+                color: $text-light-primary !important;
+            }
+        }
+    }
+
+    .view-toggles {
+        background: #ffffff !important;
+        border-color: $light-border !important;
+
+        button {
+            color: $text-light-muted !important;
+            &.active {
+                background: rgba(99, 102, 241, 0.12) !important;
+                color: $accent-indigo !important;
+            }
         }
     }
 
@@ -185,7 +280,8 @@ body.light-theme {
     .filter-panel,
     .login-card,
     .stat-card,
-    .glass-panel {
+    .glass-panel,
+    .resource-card {
         background: $gradient-light-card !important;
         color: $text-light-primary !important;
         border-color: $light-border !important;
@@ -195,6 +291,9 @@ body.light-theme {
             box-shadow: $shadow-3d-light-hover !important;
             border-color: $light-border-hover !important;
         }
+
+        h3, .res-title { color: $text-light-primary !important; }
+        .res-subject, .res-meta, p { color: $text-light-secondary !important; }
     }
 
     .user-name,
