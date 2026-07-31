@@ -17,6 +17,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
     resources: Resource[] = [];
     private sub = new Subscription();
 
+    // Gamification & Streak
+    streakCount = 7;
+    scholarLevel = 3;
+    currentXp = 780;
+    targetXp = 1000;
+
     stats = [
         { label: 'Total Uploads', value: '0', icon: 'upload', color: '#6366f1' },
         { label: 'Total Downloads', value: '0', icon: 'download', color: '#06b6d4' },
@@ -34,6 +40,28 @@ export class OverviewComponent implements OnInit, OnDestroy {
         department: '',
         semester: ''
     };
+
+    // Quick Resource Preview Modal
+    selectedResourceForPreview: Resource | null = null;
+
+    // AI Companion Assistant State
+    showAiModal = false;
+    aiInput = '';
+    aiIsThinking = false;
+    aiMessages: Array<{ text: string; sender: 'user' | 'ai'; time: string }> = [
+        {
+            text: "Hello! I'm your StudyArchive AI Companion 🤖. Ask me to summarize lecture notes, generate flashcards, or create a revision schedule!",
+            sender: 'ai',
+            time: 'Just now'
+        }
+    ];
+
+    quickPrompts = [
+        '💡 Summarize Quantum Physics Notes',
+        '📝 Generate 5 Flashcards for Data Structures',
+        '📊 Give me a 3-day Exam Study Plan',
+        '📐 Key Formulas for Calculus II'
+    ];
 
     constructor(
         private userService: UserService,
@@ -77,7 +105,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         const totalDownloads = this.resources.reduce((acc, curr) => acc + (curr.downloads || 0), 0);
         const ratedResources = this.resources.filter(r => r.rating > 0);
         const totalReviews = ratedResources.length;
-        
+
         let avgRating = 0;
         if (totalReviews > 0) {
             const sum = ratedResources.reduce((acc, curr) => acc + (curr.rating || 0), 0);
@@ -124,5 +152,43 @@ export class OverviewComponent implements OnInit, OnDestroy {
     saveProfile() {
         this.userService.updateProfile(this.editForm);
         this.closeEditModal();
+    }
+
+    // Resource Preview Sheet
+    openPreview(res: Resource) {
+        this.selectedResourceForPreview = res;
+    }
+
+    closePreview() {
+        this.selectedResourceForPreview = null;
+    }
+
+    // AI Assistant
+    toggleAiModal() {
+        this.showAiModal = !this.showAiModal;
+    }
+
+    sendAiMessage(promptText?: string) {
+        const text = promptText || this.aiInput;
+        if (!text.trim() || this.aiIsThinking) return;
+
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        this.aiMessages.push({ text, sender: 'user', time });
+        this.aiInput = '';
+        this.aiIsThinking = true;
+
+        setTimeout(() => {
+            let response = "I've analyzed your request! Here are key takeaways and a study overview for your topic.";
+            if (text.toLowerCase().includes('quantum')) {
+                response = "⚛️ **Quantum Physics Summary**:\n1. Superposition allows states to exist simultaneously until measured.\n2. Quantum Entanglement links particles regardless of distance.\n3. Key Formula: E = hf (Planck's Relation).";
+            } else if (text.toLowerCase().includes('data structure') || text.toLowerCase().includes('flashcard')) {
+                response = "💻 **Data Structures Flashcards**:\n• Q: What is time complexity of QuickSort average case?\n  A: O(N log N)\n• Q: Difference between Tree and Graph?\n  A: Graphs can contain cycles; Trees are connected acyclic graphs.";
+            } else if (text.toLowerCase().includes('plan') || text.toLowerCase().includes('schedule')) {
+                response = "📅 **3-Day Master Study Plan**:\n• Day 1: Core Definitions & Formula derivations (2 hrs)\n• Day 2: Solve 10 Past Exam Questions & Practice Problems (3 hrs)\n• Day 3: Mock Test & Flashcard Review (1.5 hrs)";
+            }
+
+            this.aiMessages.push({ text: response, sender: 'ai', time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+            this.aiIsThinking = false;
+        }, 800);
     }
 }

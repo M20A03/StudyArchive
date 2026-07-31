@@ -317,6 +317,15 @@ body.light-theme {
         background: transparent !important;
     }
 
+    .activity-content {
+        p {
+            color: $text-light-secondary !important;
+            strong { color: $text-light-primary !important; font-weight: 700 !important; }
+            span { color: $accent-indigo !important; font-weight: 600 !important; }
+        }
+        small { color: $text-light-muted !important; }
+    }
+
     // ── Toggle Group (Privacy Level Toggle) in Light Theme ──
     .toggle-group {
         background: rgba(99, 102, 241, 0.06) !important;
@@ -539,4 +548,147 @@ body.light-theme .badge {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+// ─── Mobile & Tablet Comprehensive Responsive Breakpoints ───
+@media (max-width: 992px) {
+    .search-layout {
+        grid-template-columns: 1fr !important;
+    }
+
+    .filter-panel {
+        position: static !important;
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-layout {
+        flex-direction: column !important;
+    }
+
+    .main-content {
+        width: 100% !important;
+    }
+
+    .content-body {
+        padding: 16px 12px !important;
+    }
+
+    .resource-section,
+    .activity-section,
+    .filter-panel,
+    .upload-container,
+    .glass-panel {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    // Scrollable tables on mobile & tablet
+    .resource-section {
+        overflow-x: auto;
+
+        .resource-table {
+            min-width: 540px;
+        }
+    }
+
+    // Floating AI FAB on mobile
+    .ai-fab-btn {
+        bottom: 20px !important;
+        right: 16px !important;
+        padding: 10px 18px !important;
+        font-size: 13px !important;
+
+        .fab-label {
+            display: inline-block !important;
+        }
+    }
+
+    .ai-modal-content {
+        width: 94vw !important;
+        height: 85vh !important;
+        max-width: 100% !important;
+    }
+
+    .large-search {
+        flex-direction: column !important;
+
+        input {
+            width: 100% !important;
+        }
+
+        .btn-primary {
+            width: 100% !important;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .stat-card {
+        padding: 12px 14px !important;
+        gap: 10px !important;
+
+        .stat-icon {
+            width: 36px !important;
+            height: 36px !important;
+
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+        }
+
+        .stat-value {
+            font-size: 18px !important;
+        }
+
+        .stat-label {
+            font-size: 10px !important;
+        }
+    }
+
+    .profile-header {
+        padding: 16px !important;
+
+        .profile-main {
+            flex-direction: column !important;
+            text-align: center !important;
+            align-items: center !important;
+
+            .profile-text h2 {
+                font-size: 18px !important;
+            }
+
+            .title-row {
+                justify-content: center !important;
+            }
+
+            .scholar-xp-bar {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+        }
+
+        .btn-primary {
+            width: 100% !important;
+        }
+    }
+
+    .search-hero {
+        padding: 24px 16px !important;
+
+        h1 {
+            font-size: 22px !important;
+        }
+
+        p {
+            font-size: 13px !important;
+        }
+    }
 }
