@@ -58,7 +58,13 @@ body.light-theme {
         display: none !important;
     }
 
-    // All main page containers across all routes
+    // All Angular component host elements & main page containers across all routes
+    app-root,
+    app-dashboard,
+    app-overview,
+    app-upload,
+    app-my-resources,
+    app-search,
     .dashboard-layout,
     .main-content,
     .content-body,
