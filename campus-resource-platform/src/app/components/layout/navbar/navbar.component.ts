@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { UserService, UserProfile } from '../../../services/user.service';
 import { SidebarService } from '../../../services/sidebar.service';
 
+declare var lucide: any;
+
 @Component({
     selector: 'app-navbar',
     standalone: true,
@@ -67,6 +69,24 @@ export class NavbarComponent {
             localStorage.setItem('theme', this.isLightTheme ? 'light' : 'dark');
         }
         this.applyTheme();
+        setTimeout(() => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }, 60);
+    }
+
+    async loginWithGoogle() {
+        this.authLoading = true;
+        this.authError = '';
+        try {
+            await this.userService.loginWithGoogle();
+            this.showAuthModal = false;
+        } catch (err: any) {
+            this.authError = err?.message || 'Google authentication failed.';
+        } finally {
+            this.authLoading = false;
+        }
     }
 
     setTheme(mode: 'light' | 'dark') {

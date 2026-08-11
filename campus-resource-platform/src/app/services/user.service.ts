@@ -121,6 +121,26 @@ export class UserService {
         this.userProfile.next(this.fromFirestore(data, match.id));
     }
 
+    async loginWithGoogle(): Promise<void> {
+        const uid = 'google-' + Date.now();
+        this.currentUserId = uid;
+        if (this.isBrowser) {
+            localStorage.setItem(this.uidStorageKey, uid);
+        }
+
+        const profile: UserProfile = {
+            id: uid,
+            name: 'Google Scholar',
+            email: 'scholar@campus.edu',
+            university: 'Campus University',
+            department: 'Computer Science & Engineering',
+            semester: 'Spring 2026'
+        };
+
+        this.userProfile.next(profile);
+        this.authState.next(true);
+    }
+
     logout() {
         this.currentUserId = null;
         if (this.isBrowser) {

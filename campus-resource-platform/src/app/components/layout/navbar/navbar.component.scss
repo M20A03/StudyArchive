@@ -198,6 +198,21 @@
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(99, 102, 241, 0.48);
     }
+
+    &.google-btn {
+        background: #ffffff !important;
+        color: #1e293b !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        font-weight: 700 !important;
+
+        &:hover {
+            background: #f8fafc !important;
+            border-color: #38bdf8 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.25) !important;
+        }
+    }
 }
 
 .btn-register-outline {

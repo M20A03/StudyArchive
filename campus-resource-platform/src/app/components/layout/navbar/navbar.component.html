@@ -57,97 +57,49 @@
             </div>
         </div>
 
-        <!-- Guest Visitor Buttons (In-Website Account Creation) -->
+        <!-- Guest Visitor Buttons (Google Sign In) -->
         <ng-template #guestActions>
             <div class="guest-btn-wrap">
-                <button type="button" class="btn-signin" (click)="openAuthModal('login')">
-                    <i data-lucide="log-in"></i>
-                    <span>Sign In</span>
-                </button>
-                <button type="button" class="btn-register-outline" (click)="openAuthModal('register')">
-                    Create Account
+                <button type="button" class="btn-signin google-btn" (click)="loginWithGoogle()">
+                    <svg viewBox="0 0 24 24" class="google-svg-icon" width="18" height="18">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Google Sign In</span>
                 </button>
             </div>
         </ng-template>
     </div>
 </nav>
 
-<!-- IN-WEBSITE AUTHENTICATION MODAL -->
+<!-- IN-WEBSITE GOOGLE AUTHENTICATION MODAL -->
 <div class="modal-overlay animate-fade-in" *ngIf="showAuthModal" (click)="closeAuthModal()">
     <div class="auth-modal-content glass-panel" (click)="$event.stopPropagation()">
         <div class="modal-header">
-            <div class="auth-tabs">
-                <button type="button" [class.active]="authTab === 'login'" (click)="authTab = 'login'">Sign In</button>
-                <button type="button" [class.active]="authTab === 'register'" (click)="authTab = 'register'">Create Account</button>
-            </div>
+            <h3>Sign in to CampusShare</h3>
             <button type="button" class="close-btn" (click)="closeAuthModal()">
                 <i data-lucide="x"></i>
             </button>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body text-center">
+            <p class="auth-subtitle">Instant 1-Click Access for Campus Students & Faculty</p>
+            
             <div class="auth-error-badge" *ngIf="authError">
                 {{ authError }}
             </div>
 
-            <!-- LOGIN TAB -->
-            <form *ngIf="authTab === 'login'" (ngSubmit)="submitLogin()">
-                <div class="form-group">
-                    <label>Email or Username</label>
-                    <input type="text" [(ngModel)]="loginData.identifier" name="identifier" placeholder="student@university.edu">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" [(ngModel)]="loginData.password" name="password" placeholder="••••••••">
-                </div>
-
-                <button type="submit" class="btn-primary full-width" [disabled]="authLoading">
-                    {{ authLoading ? 'Signing In...' : 'Sign In' }}
-                </button>
-            </form>
-
-            <!-- REGISTER TAB -->
-            <form *ngIf="authTab === 'register'" (ngSubmit)="submitRegister()">
-                <div class="form-grid-2">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" [(ngModel)]="registerData.fullName" name="fullName" placeholder="Alex Johnson">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" [(ngModel)]="registerData.email" name="email" placeholder="alex@university.edu">
-                    </div>
-                    <div class="form-group">
-                        <label>University / College</label>
-                        <input type="text" [(ngModel)]="registerData.college" name="college" placeholder="Stanford University">
-                    </div>
-                    <div class="form-group">
-                        <label>Department</label>
-                        <input type="text" [(ngModel)]="registerData.department" name="department" placeholder="Computer Science">
-                    </div>
-                    <div class="form-group">
-                        <label>Semester</label>
-                        <select [(ngModel)]="registerData.semester" name="semester">
-                            <option>1st Semester</option>
-                            <option>2nd Semester</option>
-                            <option>3rd Semester</option>
-                            <option>4th Semester</option>
-                            <option>5th Semester</option>
-                            <option>6th Semester</option>
-                            <option>7th Semester</option>
-                            <option>8th Semester</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="••••••••">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary full-width" [disabled]="authLoading">
-                    {{ authLoading ? 'Creating Account...' : 'Create Account' }}
-                </button>
-            </form>
+            <button type="button" class="google-auth-btn-large" (click)="loginWithGoogle()" [disabled]="authLoading">
+                <svg viewBox="0 0 24 24" class="google-svg-icon" width="22" height="22">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>{{ authLoading ? 'Connecting...' : 'Continue with Google Account' }}</span>
+            </button>
         </div>
     </div>
 </div>

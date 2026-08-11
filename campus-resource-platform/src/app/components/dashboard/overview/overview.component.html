@@ -1,7 +1,7 @@
 <div class="content-body animate-fade-in">
     <header class="profile-header glass-panel">
         <div class="profile-main">
-            <img [src]="'https://ui-avatars.com/api/?name=' + userProfile.name + '&background=fbbf24&color=1e293b&size=128'"
+            <img [src]="'https://ui-avatars.com/api/?name=' + (userProfile.name || 'Guest') + '&background=6d7cff&color=ffffff&size=128'"
                 [alt]="userProfile.name" class="profile-img">
             <div class="profile-text">
                 <h2>Welcome back, {{userProfile.name}}!</h2>
@@ -43,9 +43,10 @@
         </div>
     </div>
 
+    <!-- Live Stat Cards -->
     <div class="stats-grid">
         <div *ngFor="let stat of stats" class="stat-card glass-panel" [style.border-left-color]="stat.color">
-            <div class="stat-icon" [style.background]="stat.color + '15'">
+            <div class="stat-icon" [style.background]="stat.color + '18'">
                 <i [attr.data-lucide]="stat.icon" [style.color]="stat.color"></i>
             </div>
             <div class="stat-details">
@@ -56,51 +57,61 @@
     </div>
 
     <div class="dashboard-grid">
+        <!-- Live Recent Resources Section -->
         <section class="resource-section glass-panel">
             <div class="section-header">
                 <h3>Recent Resources</h3>
-                <button class="btn-link">View All</button>
             </div>
-            <table class="resource-table">
+
+            <table class="resource-table" *ngIf="recentResources.length > 0; else noResourcesState">
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Subject</th>
                         <th>Privacy</th>
+                        <th>Downloads</th>
                         <th>Rating</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let res of recentResources">
-                        <td>{{res.title}}</td>
-                        <td>{{res.subject}}</td>
+                        <td class="resource-link-title">{{res.title}}</td>
+                        <td>
+                            <span class="subject-chip">{{res.subject}}</span>
+                        </td>
                         <td>
                             <span class="badge" [class.public]="res.privacy === 'Public'"
                                 [class.private]="res.privacy === 'Private'">
                                 {{res.privacy}}
                             </span>
                         </td>
+                        <td>{{res.downloads || 0}}</td>
                         <td>
                             <div class="rating-box">
                                 <i data-lucide="star" class="star-icon"></i>
-                                {{res.rating}}
+                                {{res.rating || 0}}
                             </div>
-                        </td>
-                        <td class="table-actions">
-                            <button class="icon-btn"><i data-lucide="edit-2"></i></button>
-                            <button class="icon-btn danger"><i data-lucide="trash-2"></i></button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <ng-template #noResourcesState>
+                <div class="empty-state-card">
+                    <i data-lucide="folder-open"></i>
+                    <h4>No resources uploaded yet</h4>
+                    <p>Click "Upload Resource" in the sidebar to share your first study note with the campus community!</p>
+                </div>
+            </ng-template>
         </section>
 
+        <!-- Live Activity Section -->
         <section class="activity-section glass-panel">
             <div class="section-header">
                 <h3>Recent Activity</h3>
             </div>
-            <div class="activity-list">
+
+            <div class="activity-list" *ngIf="activities.length > 0; else noActivityState">
                 <div *ngFor="let act of activities" class="activity-item">
                     <div class="activity-dot"></div>
                     <div class="activity-content">
@@ -109,6 +120,14 @@
                     </div>
                 </div>
             </div>
+
+            <ng-template #noActivityState>
+                <div class="empty-state-card">
+                    <i data-lucide="activity"></i>
+                    <h4>No recent activity yet</h4>
+                    <p>Your real-time activity log will appear here as you upload and download study materials.</p>
+                </div>
+            </ng-template>
         </section>
     </div>
 </div>
