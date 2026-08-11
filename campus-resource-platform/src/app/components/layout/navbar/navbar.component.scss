@@ -499,3 +499,99 @@
     width: 100%;
     margin-top: 8px;
 }
+
+// ─────────────────────────────────────────────────────────────
+// 📱 ANDROID MOBILE NAVBAR OPTIMIZATION
+// ─────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+    .navbar {
+        padding: 0 10px !important;
+        height: 62px !important;
+    }
+
+    .nav-left {
+        gap: 8px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    .mobile-menu-btn {
+        width: 36px !important;
+        height: 36px !important;
+        flex-shrink: 0 !important;
+        padding: 0 !important;
+
+        i, svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+    }
+
+    .search-box {
+        input {
+            padding: 8px 10px 8px 34px !important;
+            font-size: 13px !important;
+            border-radius: 10px !important;
+        }
+
+        i, svg {
+            left: 10px !important;
+            width: 15px !important;
+            height: 15px !important;
+        }
+    }
+
+    .nav-right {
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .nav-icon-btn {
+        height: 36px !important;
+        padding: 0 10px !important;
+        border-radius: 10px !important;
+
+        .theme-label {
+            display: none !important;
+        }
+
+        i, svg {
+            width: 16px !important;
+            height: 16px !important;
+        }
+    }
+
+    .btn-signin.google-btn {
+        padding: 6px 10px !important;
+        height: 36px !important;
+        border-radius: 10px !important;
+        font-size: 12px !important;
+        gap: 6px !important;
+
+        span {
+            font-size: 12px !important;
+        }
+
+        .google-svg-icon {
+            width: 16px !important;
+            height: 16px !important;
+        }
+    }
+
+    .profile-dropdown {
+        padding: 2px 4px !important;
+
+        .user-info {
+            display: none !important;
+        }
+
+        .avatar {
+            width: 32px !important;
+            height: 32px !important;
+        }
+
+        i, svg {
+            display: none !important;
+        }
+    }
+}
