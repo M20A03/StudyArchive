@@ -1,16 +1,6 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { UserService } from '../services/user.service';
+import { CanActivateFn } from '@angular/router';
 
 export const authGuard: CanActivateFn = () => {
-    const userService = inject(UserService);
-    const router = inject(Router);
-
-    if (userService.isAuthenticated()) {
-        return true;
-    }
-
-    router.navigate(['/login']);
-    return false;
+    // Allow guest access so users can explore the platform before logging in
+    return true;
 };
-
