@@ -40,6 +40,27 @@
     text-align: center;
     @include glassmorphism;
 
+    .top-nav-back {
+        margin-bottom: 20px;
+        text-align: left;
+
+        .back-home-link {
+            color: $accent-blue;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            @include smooth-transition;
+
+            &:hover {
+                color: white;
+                transform: translateX(-3px);
+            }
+        }
+    }
+
     h1 {
         font-size: 28px;
         margin-bottom: 10px;
