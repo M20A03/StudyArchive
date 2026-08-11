@@ -8,7 +8,7 @@
 
 > **StudyArchive** is an intelligent, high-performance web platform built for university students to share lecture notes, exam cheat sheets, and academic resources. Features live real-time Firebase sync, an AI Study Companion trained dynamically on uploaded resources, gamified Scholar XP & Streak tracking, and 100% viewport responsiveness across mobile (Android/iOS), tablet, and desktop devices.
 
-🌐 **Live Application**: [https://study-archive-moodle.web.app](https://study-archive-moodle.web.app)  
+🌐 **Live Application**: [https://straw-hats-7795d.web.app](https://straw-hats-7795d.web.app)  
 📦 **GitHub Repository**: [M20A03/StudyArchive](https://github.com/M20A03/StudyArchive.git)
 
 ---
