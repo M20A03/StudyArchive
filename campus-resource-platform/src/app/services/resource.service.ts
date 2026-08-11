@@ -10,8 +10,7 @@ import {
     updateDoc,
     onSnapshot,
     query,
-    orderBy,
-    where
+    orderBy
 } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 
@@ -40,29 +39,24 @@ export class ResourceService {
     private resourcesCollection = collection(this.firestore, 'resources');
     private resourcesSubject = new BehaviorSubject<Resource[]>([]);
     private unsubscribeSnapshot: (() => void) | null = null;
-    private activeUserId: string | null = null;
+    private activeUserId: string = 'guest-session';
 
     resources$ = this.resourcesSubject.asObservable();
 
     constructor() {
         this.userService.authState$.subscribe((isAuthenticated) => {
-            if (!isAuthenticated) {
-                this.clearLiveSubscription();
-                this.activeUserId = null;
-                this.resourcesSubject.next([]);
-                return;
-            }
-
-            const uid = this.userService.getCurrentUserId();
-            if (!uid) {
-                this.resourcesSubject.next([]);
-                return;
-            }
+            const uid = isAuthenticated
+                ? (this.userService.getCurrentUserId() || 'guest-session')
+                : 'guest-session';
 
             this.activeUserId = uid;
             this.loadLocalResources(uid);
             this.startFirestoreSync(uid);
         });
+
+        // Initial trigger for guest visitors
+        this.loadLocalResources('guest-session');
+        this.startFirestoreSync('guest-session');
     }
 
     async addResource(resource: Omit<Resource, 'id' | 'date' | 'downloads' | 'rating'>) {
@@ -74,7 +68,7 @@ export class ResourceService {
             ownerId: uid,
             date,
             downloads: 0,
-            rating: 0
+            rating: 5.0
         };
 
         const optimistic = [localResource, ...this.resourcesSubject.value];
@@ -87,11 +81,11 @@ export class ResourceService {
                 ownerId: uid,
                 date,
                 downloads: 0,
-                rating: 0,
+                rating: 5.0,
                 createdAt: Date.now()
             });
         } catch {
-            // Keep local data so app still works in offline or restricted firestore scenarios.
+            // Keep local resource for resilient offline usage
         }
     }
 
@@ -105,7 +99,7 @@ export class ResourceService {
             try {
                 await deleteDoc(doc(this.firestore, 'resources', id));
             } catch {
-                // Local state is already updated.
+                // Local deletion retained
             }
         }
     }
@@ -128,7 +122,7 @@ export class ResourceService {
         try {
             await updateDoc(doc(this.firestore, 'resources', id), { privacy: changed.privacy });
         } catch {
-            // Keep local privacy value for resilience.
+            // Retain local state
         }
     }
 
@@ -145,7 +139,7 @@ export class ResourceService {
         if (id.startsWith('local-')) return;
 
         updateDoc(doc(this.firestore, 'resources', id), changes).catch(() => {
-            // Keep local edits even if remote update fails.
+            // Retain local state
         });
     }
 
@@ -163,7 +157,7 @@ export class ResourceService {
         if (!changed) return;
 
         updateDoc(doc(this.firestore, 'resources', id), { downloads: changed.downloads }).catch(() => {
-            // Keep local value even if remote update fails.
+            // Retain local state
         });
     }
 
@@ -171,7 +165,7 @@ export class ResourceService {
         this.clearLiveSubscription();
 
         try {
-            const q = query(this.resourcesCollection, where('ownerId', '==', uid), orderBy('createdAt', 'desc'));
+            const q = query(this.resourcesCollection, orderBy('createdAt', 'desc'));
             this.unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
                 const resources = snapshot.docs.map((item) => {
                     const data = item.data() as Record<string, unknown>;
@@ -182,19 +176,28 @@ export class ResourceService {
                         date: (data['date'] as string) || new Date().toLocaleDateString(),
                         privacy: ((data['privacy'] as 'Public' | 'Private') || 'Public'),
                         downloads: Number(data['downloads'] || 0),
-                        rating: Number(data['rating'] || 0),
+                        rating: Number(data['rating'] || 5.0),
                         semester: data['semester'] as string | undefined,
                         branch: data['branch'] as string | undefined,
                         tags: data['tags'] as string | string[] | undefined,
-                        ownerId: (data['ownerId'] as string) || uid
+                        ownerId: (data['ownerId'] as string) || 'guest-session'
                     } as Resource;
                 });
 
-                this.resourcesSubject.next(resources);
-                this.saveLocalResources(uid, resources);
+                // Filter: show all Public resources + user's own Private resources
+                const filtered = resources.filter(res => res.privacy === 'Public' || res.ownerId === uid);
+                
+                // Merge with local-only resources
+                const localOnly = this.resourcesSubject.value.filter(r => r.id.startsWith('local-'));
+                const merged = [...localOnly, ...filtered.filter(f => !localOnly.some(l => l.id === f.id))];
+
+                this.resourcesSubject.next(merged);
+                this.saveLocalResources(uid, merged);
+            }, () => {
+                this.loadLocalResources(uid);
             });
         } catch {
-            // If firestore query fails (rules/index/network), local storage still powers the app.
+            this.loadLocalResources(uid);
         }
     }
 
@@ -206,26 +209,23 @@ export class ResourceService {
     }
 
     private requireUserId(): string {
-        const uid = this.activeUserId ?? this.userService.getCurrentUserId();
-        if (!uid) {
-            throw new Error('Please login first.');
-        }
-        return uid;
+        return this.activeUserId ?? this.userService.getCurrentUserId() ?? 'guest-session';
     }
 
     private loadLocalResources(uid: string) {
         if (!this.isBrowser) return;
         const raw = localStorage.getItem(this.storageKey(uid));
         if (!raw) {
-            this.resourcesSubject.next([]);
             return;
         }
 
         try {
             const parsed = JSON.parse(raw) as Resource[];
-            this.resourcesSubject.next(Array.isArray(parsed) ? parsed : []);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                this.resourcesSubject.next(parsed);
+            }
         } catch {
-            this.resourcesSubject.next([]);
+            // Keep current subject state
         }
     }
 

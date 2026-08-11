@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ResourceCardComponent } from '../shared/resource-card/resource-card.component';
 import { FormsModule } from '@angular/forms';
-
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Resource, ResourceService } from '../../services/resource.service';
 
 @Component({
     selector: 'app-search',
     standalone: true,
     imports: [CommonModule, ResourceCardComponent, FormsModule, RouterModule],
-
     templateUrl: './search.component.html',
     styleUrl: './search.component.scss'
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit, OnDestroy {
     searchQuery = '';
     viewMode: 'grid' | 'list' = 'grid';
+    private sub = new Subscription();
 
     filters = {
         subject: 'All Subjects',
@@ -25,16 +25,34 @@ export class SearchComponent {
         branch: 'All Branches'
     };
 
-    resources: Resource[] = this.defaultResources();
+    resources: Resource[] = [];
 
-    constructor(private route: ActivatedRoute, private router: Router, private resourceService: ResourceService) {
-        this.route.queryParamMap.subscribe((params) => {
-            this.searchQuery = params.get('q') ?? '';
-        });
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private resourceService: ResourceService
+    ) {}
 
-        this.resourceService.resources$.subscribe((myResources) => {
-            this.resources = [...myResources, ...this.defaultResources()];
-        });
+    ngOnInit() {
+        this.sub.add(
+            this.route.queryParamMap.subscribe((params) => {
+                this.searchQuery = params.get('q') ?? '';
+            })
+        );
+
+        this.sub.add(
+            this.resourceService.resources$.subscribe((liveResources) => {
+                if (liveResources && liveResources.length > 0) {
+                    this.resources = liveResources;
+                } else {
+                    this.resources = this.communityDefaults();
+                }
+            })
+        );
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 
     filteredResources() {
@@ -65,20 +83,14 @@ export class SearchComponent {
     }
 
     onDownloadResource(resourceId: string) {
-        if (!resourceId.startsWith('sample-')) {
-            this.resourceService.incrementDownloads(resourceId);
-        }
-        alert('Download started');
+        this.resourceService.incrementDownloads(resourceId);
     }
 
-    private defaultResources(): Resource[] {
+    private communityDefaults(): Resource[] {
         return [
-            { title: 'Data Structures & Algorithms', subject: 'CS', tags: ['Graph', 'Trees'], privacy: 'Public', rating: 4.8, downloads: 542, date: 'Feb 2024', id: 'sample-1' },
-            { title: 'Physics Fundamentals', subject: 'Physics', tags: ['Quantum', 'Mechanics'], privacy: 'Public', rating: 4.5, downloads: 321, date: 'Jan 2024', id: 'sample-2' },
-            { title: 'Economics Overview', subject: 'Arts', tags: ['Macro', 'Finance'], privacy: 'Private', rating: 4.2, downloads: 128, date: 'Mar 2024', id: 'sample-3' },
-            { title: 'Discrete Mathematics', subject: 'Math', tags: ['Logic', 'Sets'], privacy: 'Public', rating: 4.9, downloads: 876, date: 'Dec 2023', id: 'sample-4' },
-            { title: 'Operating Systems', subject: 'CS', tags: ['Kernel', 'CPU'], privacy: 'Public', rating: 4.7, downloads: 432, date: 'Jan 2024', id: 'sample-5' },
-            { title: 'Chemistry Lab Guide', subject: 'Science', tags: ['Organic', 'Experiments'], privacy: 'Public', rating: 4.4, downloads: 254, date: 'Feb 2024', id: 'sample-6' }
+            { id: 'comm-1', title: 'Data Structures & Algorithms Cheat Sheet', subject: 'Computer Science', date: 'Feb 2026', privacy: 'Public', downloads: 142, rating: 4.9, semester: '3rd Semester', branch: 'Computer Science' },
+            { id: 'comm-2', title: 'Quantum Mechanics Lecture Notes', subject: 'Physics', date: 'Jan 2026', privacy: 'Public', downloads: 98, rating: 4.8, semester: '4th Semester', branch: 'Physics' },
+            { id: 'comm-3', title: 'Calculus II Integration Formula Guide', subject: 'Mathematics', date: 'Mar 2026', privacy: 'Public', downloads: 215, rating: 5.0, semester: '2nd Semester', branch: 'Mathematics' }
         ];
     }
 
