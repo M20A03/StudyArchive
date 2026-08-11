@@ -57,12 +57,97 @@
             </div>
         </div>
 
-        <!-- Guest Visitor Sign In Button (Sign in later) -->
+        <!-- Guest Visitor Buttons (In-Website Account Creation) -->
         <ng-template #guestActions>
-            <button type="button" class="btn-signin" (click)="goToLogin()">
-                <i data-lucide="log-in"></i>
-                <span>Sign In</span>
-            </button>
+            <div class="guest-btn-wrap">
+                <button type="button" class="btn-signin" (click)="openAuthModal('login')">
+                    <i data-lucide="log-in"></i>
+                    <span>Sign In</span>
+                </button>
+                <button type="button" class="btn-register-outline" (click)="openAuthModal('register')">
+                    Create Account
+                </button>
+            </div>
         </ng-template>
     </div>
 </nav>
+
+<!-- IN-WEBSITE AUTHENTICATION MODAL -->
+<div class="modal-overlay animate-fade-in" *ngIf="showAuthModal" (click)="closeAuthModal()">
+    <div class="auth-modal-content glass-panel" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <div class="auth-tabs">
+                <button type="button" [class.active]="authTab === 'login'" (click)="authTab = 'login'">Sign In</button>
+                <button type="button" [class.active]="authTab === 'register'" (click)="authTab = 'register'">Create Account</button>
+            </div>
+            <button type="button" class="close-btn" (click)="closeAuthModal()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="auth-error-badge" *ngIf="authError">
+                {{ authError }}
+            </div>
+
+            <!-- LOGIN TAB -->
+            <form *ngIf="authTab === 'login'" (ngSubmit)="submitLogin()">
+                <div class="form-group">
+                    <label>Email or Username</label>
+                    <input type="text" [(ngModel)]="loginData.identifier" name="identifier" placeholder="student@university.edu">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" [(ngModel)]="loginData.password" name="password" placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="btn-primary full-width" [disabled]="authLoading">
+                    {{ authLoading ? 'Signing In...' : 'Sign In' }}
+                </button>
+            </form>
+
+            <!-- REGISTER TAB -->
+            <form *ngIf="authTab === 'register'" (ngSubmit)="submitRegister()">
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" [(ngModel)]="registerData.fullName" name="fullName" placeholder="Alex Johnson">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" [(ngModel)]="registerData.email" name="email" placeholder="alex@university.edu">
+                    </div>
+                    <div class="form-group">
+                        <label>University / College</label>
+                        <input type="text" [(ngModel)]="registerData.college" name="college" placeholder="Stanford University">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" [(ngModel)]="registerData.department" name="department" placeholder="Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select [(ngModel)]="registerData.semester" name="semester">
+                            <option>1st Semester</option>
+                            <option>2nd Semester</option>
+                            <option>3rd Semester</option>
+                            <option>4th Semester</option>
+                            <option>5th Semester</option>
+                            <option>6th Semester</option>
+                            <option>7th Semester</option>
+                            <option>8th Semester</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width" [disabled]="authLoading">
+                    {{ authLoading ? 'Creating Account...' : 'Create Account' }}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

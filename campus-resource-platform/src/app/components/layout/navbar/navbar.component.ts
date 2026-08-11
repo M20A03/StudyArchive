@@ -21,6 +21,26 @@ export class NavbarComponent {
     searchValue = '';
     showAccountMenu = false;
 
+    // In-Website Auth Modal state
+    showAuthModal = false;
+    authTab: 'login' | 'register' = 'login';
+    authError = '';
+    authLoading = false;
+
+    loginData = {
+        identifier: '',
+        password: ''
+    };
+
+    registerData = {
+        fullName: '',
+        email: '',
+        college: '',
+        department: '',
+        semester: '1st Semester',
+        password: ''
+    };
+
     private sidebarService = inject(SidebarService);
 
     constructor(private userService: UserService, private router: Router) {
@@ -82,8 +102,60 @@ export class NavbarComponent {
         this.showAccountMenu = !this.showAccountMenu;
     }
 
-    goToLogin() {
-        this.router.navigate(['/login']);
+    openAuthModal(tab: 'login' | 'register' = 'login') {
+        this.authTab = tab;
+        this.authError = '';
+        this.showAuthModal = true;
+    }
+
+    closeAuthModal() {
+        this.showAuthModal = false;
+        this.authError = '';
+    }
+
+    async submitLogin() {
+        if (!this.loginData.identifier || !this.loginData.password) {
+            this.authError = 'Please enter your username/email and password';
+            return;
+        }
+        this.authLoading = true;
+        this.authError = '';
+
+        try {
+            await this.userService.login(this.loginData.identifier, this.loginData.password);
+            this.showAuthModal = false;
+            this.loginData = { identifier: '', password: '' };
+        } catch (err: any) {
+            this.authError = err?.message || 'Login failed. Please check credentials.';
+        } finally {
+            this.authLoading = false;
+        }
+    }
+
+    async submitRegister() {
+        if (!this.registerData.fullName || !this.registerData.email || !this.registerData.password) {
+            this.authError = 'Please fill out all required fields';
+            return;
+        }
+        this.authLoading = true;
+        this.authError = '';
+
+        try {
+            await this.userService.register(this.registerData);
+            this.showAuthModal = false;
+            this.registerData = {
+                fullName: '',
+                email: '',
+                college: '',
+                department: '',
+                semester: '1st Semester',
+                password: ''
+            };
+        } catch (err: any) {
+            this.authError = err?.message || 'Registration failed.';
+        } finally {
+            this.authLoading = false;
+        }
     }
 
     logout() {
