@@ -1,86 +1,45 @@
-// ─── 4D / Futuristic Student Design System ───
-
-// Dark Theme Colors
-$dark-bg-primary: #070a12;
-$dark-bg-secondary: #0d1222;
-$dark-bg-card: rgba(16, 23, 42, 0.78);
-$dark-bg-card-hover: rgba(24, 34, 58, 0.88);
-$dark-bg-elevated: #1e293b;
-$dark-border: rgba(99, 102, 241, 0.18);
-$dark-border-hover: rgba(139, 92, 246, 0.45);
-
-// Light Theme Colors
-$light-bg-primary: #f4f6fe;
-$light-bg-secondary: #ebf0fe;
-$light-bg-card: #ffffff;
-$light-bg-card-hover: #ffffff;
-$light-bg-elevated: #ffffff;
-$light-border: rgba(99, 102, 241, 0.12);
-$light-border-hover: rgba(99, 102, 241, 0.3);
-
-// Neon & Academic Accents
-$accent-indigo: #6366f1;
-$accent-indigo-hover: #4f46e5;
-$accent-blue: #3b82f6;
-$accent-violet: #8b5cf6;
-$accent-purple: #a855f7;
-$accent-cyan: #06b6d4;
-$accent-pink: #ec4899;
-$accent-emerald: #10b981;
-$accent-amber: #f59e0b;
-$accent-rose: #f43f5e;
+// Colors - softer mixed light/dark palette
+$primary-blue: #6d7cff;
+$accent-blue: #54b9f7;
+$accent-yellow: #f2c56d;
+$light-yellow: #f6edd9;
+$warm-yellow: #c0933b;
+$success-green: #42c69a;
+$soft-red: #f28692;
+$light-bg:
+    radial-gradient(1200px 680px at -10% -20%, rgba(138, 171, 255, 0.2), transparent 58%),
+    radial-gradient(860px 520px at 104% -4%, rgba(242, 197, 109, 0.2), transparent 58%),
+    radial-gradient(900px 680px at 52% 114%, rgba(84, 185, 247, 0.16), transparent 64%),
+    linear-gradient(150deg, #121a2f 0%, #1b2542 40%, #f2f5fb 165%);
 
 // Text Colors
-$text-dark-primary: #f8fafc;
-$text-dark-secondary: #94a3b8;
-$text-dark-muted: #64748b;
+$text-main: #e9efff;
+$text-secondary: #c6d3f1;
+$text-muted: #97a8cd;
 
-$text-light-primary: #0f172a;
-$text-light-secondary: #475569;
-$text-light-muted: #94a3b8;
+// Border & Radius
+$border-radius-sm: 8px;
+$border-radius-md: 12px;
+$border-radius-lg: 18px;
 
-// Gradients
-$gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
-$gradient-cyan: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-$gradient-amber: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-$gradient-emerald: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-$gradient-dark-card: linear-gradient(145deg, rgba(20, 29, 52, 0.8), rgba(11, 16, 30, 0.85));
-$gradient-light-card: linear-gradient(145deg, #ffffff, #f8faff);
+// Shadows
+$shadow-soft: 0 10px 24px rgba(7, 14, 35, 0.22);
+$shadow-medium: 0 20px 40px rgba(7, 14, 35, 0.3);
+$shadow-strong: 0 30px 54px rgba(7, 14, 35, 0.38);
 
-// Radius
-$radius-sm: 10px;
-$radius-md: 14px;
-$radius-lg: 20px;
-$radius-xl: 26px;
+// Glassmorphism - Dark
+$white-glass: linear-gradient(145deg, rgba(35, 47, 77, 0.64), rgba(18, 27, 46, 0.7));
+$shadow-glass: 0 20px 46px rgba(7, 14, 35, 0.32);
 
-// 3D Shadows
-$shadow-3d-dark: 0 14px 34px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-$shadow-3d-dark-hover: 0 22px 48px -10px rgba(99, 102, 241, 0.35), 0 0 24px 0 rgba(139, 92, 246, 0.22), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-$shadow-dark-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-$shadow-dark-lg: $shadow-3d-dark-hover;
-
-$shadow-3d-light: 0 12px 32px -8px rgba(99, 102, 241, 0.12), 0 4px 14px -2px rgba(0, 0, 0, 0.03);
-$shadow-3d-light-hover: 0 22px 46px -8px rgba(99, 102, 241, 0.22), 0 6px 20px -2px rgba(139, 92, 246, 0.18);
-$shadow-light-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-$shadow-light-lg: 0 14px 36px -8px rgba(99, 102, 241, 0.18);
 
 // Mixins
-@mixin card-4d-dark {
-    background: $gradient-dark-card;
-    border: 1px solid $dark-border;
-    border-radius: $radius-lg;
-    box-shadow: $shadow-3d-dark;
-    color: $text-dark-primary;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-@mixin card-4d-light {
-    background: $gradient-light-card;
-    border: 1px solid $light-border;
-    border-radius: $radius-lg;
-    box-shadow: $shadow-3d-light;
-    color: $text-light-primary;
+@mixin glassmorphism {
+    background: $white-glass;
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    border: 1px solid rgba(185, 203, 243, 0.2);
+    box-shadow: $shadow-glass;
+    color: $text-main;
 }
 
 @mixin flex-center {
@@ -89,25 +48,15 @@ $shadow-light-lg: 0 14px 36px -8px rgba(99, 102, 241, 0.18);
     align-items: center;
 }
 
-@mixin transition-physics {
-    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+@mixin smooth-transition {
+    transition: all 0.3s ease-in-out;
 }
 
-@mixin hover-lift-4d {
-    @include transition-physics;
-    will-change: transform, box-shadow;
+@mixin hover-lift {
+    @include smooth-transition;
 
     &:hover {
-        transform: translateY(-5px) scale(1.015) translateZ(0);
-        box-shadow: $shadow-3d-dark-hover;
-        border-color: $dark-border-hover;
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(4, 10, 26, 0.4);
     }
 }
-
-// ─── Alias Mixins for Backward Compatibility ───
-@mixin card-dark { @include card-4d-dark; }
-@mixin card-light { @include card-4d-light; }
-@mixin transition-fast { @include transition-physics; }
-@mixin transition-medium { @include transition-physics; }
-@mixin hover-lift { @include hover-lift-4d; }
-@mixin glassmorphism { @include card-4d-dark; }

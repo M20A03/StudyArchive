@@ -1,40 +1,36 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { Auth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from '@angular/fire/auth';
-import { Firestore, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, query, where, updateDoc, doc, getDoc } from '@angular/fire/firestore';
 
 export interface UserProfile {
     id?: string;
     email?: string;
+    password?: string;
     username?: string;
     name: string;
-    photoURL?: string;
     university: string;
     department: string;
     semester: string;
 }
 
-const GUEST_PROFILE: UserProfile = {
-    name: 'Guest User',
-    email: '',
-    photoURL: '',
-    university: 'StudyArchive Platform',
-    department: 'Guest Visitor',
-    semester: 'Explore Mode'
-};
-
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    private auth = inject(Auth);
     private firestore = inject(Firestore);
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
+    private usersCollection = collection(this.firestore, 'users');
     private currentUserId: string | null = null;
+    private readonly uidStorageKey = 'uid';
 
-    private userProfile = new BehaviorSubject<UserProfile>(GUEST_PROFILE);
+    private userProfile = new BehaviorSubject<UserProfile>({
+        name: 'Guest User',
+        university: 'Your University',
+        department: 'Your Department',
+        semester: '1st Semester'
+    });
     private authState = new BehaviorSubject<boolean>(false);
 
     userProfile$ = this.userProfile.asObservable();
@@ -42,94 +38,101 @@ export class UserService {
 
     constructor() {
         if (this.isBrowser) {
-            onAuthStateChanged(this.auth, async (firebaseUser: User | null) => {
-                if (firebaseUser) {
-                    await this.handleFirebaseUser(firebaseUser);
-                } else {
-                    this.currentUserId = null;
-                    this.authState.next(false);
-                    this.userProfile.next(GUEST_PROFILE);
-                }
-            });
+            this.restoreSession();
         }
     }
 
-    async loginWithGoogle(): Promise<UserProfile> {
-        if (!this.isBrowser) {
-            throw new Error('Google Sign-In is only supported in browser environment.');
-        }
-
+    private async restoreSession() {
+        const uid = localStorage.getItem(this.uidStorageKey);
+        if (!uid) return;
         try {
-            const provider = new GoogleAuthProvider();
-            provider.setCustomParameters({ prompt: 'select_account' });
-            const credential = await signInWithPopup(this.auth, provider);
-            const user = credential.user;
-            return await this.handleFirebaseUser(user);
-        } catch (error: any) {
-            if (error?.code === 'auth/popup-closed-by-user') {
-                throw new Error('Sign in popup was closed before completion.');
-            }
-            throw new Error(error?.message || 'Failed to sign in with Google Account.');
-        }
-    }
-
-    private async handleFirebaseUser(user: User): Promise<UserProfile> {
-        this.currentUserId = user.uid;
-        const userDocRef = doc(this.firestore, 'users', user.uid);
-
-        let profile: UserProfile = {
-            id: user.uid,
-            name: user.displayName || user.email?.split('@')[0] || 'Google User',
-            email: user.email || '',
-            photoURL: user.photoURL || '',
-            university: 'Campus University',
-            department: 'Computer Science',
-            semester: 'Current Semester'
-        };
-
-        try {
-            const snap = await getDoc(userDocRef);
+            const snap = await getDoc(doc(this.firestore, 'users', uid));
             if (snap.exists()) {
-                const data = snap.data() as Record<string, unknown>;
-                profile = {
-                    ...profile,
-                    name: (data['name'] as string) || profile.name,
-                    university: (data['university'] as string) || profile.university,
-                    department: (data['department'] as string) || profile.department,
-                    semester: (data['semester'] as string) || profile.semester,
-                    photoURL: (data['photoURL'] as string) || profile.photoURL
-                };
-            } else {
-                await setDoc(userDocRef, {
-                    name: profile.name,
-                    email: profile.email,
-                    photoURL: profile.photoURL,
-                    university: profile.university,
-                    department: profile.department,
-                    semester: profile.semester,
-                    createdAt: new Date().toISOString()
-                }, { merge: true });
+                this.currentUserId = uid;
+                this.userProfile.next(this.fromFirestore(snap.data() as Record<string, unknown>, uid));
+                this.authState.next(true);
             }
         } catch {
-            // Local fallback if Firestore is restricted
+            localStorage.removeItem(this.uidStorageKey);
+            this.authState.next(false);
         }
-
-        this.userProfile.next(profile);
-        this.authState.next(true);
-        return profile;
     }
 
-    async logout(): Promise<void> {
-        if (this.isBrowser) {
-            try {
-                await signOut(this.auth);
-            } catch (err) {
-                console.error('Logout error:', err);
-            }
+    async register(payload: { fullName: string; email: string; college: string; department: string; semester: string; password: string }): Promise<void> {
+        const username = payload.email.split('@')[0].toLowerCase();
+        const existingByEmail = await getDocs(query(this.usersCollection, where('email', '==', payload.email.toLowerCase())));
+        if (!existingByEmail.empty) {
+            throw new Error('Email already registered');
         }
+
+        const now = new Date().toISOString();
+        const created = await addDoc(this.usersCollection, {
+            name: payload.fullName,
+            email: payload.email.toLowerCase(),
+            password: payload.password,
+            username,
+            university: payload.college,
+            department: payload.department,
+            semester: payload.semester,
+            createdAt: now,
+            updatedAt: now
+        });
+
+        this.currentUserId = created.id;
+        if (this.isBrowser) {
+            localStorage.setItem(this.uidStorageKey, created.id);
+        }
+        this.authState.next(true);
+        this.userProfile.next({
+            id: created.id,
+            name: payload.fullName,
+            email: payload.email.toLowerCase(),
+            username,
+            university: payload.college,
+            department: payload.department,
+            semester: payload.semester
+        });
+    }
+
+    async login(identifier: string, password: string): Promise<void> {
+        const normalized = identifier.trim().toLowerCase();
+        const emailQuery = await getDocs(query(this.usersCollection, where('email', '==', normalized)));
+        let match = emailQuery.docs[0];
+
+        if (!match) {
+            const usernameQuery = await getDocs(query(this.usersCollection, where('username', '==', normalized)));
+            match = usernameQuery.docs[0];
+        }
+
+        if (!match) {
+            throw new Error('User not found');
+        }
+
+        const data = match.data() as Record<string, unknown>;
+        if ((data['password'] as string) !== password) {
+            throw new Error('Invalid password');
+        }
+
+        this.currentUserId = match.id;
+        if (this.isBrowser) {
+            localStorage.setItem(this.uidStorageKey, match.id);
+        }
+        this.authState.next(true);
+        this.userProfile.next(this.fromFirestore(data, match.id));
+    }
+
+    logout() {
         this.currentUserId = null;
+        if (this.isBrowser) {
+            localStorage.removeItem(this.uidStorageKey);
+        }
         this.authState.next(false);
-        this.userProfile.next(GUEST_PROFILE);
+        this.userProfile.next({
+            name: 'Guest User',
+            university: 'Your University',
+            department: 'Your Department',
+            semester: '1st Semester'
+        });
     }
 
     async updateProfile(profile: Partial<UserProfile>) {
@@ -138,17 +141,13 @@ export class UserService {
         this.userProfile.next(updated);
 
         if (this.currentUserId) {
-            try {
-                await updateDoc(doc(this.firestore, 'users', this.currentUserId), {
-                    name: updated.name,
-                    university: updated.university,
-                    department: updated.department,
-                    semester: updated.semester,
-                    updatedAt: new Date().toISOString()
-                });
-            } catch {
-                // Ignore remote sync errors locally
-            }
+            await updateDoc(doc(this.firestore, 'users', this.currentUserId), {
+                name: updated.name,
+                university: updated.university,
+                department: updated.department,
+                semester: updated.semester,
+                updatedAt: new Date().toISOString()
+            });
         }
     }
 
@@ -162,5 +161,17 @@ export class UserService {
 
     getCurrentUserId(): string | null {
         return this.currentUserId;
+    }
+
+    private fromFirestore(data: Record<string, unknown>, id: string): UserProfile {
+        return {
+            id,
+            name: (data['name'] as string) || 'Guest User',
+            email: (data['email'] as string) || '',
+            username: (data['username'] as string) || '',
+            university: (data['university'] as string) || 'Your University',
+            department: (data['department'] as string) || 'Your Department',
+            semester: (data['semester'] as string) || '1st Semester'
+        };
     }
 }

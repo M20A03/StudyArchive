@@ -1,46 +1,22 @@
 <div class="content-body animate-fade-in">
     <header class="profile-header glass-panel">
         <div class="profile-main">
-            <div class="avatar-wrap">
-                <img [src]="userProfile.photoURL || 'https://ui-avatars.com/api/?name=' + userProfile.name + '&background=6366f1&color=fff&size=128'"
-                    [alt]="userProfile.name" class="profile-img">
-                <span class="online-indicator"></span>
-            </div>
+            <img [src]="'https://ui-avatars.com/api/?name=' + userProfile.name + '&background=fbbf24&color=1e293b&size=128'"
+                [alt]="userProfile.name" class="profile-img">
             <div class="profile-text">
-                <div class="title-row">
-                    <h2>Welcome back, {{userProfile.name}}!</h2>
-                    <span class="streak-badge">
-                        🔥 {{streakCount}} Day Streak
-                    </span>
-                </div>
-                <p>{{userProfile.university || 'StudyArchive Campus'}} • {{userProfile.department || 'Computer Science'}} • {{userProfile.semester || 'Current Term'}}</p>
-                
-                <!-- Student Scholar XP Progress Bar -->
-                <div class="scholar-xp-bar">
-                    <div class="xp-info">
-                        <span>⭐ Level {{scholarLevel}} Scholar</span>
-                        <span class="xp-val">{{currentXp}} / {{targetXp}} XP</span>
-                    </div>
-                    <div class="xp-track">
-                        <div class="xp-fill" [style.width.%]="(currentXp / targetXp) * 100"></div>
-                    </div>
-                </div>
+                <h2>Welcome back, {{userProfile.name}}!</h2>
+                <p>{{userProfile.university}} • {{userProfile.department}} • {{userProfile.semester}}</p>
             </div>
         </div>
-        <button class="btn-primary" (click)="openEditModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-            Edit Profile
-        </button>
+        <button class="btn-primary" (click)="openEditModal()">Edit Profile</button>
     </header>
 
     <!-- Edit Profile Modal -->
     <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
-        <div class="modal-content glass-panel" (click)="$event.stopPropagation()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
             <div class="modal-header">
-                <h3>Edit Student Profile</h3>
-                <button class="close-btn" (click)="closeEditModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
+                <h3>Edit Profile</h3>
+                <button class="close-btn" (click)="closeEditModal()"><i data-lucide="x"></i></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -48,15 +24,15 @@
                     <input type="text" [(ngModel)]="editForm.name" placeholder="Enter your name">
                 </div>
                 <div class="form-group">
-                    <label>University / College</label>
+                    <label>University</label>
                     <input type="text" [(ngModel)]="editForm.university" placeholder="University name">
                 </div>
                 <div class="form-group">
-                    <label>Department / Major</label>
+                    <label>Department</label>
                     <input type="text" [(ngModel)]="editForm.department" placeholder="Department">
                 </div>
                 <div class="form-group">
-                    <label>Semester / Year</label>
+                    <label>Semester</label>
                     <input type="text" [(ngModel)]="editForm.semester" placeholder="Current semester">
                 </div>
             </div>
@@ -67,54 +43,10 @@
         </div>
     </div>
 
-    <!-- Quick Resource Preview Modal -->
-    <div class="modal-overlay" *ngIf="selectedResourceForPreview" (click)="closePreview()">
-        <div class="modal-content preview-modal glass-panel" (click)="$event.stopPropagation()">
-            <div class="modal-header">
-                <div class="preview-title-wrap">
-                    <span class="badge public" *ngIf="selectedResourceForPreview.privacy === 'Public'">Public Note</span>
-                    <span class="badge private" *ngIf="selectedResourceForPreview.privacy === 'Private'">Private Note</span>
-                    <h3>{{selectedResourceForPreview.title}}</h3>
-                </div>
-                <button class="close-btn" (click)="closePreview()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="preview-meta-grid">
-                    <div><strong>Subject:</strong> {{selectedResourceForPreview.subject}}</div>
-                    <div><strong>Uploaded:</strong> {{selectedResourceForPreview.date}}</div>
-                    <div><strong>Downloads:</strong> {{selectedResourceForPreview.downloads || 0}}</div>
-                    <div><strong>Rating:</strong> ⭐ {{selectedResourceForPreview.rating || '5.0'}}</div>
-                </div>
-                <div class="document-preview-box">
-                    <div class="doc-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-                        <span>Document Synopsis & Notes Preview</span>
-                    </div>
-                    <p class="preview-abstract">
-                        This academic resource covers core concepts, formula derivations, solved examples, and exam review notes for {{selectedResourceForPreview.title}} in {{selectedResourceForPreview.subject}}.
-                    </p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" (click)="closePreview()">Close</button>
-                <button class="btn-primary" (click)="closePreview()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                    Download Resource
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Stats Grid -->
     <div class="stats-grid">
         <div *ngFor="let stat of stats" class="stat-card glass-panel" [style.border-left-color]="stat.color">
-            <div class="stat-icon" [style.background]="stat.color + '18'">
-                <svg *ngIf="stat.icon === 'upload'" [style.color]="stat.color" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                <svg *ngIf="stat.icon === 'download'" [style.color]="stat.color" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                <svg *ngIf="stat.icon === 'star'" [style.color]="stat.color" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg *ngIf="stat.icon === 'zap'" [style.color]="stat.color" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <div class="stat-icon" [style.background]="stat.color + '15'">
+                <i [attr.data-lucide]="stat.icon" [style.color]="stat.color"></i>
             </div>
             <div class="stat-details">
                 <span class="stat-label">{{stat.label}}</span>
@@ -123,17 +55,13 @@
         </div>
     </div>
 
-    <!-- Dashboard Grid -->
     <div class="dashboard-grid">
         <section class="resource-section glass-panel">
             <div class="section-header">
                 <h3>Recent Resources</h3>
-                <span class="sub-header-tag">Click title to preview</span>
+                <button class="btn-link">View All</button>
             </div>
-            <div *ngIf="recentResources.length === 0" class="empty-resources">
-                <p>No resources uploaded yet. Get started by uploading study notes!</p>
-            </div>
-            <table class="resource-table" *ngIf="recentResources.length > 0">
+            <table class="resource-table">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -145,12 +73,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let res of recentResources">
-                        <td>
-                            <a class="resource-link-title" (click)="openPreview(res)">
-                                {{res.title}}
-                            </a>
-                        </td>
-                        <td><span class="subject-chip">{{res.subject}}</span></td>
+                        <td>{{res.title}}</td>
+                        <td>{{res.subject}}</td>
                         <td>
                             <span class="badge" [class.public]="res.privacy === 'Public'"
                                 [class.private]="res.privacy === 'Private'">
@@ -159,20 +83,13 @@
                         </td>
                         <td>
                             <div class="rating-box">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                {{res.rating || '0.0'}}
+                                <i data-lucide="star" class="star-icon"></i>
+                                {{res.rating}}
                             </div>
                         </td>
                         <td class="table-actions">
-                            <button class="icon-btn" (click)="openPreview(res)" title="Quick Preview">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </button>
-                            <button class="icon-btn" (click)="togglePrivacy(res.id)" title="Toggle Privacy">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-                            </button>
-                            <button class="icon-btn danger" (click)="deleteResource(res.id)" title="Delete Resource">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                            </button>
+                            <button class="icon-btn"><i data-lucide="edit-2"></i></button>
+                            <button class="icon-btn danger"><i data-lucide="trash-2"></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -193,58 +110,5 @@
                 </div>
             </div>
         </section>
-    </div>
-</div>
-
-<!-- 🤖 Floating AI Companion Assistant Button & Modal -->
-<button class="ai-fab-btn" (click)="toggleAiModal()" title="Ask StudyArchive AI Companion">
-    <div class="fab-pulse"></div>
-    <span class="ai-icon">✨</span>
-    <span class="fab-label">AI Assistant</span>
-</button>
-
-<div class="modal-overlay ai-modal-overlay" *ngIf="showAiModal" (click)="toggleAiModal()">
-    <div class="modal-content ai-modal-content glass-panel" (click)="$event.stopPropagation()">
-        <div class="modal-header ai-header">
-            <div class="ai-title">
-                <span class="ai-badge">🤖 StudyArchive AI</span>
-                <h3>Instant Study Companion</h3>
-            </div>
-            <button class="close-btn" (click)="toggleAiModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-        </div>
-
-        <div class="ai-chat-body">
-            <div class="quick-prompts-row">
-                <span class="prompt-chip" *ngFor="let p of quickPrompts" (click)="sendAiMessage(p)">
-                    {{p}}
-                </span>
-            </div>
-
-            <div class="chat-messages">
-                <div *ngFor="let msg of aiMessages" class="chat-msg" [class.user-msg]="msg.sender === 'user'" [class.ai-msg]="msg.sender === 'ai'">
-                    <div class="msg-bubble">
-                        <p [innerHTML]="msg.text"></p>
-                        <small>{{msg.time}}</small>
-                    </div>
-                </div>
-
-                <div class="chat-msg ai-msg" *ngIf="aiIsThinking">
-                    <div class="msg-bubble thinking">
-                        <div class="typing-dots">
-                            <span></span><span></span><span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="ai-input-footer">
-            <input type="text" [(ngModel)]="aiInput" (keydown.enter)="sendAiMessage()" placeholder="Ask AI to summarize, explain formulas, or make flashcards...">
-            <button class="btn-primary send-btn" (click)="sendAiMessage()" [disabled]="!aiInput.trim() || aiIsThinking">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-        </div>
     </div>
 </div>

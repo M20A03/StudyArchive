@@ -1,45 +1,45 @@
 <div class="login-container">
-    <div class="login-card glass-panel animate-fade-in">
-        <div class="brand-badge">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-            </svg>
-            <span>StudyArchive</span>
-        </div>
+    <div class="animated-bg"></div>
 
-        <h1>Welcome to StudyArchive</h1>
-        <p class="subtitle">Academic Resource Hub & Course Management</p>
+    <div class="login-card animate-fade-in glass-panel">
+        <h1>Log in to CampusShare</h1>
+        <p class="subtitle">Course Management & Resource Sharing</p>
 
-        <div *ngIf="errorMessage" class="error-banner">
-            <i data-lucide="alert-circle"></i>
-            <span>{{ errorMessage }}</span>
-        </div>
-
-        <div class="auth-actions">
-            <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="isLoading">
-                <svg class="google-icon" width="20" height="20" viewBox="0 0 24 24">
-                    <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-                    <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
-                    <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C1.2 8.7.8 10.3.8 12s.4 3.3 1.1 4.7l3.7-2.9z"/>
-                    <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"/>
-                </svg>
-                <span *ngIf="!isLoading">Sign in with Google</span>
-                <div *ngIf="isLoading" class="loader"></div>
-            </button>
-
-            <div class="divider">
-                <span>OR</span>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="text" formControlName="username" placeholder=" " id="username"
+                        [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                    <label for="username">Username</label>
+                </div>
             </div>
 
-            <button type="button" class="btn-guest" (click)="continueAsGuest()">
-                <i data-lucide="compass"></i>
-                Browse Platform as Guest
-            </button>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="password" formControlName="password" placeholder=" " id="password"
+                        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">Log in</span>
+                    <div *ngIf="isLoading" class="loader"></div>
+                </button>
+                <p class="signup-prompt">Don't have an account? <a routerLink="/signup">Sign up</a></p>
+                <a href="#" class="lost-password" (click)="showLostPasswordHelp($event)">Lost password?</a>
+            </div>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
         </div>
 
         <div class="footer-section">
-            <p class="privacy-note">By signing in with Google, you gain instant access to your saved notes, syllabus resources, and university materials.</p>
+            <p>Is this your first time here?</p>
+            <a href="#" class="manual-link" (click)="openUserManual($event)">User Manual</a>
+            <button class="btn-outline" (click)="showCookiesNotice()">Cookies notice</button>
         </div>
     </div>
 </div>

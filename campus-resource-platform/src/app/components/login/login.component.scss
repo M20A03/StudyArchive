@@ -1,289 +1,223 @@
-@use '../../../styles/variables' as *;
+@use 'variables' as *;
 
 .login-container {
     min-height: 100vh;
+    width: 100%;
     @include flex-center;
-    padding: 24px;
-    background: $dark-bg-primary;
     position: relative;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: -15%;
-        left: -10%;
-        width: 550px;
-        height: 550px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(139, 92, 246, 0.1) 45%, transparent 70%);
-        pointer-events: none;
-        animation: orbFloat1 12s ease-in-out infinite alternate;
-    }
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -15%;
-        right: -10%;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, rgba(236, 72, 153, 0.1) 45%, transparent 70%);
-        pointer-events: none;
-        animation: orbFloat2 15s ease-in-out infinite alternate;
-    }
+    overflow: hidden;
+    padding: 24px;
 }
 
-@keyframes orbFloat1 {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, 20px) scale(1.1); }
+.animated-bg {
+    position: absolute;
+    inset: -45%;
+    background:
+        radial-gradient(circle at 24% 28%, rgba(109, 124, 255, 0.3) 0%, transparent 36%),
+        radial-gradient(circle at 72% 72%, rgba(84, 185, 247, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(242, 197, 109, 0.14) 0%, transparent 46%);
+    animation: rotate 24s linear infinite;
+    z-index: 0;
 }
 
-@keyframes orbFloat2 {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-25px, -20px) scale(1.08); }
-}
-
-body.light-theme .login-container {
-    background: $light-bg-primary;
-
-    &::before {
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
     }
 
-    &::after {
-        background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
-    }
-
-    .login-card {
-        background: #ffffff;
-        border-color: $light-border;
-        box-shadow: $shadow-3d-light-hover;
-
-        h1 { color: $text-light-primary; }
-        .subtitle { color: $text-light-secondary; }
-
-        .btn-google {
-            background: #ffffff;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            color: $text-light-primary;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08);
-            &:hover {
-                background: #f8fafc;
-                border-color: $accent-indigo;
-                box-shadow: 0 6px 20px rgba(99, 102, 241, 0.16);
-            }
-        }
-
-        .btn-guest {
-            background: rgba(99, 102, 241, 0.06);
-            color: $text-light-secondary;
-            &:hover {
-                background: rgba(99, 102, 241, 0.12);
-                color: $text-light-primary;
-            }
-        }
-
-        .divider span {
-            background: #ffffff;
-            color: $text-light-muted;
-        }
-
-        .divider::before {
-            background: $light-border;
-        }
-
-        .privacy-note { color: $text-light-muted; }
-        .error-banner {
-            background: rgba(244, 63, 94, 0.08);
-            border-color: rgba(244, 63, 94, 0.2);
-            color: #ef4444;
-        }
+    to {
+        transform: rotate(360deg);
     }
 }
 
 .login-card {
-    width: 100%;
-    max-width: 450px;
-    padding: 48px 40px;
-    @include card-4d-dark;
-    border-radius: $radius-xl;
     position: relative;
     z-index: 1;
+    width: 100%;
+    max-width: 460px;
+    padding: 40px;
+    border-radius: $border-radius-lg;
     text-align: center;
-    @include transition-physics;
-
-    &:hover {
-        transform: translateY(-4px) translateZ(0);
-        box-shadow: 0 24px 50px -10px rgba(99, 102, 241, 0.4), 0 0 30px rgba(139, 92, 246, 0.25);
-        border-color: rgba(139, 92, 246, 0.5);
-    }
-
-    .brand-badge {
-        @include flex-center;
-        gap: 10px;
-        margin-bottom: 28px;
-        color: $accent-indigo;
-        font-size: 20px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-
-        svg {
-            color: $accent-indigo;
-            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
-        }
-
-        span {
-            background: $gradient-brand;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    }
+    @include glassmorphism;
 
     h1 {
         font-size: 28px;
+        margin-bottom: 10px;
+        color: $text-main;
         font-weight: 800;
-        color: $text-dark-primary;
-        margin-bottom: 8px;
-        letter-spacing: -0.03em;
     }
 
     .subtitle {
         font-size: 14px;
-        color: $text-dark-secondary;
+        color: $text-secondary;
         margin-bottom: 32px;
-        line-height: 1.5;
     }
 }
 
-.error-banner {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: rgba(244, 63, 94, 0.1);
-    border: 1px solid rgba(244, 63, 94, 0.25);
-    border-radius: $radius-md;
-    color: #f43f5e;
-    font-size: 13px;
-    margin-bottom: 20px;
+.form-group {
+    margin-bottom: 22px;
     text-align: left;
-    animation: fadeIn 0.3s ease-out;
 }
 
-.auth-actions {
+.input-wrapper {
+    position: relative;
+
+    input {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid rgba(185, 203, 243, 0.2);
+        border-radius: $border-radius-md;
+        background: rgba(19, 28, 47, 0.54);
+        color: $text-main;
+        outline: none;
+        @include smooth-transition;
+
+        &:focus {
+            border-color: $accent-blue;
+            box-shadow: 0 0 0 4px rgba(84, 185, 247, 0.16);
+            background: rgba(24, 35, 59, 0.74);
+        }
+
+        &.error {
+            border-color: $soft-red;
+        }
+
+        &:focus+label,
+        &:not(:placeholder-shown)+label {
+            top: -10px;
+            left: 12px;
+            font-size: 12px;
+            background: rgba(18, 27, 46, 0.95);
+            padding: 0 6px;
+            color: $accent-blue;
+            border-radius: 4px;
+        }
+    }
+
+    label {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        color: $text-muted;
+        pointer-events: none;
+        @include smooth-transition;
+    }
+}
+
+.form-actions {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-}
+    gap: 14px;
+    margin-top: 28px;
 
-.btn-google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 14px 24px;
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(99, 102, 241, 0.25);
-    border-radius: $radius-md;
-    color: $text-dark-primary;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    @include transition-physics;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-
-    &:hover {
-        border-color: $accent-indigo;
-        background: rgba(30, 41, 59, 0.95);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+    button {
+        height: 50px;
+        @include flex-center;
     }
 
-    &:active {
-        transform: translateY(0);
+    .lost-password {
+        font-size: 14px;
+        color: $accent-blue;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-    }
+    .signup-prompt {
+        font-size: 14px;
+        color: $text-secondary;
 
-    .google-icon {
-        flex-shrink: 0;
+        a {
+            color: $accent-yellow;
+            font-weight: 700;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }
 
 .divider {
+    margin: 28px 0;
     position: relative;
-    text-align: center;
-    margin: 4px 0;
 
     &::before {
         content: '';
         position: absolute;
         top: 50%;
         left: 0;
-        right: 0;
+        width: 100%;
         height: 1px;
-        background: $dark-border;
+        background: rgba(185, 203, 243, 0.2);
     }
 
     span {
         position: relative;
-        padding: 0 16px;
+        background: rgba(23, 34, 56, 0.9);
+        padding: 0 14px;
+        color: $text-muted;
         font-size: 12px;
         font-weight: 700;
-        text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: $text-dark-muted;
-        background: $dark-bg-secondary;
-        border-radius: 4px;
-    }
-}
-
-.btn-guest {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 13px 24px;
-    background: rgba(99, 102, 241, 0.08);
-    border: 1px solid rgba(99, 102, 241, 0.15);
-    border-radius: $radius-md;
-    color: $text-dark-secondary;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    @include transition-physics;
-
-    &:hover {
-        background: rgba(99, 102, 241, 0.16);
-        color: $text-dark-primary;
-        border-color: rgba(99, 102, 241, 0.35);
     }
 }
 
 .footer-section {
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid $dark-border;
-
-    .privacy-note {
-        font-size: 12px;
-        color: $text-dark-muted;
-        line-height: 1.6;
+    p {
+        font-size: 14px;
+        color: $text-secondary;
+        margin-bottom: 12px;
     }
 
-    .login-link {
-        font-size: 14px;
-        color: $text-dark-secondary;
+    .manual-link {
+        display: block;
+        color: $accent-blue;
+        font-weight: 600;
+        margin-bottom: 14px;
+        text-decoration: none;
 
-        a {
-            color: $accent-indigo;
-            font-weight: 700;
-            &:hover { color: $accent-violet; }
+        &:hover {
+            text-decoration: underline;
         }
+    }
+
+    .btn-outline {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(185, 203, 243, 0.2);
+        padding: 8px 16px;
+        border-radius: $border-radius-sm;
+        font-size: 12px;
+        cursor: pointer;
+        color: $text-muted;
+        @include smooth-transition;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: $text-main;
+        }
+    }
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(201, 213, 241, 0.55);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

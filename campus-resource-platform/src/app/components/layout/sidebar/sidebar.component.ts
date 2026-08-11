@@ -1,58 +1,33 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { UserService } from '../../../services/user.service';
-import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-sidebar',
     standalone: true,
     imports: [CommonModule, RouterModule],
+
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent {
     isCollapsed = false;
-    isMobileOpen = false;
-    private sub = new Subscription();
-
     menuItems = [
-        { label: 'Dashboard', path: '/dashboard', svgIcon: 'dashboard' },
-        { label: 'Upload Resource', path: '/dashboard/upload', svgIcon: 'upload' },
-        { label: 'My Resources', path: '/dashboard/my-resources', svgIcon: 'folder' },
-        { label: 'Search Resources', path: '/dashboard/search', svgIcon: 'search' },
+        { icon: 'layout-dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'upload-cloud', label: 'Upload Resource', path: '/dashboard/upload' },
+        { icon: 'folder', label: 'My Resources', path: '/dashboard/my-resources' },
+        { icon: 'search', label: 'Search Resources', path: '/dashboard/search' },
     ];
 
-    constructor(
-        private userService: UserService,
-        private sidebarService: SidebarService,
-        private router: Router
-    ) {}
-
-    ngOnInit() {
-        this.sub.add(
-            this.sidebarService.mobileOpen$.subscribe((open) => {
-                this.isMobileOpen = open;
-            })
-        );
-    }
-
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
+    constructor(private userService: UserService, private router: Router) { }
 
     toggleSidebar() {
         this.isCollapsed = !this.isCollapsed;
     }
 
-    closeMobile() {
-        this.sidebarService.closeMobile();
-    }
-
-    async logout() {
-        this.closeMobile();
-        await this.userService.logout();
-        this.router.navigate(['/dashboard']);
+    logout() {
+        this.userService.logout();
+        this.router.navigate(['/login']);
     }
 }

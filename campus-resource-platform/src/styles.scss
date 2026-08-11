@@ -1,806 +1,401 @@
-@use 'variables' as *;
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@use 'styles/variables' as *;
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-html {
-    scroll-behavior: smooth;
+    font-family: 'Inter', 'Poppins', sans-serif;
 }
 
 body {
     margin: 0;
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    background-color: $dark-bg-primary;
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: $light-bg;
+    background-attachment: fixed;
     min-height: 100vh;
-    color: $text-dark-primary;
+    color: $text-main;
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: 1.5;
     position: relative;
-    @include transition-physics;
 }
 
-// ─── 4D Glowing Background Mesh (Zero Lag, Pure CSS) ───
 body::before {
     content: '';
     position: fixed;
     inset: 0;
     pointer-events: none;
     background:
-        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.14) 0%, transparent 45%),
-        radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 40%);
-    z-index: -2;
-    animation: ambientMeshPulse 18s ease-in-out infinite alternate;
+        linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 35%),
+        radial-gradient(500px 280px at 10% 12%, rgba(255, 255, 255, 0.12), transparent 70%),
+        radial-gradient(680px 320px at 90% 85%, rgba(88, 200, 255, 0.08), transparent 72%);
+    z-index: -1;
+    transition: transform 0.4s ease;
 }
 
 body::after {
     content: '';
     position: fixed;
-    inset: 0;
+    inset: -18%;
     pointer-events: none;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size: 28px 28px;
-    opacity: 0.6;
-    z-index: -1;
+    background:
+        radial-gradient(460px 380px at 14% 26%, rgba(109, 124, 255, 0.16), transparent 72%),
+        radial-gradient(500px 410px at 84% 22%, rgba(242, 197, 109, 0.14), transparent 74%),
+        radial-gradient(560px 430px at 52% 82%, rgba(84, 185, 247, 0.16), transparent 74%);
+    filter: blur(18px);
+    animation: auraFloat 16s ease-in-out infinite alternate;
+    z-index: -2;
 }
 
-@keyframes ambientMeshPulse {
-    0% {
-        transform: scale(1) translate3d(0, 0, 0);
-        opacity: 0.85;
-    }
-    50% {
-        transform: scale(1.05) translate3d(15px, -10px, 0);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0.98) translate3d(-10px, 15px, 0);
-        opacity: 0.9;
-    }
-}
-
-// ─── Light Theme 4D ───
+// ─────────────────────────────────────────────────────────────
+// ☀️ LIGHT THEME UN-ENCAPSULATED OVERRIDES
+// ─────────────────────────────────────────────────────────────
 body.light-theme {
-    color-scheme: light;
-    background-color: $light-bg-primary;
-    color: $text-light-primary;
+    color-scheme: light !important;
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
 
-    &::before {
-        background:
-            radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
-            radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 45%),
-            radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+    &::before, &::after {
+        display: none !important;
     }
 
-    &::after {
-        background-image: radial-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px);
-        opacity: 0.8;
+    // Main layout containers
+    .dashboard-layout,
+    .main-content,
+    .content-body {
+        background: #f8fafc !important;
+        color: #0f172a !important;
     }
 
-    // ── Global Form Elements & Inputs ──
-    input, select, textarea {
-        background-color: #ffffff !important;
-        color: $text-light-primary !important;
-        border-color: rgba(99, 102, 241, 0.2) !important;
-
-        &::placeholder {
-            color: $text-light-muted !important;
-        }
-
-        option {
-            background-color: #ffffff !important;
-            color: $text-light-primary !important;
-        }
-    }
-
+    // Sidebar
     .sidebar {
-        background: rgba(255, 255, 255, 0.9) !important;
-        border-right-color: $light-border !important;
-        box-shadow: 4px 0 24px rgba(99, 102, 241, 0.06) !important;
+        background: #ffffff !important;
+        border-right: 1px solid #e2e8f0 !important;
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.04) !important;
 
-        .menu-item {
-            color: $text-light-secondary !important;
-            &:hover, &.active {
-                color: $accent-indigo !important;
-                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.08)) !important;
-                box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2) !important;
+        .sidebar-header {
+            border-bottom: 1px solid #e2e8f0 !important;
+            .logo span {
+                color: #0f172a !important;
+                background: linear-gradient(135deg, #4f46e5, #9333ea);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
-        }
-
-        .logo span {
-            color: $text-light-primary !important;
-        }
-
-        .toggle-btn {
-            color: $text-light-secondary !important;
-            &:hover { background: rgba(99, 102, 241, 0.08) !important; }
-        }
-    }
-
-    .navbar {
-        background: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        border-bottom-color: $light-border !important;
-        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06) !important;
-    }
-
-    .btn-signin {
-        background: #ffffff !important;
-        color: $text-light-primary !important;
-        border: 1px solid rgba(99, 102, 241, 0.25) !important;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08) !important;
-
-        &:hover {
-            background: #f8fafc !important;
-            border-color: $accent-indigo !important;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.16) !important;
-        }
-    }
-
-    .nav-icon-btn {
-        color: $text-light-secondary !important;
-        &:hover {
-            color: $accent-indigo !important;
-            background: rgba(99, 102, 241, 0.08) !important;
-        }
-    }
-
-    .search-box {
-        background: #ffffff !important;
-        border-color: rgba(99, 102, 241, 0.18) !important;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.06) !important;
-        svg { color: $text-light-muted !important; }
-        input {
-            color: $text-light-primary !important;
-            &::placeholder { color: $text-light-muted !important; }
-        }
-    }
-
-    // ── Search Hero & Search Bar ──
-    .search-hero {
-        background: #ffffff !important;
-        border-color: rgba(99, 102, 241, 0.15) !important;
-        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.06) !important;
-
-        h1 { color: $text-light-primary !important; }
-        p { color: $text-light-secondary !important; }
-    }
-
-    .large-search {
-        input {
-            background: #ffffff !important;
-            color: $text-light-primary !important;
-            border-color: rgba(99, 102, 241, 0.2) !important;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.05) !important;
-
-            &::placeholder {
-                color: $text-light-muted !important;
-            }
-
-            &:focus {
-                border-color: $accent-indigo !important;
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
-            }
-        }
-
-        svg, i {
-            color: $text-light-muted !important;
-        }
-    }
-
-    // ── Filter Panel & View Toggles ──
-    .filter-panel, .filter-group {
-        background: #ffffff !important;
-        border-color: $light-border !important;
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.05) !important;
-
-        h3 { color: $text-light-primary !important; }
-        label { color: $text-light-secondary !important; }
-
-        select, input {
-            background: #ffffff !important;
-            color: $text-light-primary !important;
-            border-color: rgba(99, 102, 241, 0.2) !important;
-
-            option {
-                background: #ffffff !important;
-                color: $text-light-primary !important;
-            }
-        }
-    }
-
-    .view-toggles {
-        background: #ffffff !important;
-        border-color: $light-border !important;
-
-        button {
-            color: $text-light-muted !important;
-            &.active {
-                background: rgba(99, 102, 241, 0.12) !important;
-                color: $accent-indigo !important;
-            }
-        }
-    }
-
-    .profile-dropdown {
-        background: #ffffff !important;
-        border-color: rgba(99, 102, 241, 0.18) !important;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.06) !important;
-        .user-name { color: $text-light-primary !important; }
-        .user-email { color: $text-light-secondary !important; }
-    }
-
-    .account-menu {
-        background: #ffffff !important;
-        border-color: $light-border !important;
-        box-shadow: $shadow-3d-light-hover !important;
-
-        .menu-header {
-            strong { color: $text-light-primary !important; }
-            span { color: $text-light-secondary !important; }
         }
 
         .menu-item {
-            color: $text-light-secondary !important;
+            color: #475569 !important;
+
+            svg {
+                color: #64748b !important;
+            }
+
             &:hover {
-                color: $text-light-primary !important;
-                background: rgba(99, 102, 241, 0.06) !important;
+                background: #f1f5f9 !important;
+                color: #4f46e5 !important;
+                svg { color: #4f46e5 !important; }
             }
-            &.danger { color: #ef4444 !important; }
-        }
 
-        .menu-divider { background: $light-border !important; }
+            &.active {
+                background: #eef2ff !important;
+                color: #4f46e5 !important;
+                border: 1px solid #c7d2fe !important;
+                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12) !important;
+                svg { color: #4f46e5 !important; }
+            }
 
-        .theme-row {
-            background: rgba(99, 102, 241, 0.06) !important;
-            .theme-btn {
-                color: $text-light-secondary !important;
-                &.active {
-                    background: #ffffff !important;
-                    color: $text-light-primary !important;
-                    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12) !important;
+            &.logout {
+                color: #64748b !important;
+                &:hover {
+                    background: #fef2f2 !important;
+                    color: #ef4444 !important;
                 }
             }
         }
+
+        .sidebar-footer {
+            border-top: 1px solid #e2e8f0 !important;
+        }
     }
 
+    // Navbar
+    .navbar {
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03) !important;
+
+        .search-box {
+            background: #f8fafc !important;
+            border: 1px solid #cbd5e1 !important;
+
+            svg { color: #64748b !important; }
+            input {
+                color: #0f172a !important;
+                &::placeholder { color: #94a3b8 !important; }
+            }
+            .search-hint {
+                background: #4f46e5 !important;
+                color: #ffffff !important;
+            }
+        }
+
+        .nav-icon-btn {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border: 1px solid #cbd5e1 !important;
+            &:hover {
+                background: #e2e8f0 !important;
+                color: #0f172a !important;
+            }
+        }
+
+        .btn-signin {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+            &:hover {
+                background: #f8fafc !important;
+                border-color: #4f46e5 !important;
+            }
+        }
+
+        .mobile-menu-btn {
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+    }
+
+    // All Cards & Glass Panels
+    .glass-panel,
+    .profile-header,
+    .stat-card,
     .resource-section,
     .activity-section,
     .table-container,
     .upload-container,
     .filter-panel,
     .login-card,
-    .stat-card,
-    .glass-panel,
-    .resource-card {
-        background: $gradient-light-card !important;
-        color: $text-light-primary !important;
-        border-color: $light-border !important;
-        box-shadow: $shadow-3d-light !important;
-
-        &:hover {
-            box-shadow: $shadow-3d-light-hover !important;
-            border-color: $light-border-hover !important;
-        }
-
-        h3, .res-title { color: $text-light-primary !important; }
-        .res-subject, .res-meta, p { color: $text-light-secondary !important; }
-    }
-
-    .user-name,
-    .section-header h3,
-    h1, h2, h3, h4 {
-        color: $text-light-primary !important;
-    }
-
-    p, td, th,
-    .stat-label, .subject, .res-subject {
-        color: $text-light-secondary !important;
-    }
-
-    .stat-value { color: $text-light-primary !important; }
-
-    .dashboard-layout {
-        background: $light-bg-primary !important;
-    }
-    .main-content,
-    .content-body {
-        background: transparent !important;
-    }
-
-    .activity-content {
-        p {
-            color: $text-light-secondary !important;
-            strong { color: $text-light-primary !important; font-weight: 700 !important; }
-            span { color: $accent-indigo !important; font-weight: 600 !important; }
-        }
-        small { color: $text-light-muted !important; }
-    }
-
-    // ── AI Chat Assistant Light Theme Overrides ──
-    .chat-msg.ai-msg .msg-bubble {
-        background: #f1f5f9 !important;
-        border-color: rgba(99, 102, 241, 0.22) !important;
-        color: #0f172a !important;
-
-        p, span, div {
-            color: #0f172a !important;
-        }
-
-        strong {
-            color: #4f46e5 !important;
-        }
-
-        small {
-            color: #64748b !important;
-            opacity: 1 !important;
-        }
-    }
-
-    .ai-modal-content {
+    .modal-content,
+    .document-preview-box {
         background: #ffffff !important;
-        border-color: rgba(99, 102, 241, 0.2) !important;
-        box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15) !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02) !important;
+        color: #0f172a !important;
+    }
 
-        .ai-header {
-            border-bottom-color: rgba(99, 102, 241, 0.15) !important;
+    // Headlines & Titles
+    h1, h2, h3, h4, h5, h6,
+    .user-name,
+    .profile-text h2,
+    .section-header h3,
+    .preview-title-wrap h3 {
+        color: #0f172a !important;
+    }
 
-            .ai-title h3 {
-                color: #0f172a !important;
+    p, .profile-text p, .preview-abstract, small {
+        color: #475569 !important;
+    }
+
+    // Stat Cards
+    .stat-card {
+        .stat-label { color: #64748b !important; font-weight: 600 !important; }
+        .stat-value { color: #0f172a !important; font-weight: 800 !important; }
+    }
+
+    // Recent Activity Section (CRITICAL FIX FOR INVISIBLE USERNAMES)
+    .activity-section {
+        .activity-item {
+            .activity-dot {
+                border-color: #ffffff !important;
             }
-        }
 
-        .prompt-chip {
-            background: rgba(99, 102, 241, 0.08) !important;
-            color: #4f46e5 !important;
-            border-color: rgba(99, 102, 241, 0.2) !important;
-
-            &:hover {
-                background: rgba(99, 102, 241, 0.16) !important;
-            }
-        }
-
-        .ai-input-footer {
-            border-top-color: rgba(99, 102, 241, 0.15) !important;
-
-            input {
-                background: #ffffff !important;
-                color: #0f172a !important;
-                border-color: rgba(99, 102, 241, 0.25) !important;
-
-                &::placeholder {
+            .activity-content {
+                p {
+                    color: #334155 !important;
+                    strong {
+                        color: #0f172a !important;
+                        font-weight: 700 !important;
+                    }
+                    span {
+                        color: #4f46e5 !important;
+                        font-weight: 600 !important;
+                    }
+                }
+                small {
                     color: #64748b !important;
                 }
             }
         }
     }
 
-    // ── Recent Resources Table Light Theme Overrides ──
+    // Recent Resources Table
     .resource-table {
         th {
+            background: #f8fafc !important;
             color: #64748b !important;
-            border-bottom-color: rgba(99, 102, 241, 0.15) !important;
+            border-bottom: 1px solid #e2e8f0 !important;
         }
 
         td {
-            color: #0f172a !important;
-            border-bottom-color: rgba(99, 102, 241, 0.08) !important;
+            color: #1e293b !important;
+            border-bottom: 1px solid #f1f5f9 !important;
         }
 
-        tr:hover {
-            background: rgba(99, 102, 241, 0.04) !important;
+        tr:hover td {
+            background: #f8fafc !important;
         }
 
         .resource-link-title {
             color: #4f46e5 !important;
             font-weight: 700 !important;
-
             &:hover {
                 color: #6366f1 !important;
+                text-decoration: underline !important;
             }
         }
-    }
 
-    // ── Toggle Group (Privacy Level Toggle) in Light Theme ──
-    .toggle-group {
-        background: rgba(99, 102, 241, 0.06) !important;
-        border: 1px solid rgba(99, 102, 241, 0.15) !important;
-        padding: 4px !important;
-        border-radius: 10px !important;
+        .subject-chip {
+            background: #eef2ff !important;
+            color: #4338ca !important;
+            border: 1px solid #c7d2fe !important;
+            font-weight: 600 !important;
+        }
 
-        .toggle-option {
-            span {
-                color: #64748b !important;
-                font-weight: 600 !important;
-                padding: 6px 16px !important;
-                border-radius: 7px !important;
-            }
+        .rating-box {
+            color: #d97706 !important;
+        }
 
-            input:checked + span {
-                background: #ffffff !important;
+        .icon-btn {
+            background: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #64748b !important;
+            &:hover {
+                background: #eef2ff !important;
                 color: #4f46e5 !important;
-                font-weight: 700 !important;
-                border: 1px solid rgba(99, 102, 241, 0.25) !important;
-                box-shadow: 0 4px 14px rgba(99, 102, 241, 0.16) !important;
+                border-color: #818cf8 !important;
+            }
+            &.danger:hover {
+                background: #fef2f2 !important;
+                color: #ef4444 !important;
+                border-color: #fca5a5 !important;
             }
         }
     }
 }
 
-// ─── Segmented Toggle Group ───
-.toggle-group {
-    display: flex;
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(99, 102, 241, 0.25);
-    padding: 4px;
-    border-radius: 10px;
-    width: fit-content;
-
-    .toggle-option {
-        cursor: pointer;
-
-        input { display: none; }
-
-        span {
-            display: block;
-            padding: 8px 18px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 600;
-            color: $text-dark-muted;
-            @include transition-physics;
-        }
-
-        input:checked + span {
-            background: linear-gradient(135deg, $accent-indigo 0%, $accent-violet 100%);
-            color: white;
-            font-weight: 700;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
-        }
-    }
+body:hover::before {
+    transform: scale(1.03);
 }
 
-// ─── AI Chatbot User Message White Text Rule ───
-.chat-msg.user-msg {
-    .msg-bubble {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-        color: #ffffff !important;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3) !important;
-
-        p, span, div, small, strong {
-            color: #ffffff !important;
-            opacity: 1 !important;
-        }
-    }
-}
-
-// ─── Resource Table Title Links ───
-.resource-link-title {
-    color: #818cf8 !important;
-    font-weight: 700 !important;
-    cursor: pointer !important;
-    text-decoration: none !important;
-    @include transition-fast;
-
-    &:hover {
-        color: #a5b4fc !important;
-        text-decoration: underline !important;
-    }
-}
-
-// ─── Links ───
 a {
-    color: $accent-indigo;
-    text-decoration: none;
-    @include transition-physics;
-    &:hover { color: $accent-violet; }
+    color: $accent-blue;
 }
 
-// ─── Inputs ───
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
     font: inherit;
 }
 
-// ─── 4D Glass Panel ───
 .glass-panel {
-    @include card-4d-dark;
-    @include transition-physics;
-
-    &:hover {
-        transform: translateY(-4px) translateZ(0);
-        box-shadow: $shadow-3d-dark-hover;
-        border-color: $dark-border-hover;
-    }
+    position: relative;
+    overflow: visible;
+    @include glassmorphism;
 }
 
-body.light-theme .glass-panel {
-    @include card-4d-light;
-    &:hover {
-        transform: translateY(-4px) translateZ(0);
-        box-shadow: $shadow-3d-light-hover;
-        border-color: $light-border-hover;
-    }
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: -120% 20% auto -30%;
+    height: 240%;
+    background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.12) 52%, transparent 62%);
+    transform: rotate(8deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
-// ─── Glow Primary Button ───
+.glass-panel:hover::before {
+    opacity: 1;
+}
+
 .btn-primary {
     padding: 12px 28px;
-    background: $gradient-brand;
+    background: linear-gradient(128deg, #6d7cff 0%, #54b9f7 52%, #f2c56d 100%);
     color: white;
-    border: none;
-    border-radius: $radius-md;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: $border-radius-md;
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
-    letter-spacing: -0.01em;
-    @include transition-physics;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35), 0 0 12px rgba(139, 92, 246, 0.2);
+    @include smooth-transition;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 
     &:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5), 0 0 20px rgba(217, 70, 239, 0.3);
-    }
-
-    &:active {
-        transform: translateY(0) scale(0.99);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
+        background: linear-gradient(128deg, #6072ff 0%, #44adee 52%, #e8ba5f 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
     }
 }
 
-// ─── Glowing Badges ───
 .badge {
-    padding: 5px 14px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    font-weight: 500;
 
     &.public {
-        background: rgba(16, 185, 129, 0.15);
-        color: #34d399;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
     }
 
     &.private {
-        background: rgba(236, 72, 153, 0.15);
-        color: #f472b6;
-        border: 1px solid rgba(236, 72, 153, 0.3);
-        box-shadow: 0 0 10px rgba(236, 72, 153, 0.15);
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
     }
 }
 
-body.light-theme .badge {
-    &.public {
-        background: rgba(16, 185, 129, 0.12);
-        color: #059669;
-        border-color: rgba(16, 185, 129, 0.25);
-    }
-
-    &.private {
-        background: rgba(225, 29, 72, 0.12);
-        color: #e11d48;
-        border-color: rgba(225, 29, 72, 0.25);
-    }
-}
-
-// ─── Scrollbar ───
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.25);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
 
     &:hover {
-        background: rgba(139, 92, 246, 0.45);
+        background: rgba(255, 255, 255, 0.4);
     }
 }
 
-// ─── Animations (GPU-Accelerated) ───
+@keyframes auraFloat {
+    0% {
+        transform: translate3d(-2%, 0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate3d(2%, 2%, 0) scale(1.06);
+    }
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(14px) translateZ(0);
+        transform: translateY(20px);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0) translateZ(0);
-    }
-}
 
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.95) translateZ(0);
-    }
     to {
         opacity: 1;
-        transform: scale(1) translateZ(0);
+        transform: translateY(0);
     }
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    will-change: opacity, transform;
-}
-
-// ─── Spinner ───
-.loader {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-// ─── Mobile & Tablet Comprehensive Responsive Breakpoints ───
-@media (max-width: 992px) {
-    .search-layout {
-        grid-template-columns: 1fr !important;
-    }
-
-    .filter-panel {
-        position: static !important;
-        width: 100% !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-layout {
-        flex-direction: column !important;
-    }
-
-    .main-content {
-        width: 100% !important;
-    }
-
-    .content-body {
-        padding: 16px 12px !important;
-    }
-
-    .resource-section,
-    .activity-section,
-    .filter-panel,
-    .upload-container,
-    .glass-panel {
-        padding: 16px !important;
-        border-radius: 14px !important;
-    }
-
-    // Scrollable tables on mobile & tablet
-    .resource-section {
-        overflow-x: auto;
-
-        .resource-table {
-            min-width: 540px;
-        }
-    }
-
-    // Floating AI FAB on mobile
-    .ai-fab-btn {
-        bottom: 20px !important;
-        right: 16px !important;
-        padding: 10px 18px !important;
-        font-size: 13px !important;
-
-        .fab-label {
-            display: inline-block !important;
-        }
-    }
-
-    .ai-modal-content {
-        width: 94vw !important;
-        height: 85vh !important;
-        max-width: 100% !important;
-    }
-
-    .large-search {
-        flex-direction: column !important;
-
-        input {
-            width: 100% !important;
-        }
-
-        .btn-primary {
-            width: 100% !important;
-        }
-    }
-}
-
-@media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
-    }
-
-    .stat-card {
-        padding: 12px 14px !important;
-        gap: 10px !important;
-
-        .stat-icon {
-            width: 36px !important;
-            height: 36px !important;
-
-            svg {
-                width: 18px !important;
-                height: 18px !important;
-            }
-        }
-
-        .stat-value {
-            font-size: 18px !important;
-        }
-
-        .stat-label {
-            font-size: 10px !important;
-        }
-    }
-
-    .profile-header {
-        padding: 16px !important;
-
-        .profile-main {
-            flex-direction: column !important;
-            text-align: center !important;
-            align-items: center !important;
-
-            .profile-text h2 {
-                font-size: 18px !important;
-            }
-
-            .title-row {
-                justify-content: center !important;
-            }
-
-            .scholar-xp-bar {
-                max-width: 100% !important;
-                width: 100% !important;
-            }
-        }
-
-        .btn-primary {
-            width: 100% !important;
-        }
-    }
-
-    .search-hero {
-        padding: 24px 16px !important;
-
-        h1 {
-            font-size: 22px !important;
-        }
-
-        p {
-            font-size: 13px !important;
-        }
-    }
+    animation: fadeIn 0.6s ease-out forwards;
 }

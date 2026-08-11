@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { UserService, UserProfile } from '../../../services/user.service';
-import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-navbar',
@@ -15,40 +14,20 @@ import { SidebarService } from '../../../services/sidebar.service';
 })
 export class NavbarComponent {
     userProfile: UserProfile;
-    isAuthenticated = false;
     isLightTheme = false;
     showNotifications = false;
     searchValue = '';
     showAccountMenu = false;
 
-    constructor(
-        private userService: UserService,
-        private sidebarService: SidebarService,
-        private router: Router
-    ) {
+    constructor(private userService: UserService, private router: Router) {
         this.userProfile = this.userService.getProfile();
         this.userService.userProfile$.subscribe((profile: UserProfile) => {
             this.userProfile = profile;
-        });
-        this.userService.authState$.subscribe((auth: boolean) => {
-            this.isAuthenticated = auth;
         });
 
         if (typeof window !== 'undefined') {
             this.isLightTheme = localStorage.getItem('theme') === 'light';
             this.applyTheme();
-        }
-    }
-
-    toggleMobileMenu() {
-        this.sidebarService.toggleMobile();
-    }
-
-    async loginWithGoogle() {
-        try {
-            await this.userService.loginWithGoogle();
-        } catch (error: any) {
-            console.error('Google sign-in error:', error?.message);
         }
     }
 
@@ -89,16 +68,16 @@ export class NavbarComponent {
         this.showAccountMenu = !this.showAccountMenu;
     }
 
-    async changeAccount() {
-        await this.userService.logout();
+    changeAccount() {
+        this.userService.logout();
         this.showAccountMenu = false;
         this.router.navigate(['/login']);
     }
 
-    async logout() {
-        await this.userService.logout();
+    logout() {
+        this.userService.logout();
         this.showAccountMenu = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/login']);
     }
 
     @HostListener('document:click')

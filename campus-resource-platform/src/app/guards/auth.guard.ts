@@ -3,7 +3,14 @@ import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 
 export const authGuard: CanActivateFn = () => {
-    // Platform navigation is public & guest accessible
-    return true;
+    const userService = inject(UserService);
+    const router = inject(Router);
+
+    if (userService.isAuthenticated()) {
+        return true;
+    }
+
+    router.navigate(['/login']);
+    return false;
 };
 

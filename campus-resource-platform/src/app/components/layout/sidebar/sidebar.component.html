@@ -1,41 +1,26 @@
-<!-- Mobile Backdrop -->
-<div class="sidebar-backdrop animate-fade-in" *ngIf="isMobileOpen" (click)="closeMobile()"></div>
-
-<div class="sidebar" [class.collapsed]="isCollapsed" [class.mobile-open]="isMobileOpen">
+<div class="sidebar" [class.collapsed]="isCollapsed">
     <div class="sidebar-header">
         <div class="logo">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-            </svg>
-            <span *ngIf="!isCollapsed">StudyArchive</span>
+            <i data-lucide="graduation-cap"></i>
+            <span *ngIf="!isCollapsed">CampusShare</span>
         </div>
-
-        <button class="mobile-close-btn" (click)="closeMobile()" title="Close Menu">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-
-        <button class="toggle-btn desktop-only" (click)="toggleSidebar()">
-            <svg *ngIf="!isCollapsed" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            <svg *ngIf="isCollapsed" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i [attr.data-lucide]="isCollapsed ? 'chevron-right' : 'chevron-left'"></i>
         </button>
     </div>
 
     <div class="menu">
         <a *ngFor="let item of menuItems" [routerLink]="item.path" routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }" class="menu-item" (click)="closeMobile()">
-            <svg *ngIf="item.svgIcon === 'dashboard'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-            <svg *ngIf="item.svgIcon === 'upload'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-            <svg *ngIf="item.svgIcon === 'folder'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
-            <svg *ngIf="item.svgIcon === 'search'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }" class="menu-item">
+            <i [attr.data-lucide]="item.icon"></i>
             <span *ngIf="!isCollapsed">{{item.label}}</span>
         </a>
     </div>
 
     <div class="sidebar-footer">
         <button type="button" class="menu-item logout" (click)="logout()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-            <span *ngIf="!isCollapsed">Sign Out</span>
+            <i data-lucide="log-out"></i>
+            <span *ngIf="!isCollapsed">Logout</span>
         </button>
     </div>
 </div>
