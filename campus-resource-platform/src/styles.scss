@@ -47,7 +47,7 @@ body::after {
 }
 
 // ─────────────────────────────────────────────────────────────
-// ☀️ LIGHT THEME UN-ENCAPSULATED OVERRIDES
+// ☀️ LIGHT THEME UN-ENCAPSULATED OVERRIDES (EVERY PAGE & COMPONENT)
 // ─────────────────────────────────────────────────────────────
 body.light-theme {
     color-scheme: light !important;
@@ -58,10 +58,15 @@ body.light-theme {
         display: none !important;
     }
 
-    // Main layout containers
+    // All main page containers across all routes
     .dashboard-layout,
     .main-content,
-    .content-body {
+    .content-body,
+    .upload-page,
+    .my-resources-page,
+    .search-page,
+    .login-container,
+    .signup-container {
         background: #f8fafc !important;
         color: #0f172a !important;
     }
@@ -85,14 +90,14 @@ body.light-theme {
         .menu-item {
             color: #475569 !important;
 
-            svg {
+            svg, i {
                 color: #64748b !important;
             }
 
             &:hover {
                 background: #f1f5f9 !important;
                 color: #4f46e5 !important;
-                svg { color: #4f46e5 !important; }
+                svg, i { color: #4f46e5 !important; }
             }
 
             &.active {
@@ -100,7 +105,7 @@ body.light-theme {
                 color: #4f46e5 !important;
                 border: 1px solid #c7d2fe !important;
                 box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12) !important;
-                svg { color: #4f46e5 !important; }
+                svg, i { color: #4f46e5 !important; }
             }
 
             &.logout {
@@ -127,9 +132,10 @@ body.light-theme {
             background: #f8fafc !important;
             border: 1px solid #cbd5e1 !important;
 
-            svg { color: #64748b !important; }
+            svg, i { color: #64748b !important; }
             input {
                 color: #0f172a !important;
+                background: transparent !important;
                 &::placeholder { color: #94a3b8 !important; }
             }
             .search-hint {
@@ -166,35 +172,112 @@ body.light-theme {
         }
     }
 
-    // All Cards & Glass Panels
+    // All Cards, Panels, Containers across all pages
     .glass-panel,
     .profile-header,
     .stat-card,
     .resource-section,
     .activity-section,
-    .table-container,
     .upload-container,
     .filter-panel,
+    .search-hero,
+    .table-container,
     .login-card,
+    .signup-card,
     .modal-content,
-    .document-preview-box {
+    .document-preview-box,
+    .resource-card {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02) !important;
         color: #0f172a !important;
     }
 
-    // Headlines & Titles
+    // Headers & Labels
     h1, h2, h3, h4, h5, h6,
     .user-name,
     .profile-text h2,
     .section-header h3,
-    .preview-title-wrap h3 {
+    .header h1,
+    .preview-title-wrap h3,
+    .search-hero h1 {
         color: #0f172a !important;
     }
 
-    p, .profile-text p, .preview-abstract, small {
+    p, .profile-text p, .header p, .search-hero p, .preview-abstract, small {
         color: #475569 !important;
+    }
+
+    // Form inputs, selects, textareas, and labels (Upload, Search, Profile, Edit)
+    label,
+    .form-group label,
+    .filter-group label {
+        color: #334155 !important;
+        font-weight: 600 !important;
+    }
+
+    input,
+    select,
+    textarea,
+    .large-search input,
+    .form-group input,
+    .form-group select,
+    .filter-group select {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+
+        &:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15) !important;
+        }
+
+        &::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        option {
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }
+    }
+
+    // Dropzone on Upload Page
+    .dropzone {
+        background: #f8fafc !important;
+        border: 2px dashed #cbd5e1 !important;
+        color: #0f172a !important;
+
+        &:hover {
+            border-color: #4f46e5 !important;
+            background: #f1f5f9 !important;
+        }
+
+        .drop-text h3 {
+            color: #0f172a !important;
+        }
+
+        .drop-text p {
+            color: #64748b !important;
+        }
+    }
+
+    // View Toggles (Grid vs List on Search Page)
+    .view-toggles {
+        background: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
+
+        button {
+            color: #64748b !important;
+            &.active {
+                background: #ffffff !important;
+                color: #4f46e5 !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+            }
+            &:hover:not(.active) {
+                color: #0f172a !important;
+            }
+        }
     }
 
     // Stat Cards
@@ -203,7 +286,7 @@ body.light-theme {
         .stat-value { color: #0f172a !important; font-weight: 800 !important; }
     }
 
-    // Recent Activity Section (CRITICAL FIX FOR INVISIBLE USERNAMES)
+    // Recent Activity Section
     .activity-section {
         .activity-item {
             .activity-dot {
@@ -229,8 +312,9 @@ body.light-theme {
         }
     }
 
-    // Recent Resources Table
-    .resource-table {
+    // Tables (Overview & My Resources)
+    .resource-table,
+    .premium-table {
         th {
             background: #f8fafc !important;
             color: #64748b !important;
@@ -246,6 +330,7 @@ body.light-theme {
             background: #f8fafc !important;
         }
 
+        .res-title,
         .resource-link-title {
             color: #4f46e5 !important;
             font-weight: 700 !important;
@@ -255,6 +340,7 @@ body.light-theme {
             }
         }
 
+        .res-subject,
         .subject-chip {
             background: #eef2ff !important;
             color: #4338ca !important;
@@ -275,7 +361,8 @@ body.light-theme {
                 color: #4f46e5 !important;
                 border-color: #818cf8 !important;
             }
-            &.danger:hover {
+            &.danger:hover,
+            &.delete:hover {
                 background: #fef2f2 !important;
                 color: #ef4444 !important;
                 border-color: #fca5a5 !important;
