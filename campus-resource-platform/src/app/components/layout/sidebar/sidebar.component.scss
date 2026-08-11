@@ -1,5 +1,19 @@
 @use 'variables' as *;
 
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 12, 26, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 190;
+    animation: fadeIn 0.25s ease-out;
+
+    @media (max-width: 992px) {
+        display: block;
+    }
+}
+
 .sidebar {
     height: 100vh;
     width: 260px;
@@ -10,9 +24,24 @@
     @include smooth-transition;
     overflow: hidden;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.28);
+    z-index: 200;
 
     &.collapsed {
         width: 88px;
+    }
+
+    @media (max-width: 992px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 280px !important;
+        transform: translateX(-100%);
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.6);
+
+        &.mobile-open {
+            transform: translateX(0);
+        }
     }
 
     .sidebar-header {
@@ -28,7 +57,7 @@
             color: #fff;
             font-weight: 700;
 
-            i {
+            i, svg {
                 width: 30px;
                 height: 30px;
                 color: $primary-blue;
@@ -46,15 +75,33 @@
             border: none;
             color: $text-muted;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 8px;
             @include flex-center;
             @include smooth-transition;
 
+            i, svg {
+                width: 20px;
+                height: 20px;
+            }
+
             &:hover {
                 color: $text-main;
                 background: rgba(255, 255, 255, 0.08);
+            }
+        }
+
+        .desktop-only {
+            @media (max-width: 992px) {
+                display: none;
+            }
+        }
+
+        .mobile-only {
+            display: none;
+            @media (max-width: 992px) {
+                display: flex;
             }
         }
     }
@@ -69,23 +116,25 @@
 
     .menu-item {
         width: 100%;
-        padding: 12px 14px;
+        padding: 14px 16px;
         border: none;
         background: transparent;
         border-radius: 12px;
         color: #94a3b8;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
         text-decoration: none;
         text-align: left;
         cursor: pointer;
         position: relative;
+        font-size: 15px;
+        font-weight: 500;
         @include smooth-transition;
 
-        i {
-            width: 18px;
-            height: 18px;
+        i, svg {
+            width: 20px;
+            height: 20px;
         }
 
         &:hover {
@@ -106,7 +155,7 @@
                 top: 50%;
                 transform: translateY(-50%);
                 width: 3px;
-                height: 20px;
+                height: 22px;
                 border-radius: 0 4px 4px 0;
                 background: $primary-blue;
                 box-shadow: 0 0 10px rgba(109, 124, 255, 0.8);

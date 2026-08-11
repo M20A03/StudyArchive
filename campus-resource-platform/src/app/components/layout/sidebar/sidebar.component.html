@@ -1,26 +1,32 @@
-<div class="sidebar" [class.collapsed]="isCollapsed">
+<!-- Android Mobile Drawer Backdrop Overlay -->
+<div class="sidebar-backdrop" *ngIf="isMobileOpen" (click)="closeMobile()"></div>
+
+<div class="sidebar" [class.collapsed]="isCollapsed" [class.mobile-open]="isMobileOpen">
     <div class="sidebar-header">
         <div class="logo">
             <i data-lucide="graduation-cap"></i>
-            <span *ngIf="!isCollapsed">CampusShare</span>
+            <span *ngIf="!isCollapsed || isMobileOpen">StudyArchive</span>
         </div>
-        <button class="toggle-btn" (click)="toggleSidebar()">
+        <button class="toggle-btn desktop-only" (click)="toggleSidebar()">
             <i [attr.data-lucide]="isCollapsed ? 'chevron-right' : 'chevron-left'"></i>
+        </button>
+        <button class="toggle-btn mobile-only" (click)="closeMobile()">
+            <i data-lucide="x"></i>
         </button>
     </div>
 
     <div class="menu">
         <a *ngFor="let item of menuItems" [routerLink]="item.path" routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }" class="menu-item">
+            [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }" class="menu-item" (click)="closeMobile()">
             <i [attr.data-lucide]="item.icon"></i>
-            <span *ngIf="!isCollapsed">{{item.label}}</span>
+            <span *ngIf="!isCollapsed || isMobileOpen">{{item.label}}</span>
         </a>
     </div>
 
     <div class="sidebar-footer">
         <button type="button" class="menu-item logout" (click)="logout()">
             <i data-lucide="log-out"></i>
-            <span *ngIf="!isCollapsed">Logout</span>
+            <span *ngIf="!isCollapsed || isMobileOpen">Logout</span>
         </button>
     </div>
 </div>
