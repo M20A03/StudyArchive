@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { UserService, UserProfile } from '../../../services/user.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-navbar',
@@ -15,14 +16,23 @@ import { UserService, UserProfile } from '../../../services/user.service';
 export class NavbarComponent {
     userProfile: UserProfile;
     isLightTheme = false;
+    isLoggedIn = false;
     showNotifications = false;
     searchValue = '';
     showAccountMenu = false;
 
+    private sidebarService = inject(SidebarService);
+
     constructor(private userService: UserService, private router: Router) {
         this.userProfile = this.userService.getProfile();
+        this.isLoggedIn = this.userService.isAuthenticated();
+
         this.userService.userProfile$.subscribe((profile: UserProfile) => {
             this.userProfile = profile;
+        });
+
+        this.userService.authState$.subscribe((authenticated: boolean) => {
+            this.isLoggedIn = authenticated;
         });
 
         if (typeof window !== 'undefined') {
@@ -47,6 +57,10 @@ export class NavbarComponent {
         this.applyTheme();
     }
 
+    toggleMobileSidebar() {
+        this.sidebarService.toggleMobile();
+    }
+
     toggleNotifications() {
         this.showNotifications = !this.showNotifications;
     }
@@ -68,16 +82,14 @@ export class NavbarComponent {
         this.showAccountMenu = !this.showAccountMenu;
     }
 
-    changeAccount() {
-        this.userService.logout();
-        this.showAccountMenu = false;
+    goToLogin() {
         this.router.navigate(['/login']);
     }
 
     logout() {
         this.userService.logout();
         this.showAccountMenu = false;
-        this.router.navigate(['/login']);
+        this.router.navigate(['/dashboard']);
     }
 
     @HostListener('document:click')
