@@ -27,12 +27,13 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [authGuard],
+        // Open to all visitors at opening / starting of website
         children: [
             { path: '', component: OverviewComponent },
-            { path: 'upload', component: UploadComponent },
-            { path: 'my-resources', component: MyResourcesComponent },
-            { path: 'search', component: SearchComponent }
+            { path: 'search', component: SearchComponent },
+            // Protected routes that require sign-in
+            { path: 'upload', component: UploadComponent, canActivate: [authGuard] },
+            { path: 'my-resources', component: MyResourcesComponent, canActivate: [authGuard] }
         ]
     },
     {

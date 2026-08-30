@@ -213,4 +213,15 @@
             border-color: var(--color-error);
         }
     }
+
+    .sign-in-link {
+        color: var(--brand-secondary);
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+
+        &:hover {
+            background: var(--brand-primary);
+            color: #ffffff;
+        }
+    }
 }

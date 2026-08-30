@@ -1,6 +1,6 @@
 <nav class="navbar glass-panel" aria-label="Main Top Navigation">
     <div class="nav-left">
-        <!-- Mobile Drawer Toggle Button (44x44px minimum touch target) -->
+        <!-- Mobile Drawer Toggle Button -->
         <button class="mobile-menu-btn" type="button" (click)="onMobileMenuClick()" aria-label="Open sidebar menu">
             <i data-lucide="menu"></i>
         </button>
@@ -28,8 +28,8 @@
             <i [attr.data-lucide]="(themeService.isDark$ | async) ? 'sun' : 'moon'"></i>
         </button>
 
-        <!-- Notifications Dropdown -->
-        <div class="notifications-wrap">
+        <!-- Notifications Dropdown (When Logged In) -->
+        <div class="notifications-wrap" *ngIf="isAuthenticated">
             <button class="nav-icon-btn" 
                     type="button" 
                     (click)="toggleNotifications($event)" 
@@ -62,8 +62,8 @@
             </div>
         </div>
 
-        <!-- User Profile Dropdown Menu -->
-        <div class="account-menu-wrap">
+        <!-- User Profile Dropdown Menu (When Logged In) -->
+        <div class="account-menu-wrap" *ngIf="isAuthenticated">
             <button class="profile-dropdown" 
                     type="button" 
                     (click)="toggleAccountMenu($event)"
@@ -127,6 +127,17 @@
                     <span>Sign Out</span>
                 </button>
             </div>
+        </div>
+
+        <!-- Guest Actions (When Not Logged In) -->
+        <div class="guest-auth-actions" *ngIf="!isAuthenticated">
+            <a routerLink="/login" class="btn-secondary nav-login-btn">
+                <i data-lucide="log-in"></i>
+                <span>Sign In</span>
+            </a>
+            <a routerLink="/signup" class="btn-primary nav-signup-btn">
+                <span>Join</span>
+            </a>
         </div>
     </div>
 </nav>

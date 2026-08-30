@@ -18,9 +18,10 @@ export class OverviewComponent {
     private resourceService = inject(ResourceService);
 
     userProfile: UserProfile = this.userService.getProfile();
+    isAuthenticated = false;
 
     stats = [
-        { label: 'Total Uploads', value: '12', icon: 'upload-cloud', color: '#6366f1' },
+        { label: 'Total Uploads', value: '124', icon: 'upload-cloud', color: '#6366f1' },
         { label: 'Total Downloads', value: '1.2k', icon: 'download-cloud', color: '#38bdf8' },
         { label: 'Total Reviews', value: '85', icon: 'star', color: '#10b981' },
         { label: 'Avg Rating', value: '4.9', icon: 'zap', color: '#f59e0b' }
@@ -46,6 +47,10 @@ export class OverviewComponent {
     constructor() {
         this.userService.userProfile$.subscribe((profile: UserProfile) => {
             this.userProfile = profile;
+        });
+
+        this.userService.authState$.subscribe((auth) => {
+            this.isAuthenticated = auth;
         });
 
         this.resourceService.resources$.subscribe((resList) => {

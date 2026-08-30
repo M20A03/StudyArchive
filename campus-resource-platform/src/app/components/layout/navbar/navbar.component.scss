@@ -119,6 +119,28 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
+
+    .guest-auth-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+
+        .nav-login-btn,
+        .nav-signup-btn {
+            text-decoration: none;
+            padding: 8px 16px;
+            font-size: 13px !important;
+            min-height: 38px;
+            border-radius: var(--radius-full);
+        }
+
+        .nav-signup-btn {
+            display: none;
+            @media (min-width: 600px) {
+                display: inline-flex;
+            }
+        }
+    }
 }
 
 .nav-icon-btn {

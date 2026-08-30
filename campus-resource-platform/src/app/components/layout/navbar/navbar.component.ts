@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostListener, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { ThemeService } from '../../../core/theme.service';
@@ -9,7 +9,7 @@ import { UserProfile, ThemeMode } from '../../../core/models';
 @Component({
     selector: 'app-navbar',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, RouterModule],
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.scss'
 })
@@ -21,6 +21,7 @@ export class NavbarComponent {
     @Output() toggleMobileMenu = new EventEmitter<void>();
 
     userProfile: UserProfile = this.userService.getProfile();
+    isAuthenticated = false;
     showNotifications = false;
     searchValue = '';
     showAccountMenu = false;
@@ -28,6 +29,10 @@ export class NavbarComponent {
     constructor() {
         this.userService.userProfile$.subscribe((profile: UserProfile) => {
             this.userProfile = profile;
+        });
+
+        this.userService.authState$.subscribe((auth) => {
+            this.isAuthenticated = auth;
         });
     }
 
@@ -70,7 +75,7 @@ export class NavbarComponent {
     logout() {
         this.showAccountMenu = false;
         this.userService.logout();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/dashboard']);
     }
 
     @HostListener('document:click')

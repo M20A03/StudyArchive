@@ -1,7 +1,7 @@
 <!-- Mobile Backdrop -->
 <div class="sidebar-backdrop" 
      [class.open]="isMobileOpen" 
-     (click)="onBackdropClick()"
+     (click)="onBackdropClick()" 
      aria-hidden="true"></div>
 
 <!-- Sidebar Container -->
@@ -46,12 +46,22 @@
     </nav>
 
     <div class="sidebar-footer">
-        <button type="button" 
+        <button *ngIf="isAuthenticated" 
+                type="button" 
                 class="menu-item logout" 
                 (click)="logout()" 
                 title="Sign out of your account">
             <i data-lucide="log-out" class="menu-icon"></i>
             <span *ngIf="!isCollapsed" class="menu-label">Logout</span>
         </button>
+
+        <a *ngIf="!isAuthenticated" 
+           routerLink="/login" 
+           (click)="onNavClick()"
+           class="menu-item sign-in-link" 
+           title="Sign in to your account">
+            <i data-lucide="log-in" class="menu-icon"></i>
+            <span *ngIf="!isCollapsed" class="menu-label">Sign In</span>
+        </a>
     </div>
 </aside>

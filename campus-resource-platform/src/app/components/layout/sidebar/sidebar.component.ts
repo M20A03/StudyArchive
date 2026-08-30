@@ -18,13 +18,20 @@ export class SidebarComponent {
     @Output() closeMobileDrawer = new EventEmitter<void>();
 
     isCollapsed = false;
+    isAuthenticated = false;
 
     menuItems = [
         { icon: 'layout-dashboard', label: 'Dashboard', path: '/dashboard' },
-        { icon: 'upload-cloud', label: 'Upload Resource', path: '/dashboard/upload' },
-        { icon: 'folder', label: 'My Resources', path: '/dashboard/my-resources' },
         { icon: 'search', label: 'Search Resources', path: '/dashboard/search' },
+        { icon: 'upload-cloud', label: 'Upload Resource', path: '/dashboard/upload' },
+        { icon: 'folder', label: 'My Resources', path: '/dashboard/my-resources' }
     ];
+
+    constructor() {
+        this.userService.authState$.subscribe((auth) => {
+            this.isAuthenticated = auth;
+        });
+    }
 
     toggleSidebar() {
         this.isCollapsed = !this.isCollapsed;
@@ -43,7 +50,7 @@ export class SidebarComponent {
     logout() {
         this.onNavClick();
         this.userService.logout();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/dashboard']);
     }
 
     @HostListener('document:keydown.escape')
