@@ -80,7 +80,7 @@ export async function resilientFetch<T = unknown>(
                 }
 
                 throw new FetchError(
-                    (errorData as Record<string, string>)?.message || `HTTP ${response.status}: ${response.statusText}`,
+                    (errorData as Record<string, string>)?.[`message`] || `HTTP ${response.status}: ${response.statusText}`,
                     response.status,
                     errorData
                 );
