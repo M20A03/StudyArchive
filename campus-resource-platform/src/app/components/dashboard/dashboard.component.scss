@@ -1,0 +1,32 @@
+@use 'tokens' as *;
+@use 'variables' as *;
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    position: relative;
+}
+
+.main-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // Prevents flex child from overflowing
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: transparent;
+}
+
+.content-body {
+    flex: 1;
+    padding-top: var(--space-6);
+    padding-bottom: calc(var(--space-12) + env(safe-area-inset-bottom, 0px));
+    width: 100%;
+    overflow-x: clip;
+
+    @media (min-width: 1024px) {
+        padding-top: var(--space-8);
+    }
+}

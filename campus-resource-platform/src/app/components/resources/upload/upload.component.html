@@ -1,0 +1,144 @@
+<div class="upload-page animate-fade-in">
+    <div class="header">
+        <h1>Upload Academic Resource</h1>
+        <p class="prose-block">Contribute course notes, past exams, or study guides to help fellow campus students.</p>
+    </div>
+
+    <div class="upload-card glass-panel">
+        <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+            <!-- File Drag and Drop Zone -->
+            <div class="dropzone" 
+                 [class.has-file]="selectedFile"
+                 [class.is-dragging]="isDragging"
+                 (click)="fileInput.click()"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)"
+                 tabindex="0"
+                 (keydown.enter)="fileInput.click()"
+                 (keydown.space)="fileInput.click()"
+                 role="button"
+                 aria-label="Click or drag file to upload">
+                <input type="file" 
+                       #fileInput 
+                       (change)="onFileSelected($event)" 
+                       accept=".pdf,.docx,.doc,.pptx,.png,.jpg"
+                       hidden>
+                
+                <div class="drop-icon-wrap" *ngIf="!selectedFile">
+                    <i data-lucide="upload-cloud" class="drop-icon"></i>
+                </div>
+                <div class="drop-icon-wrap success" *ngIf="selectedFile">
+                    <i data-lucide="file-check" class="drop-icon"></i>
+                </div>
+
+                <div class="drop-text" *ngIf="!selectedFile">
+                    <h3>Click or drag study material here</h3>
+                    <p>PDF, DOCX, PPTX, Images (Max 25MB)</p>
+                </div>
+
+                <div class="drop-text" *ngIf="selectedFile">
+                    <h3>{{selectedFile.name}}</h3>
+                    <p>{{(selectedFile.size / 1024 / 1024).toFixed(2)}} MB • Ready for publication</p>
+                </div>
+            </div>
+
+            <!-- Metadata Form Grid -->
+            <div class="form-grid">
+                <div class="form-group span-2">
+                    <label for="title">Resource Title <span class="required">*</span></label>
+                    <input type="text" 
+                           id="title" 
+                           formControlName="title" 
+                           placeholder="e.g. Data Structures & Algorithms Midterm Notes">
+                    <small *ngIf="uploadForm.get('title')?.touched && uploadForm.get('title')?.errors?.['required']" class="input-error">
+                        Title is required.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject <span class="required">*</span></label>
+                    <select id="subject" formControlName="subject">
+                        <option value="" disabled selected>Select Subject</option>
+                        <option>Computer Science</option>
+                        <option>Physics</option>
+                        <option>Mathematics</option>
+                        <option>Economics</option>
+                        <option>Chemistry</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="semester">Semester <span class="required">*</span></label>
+                    <select id="semester" formControlName="semester">
+                        <option value="" disabled selected>Select Semester</option>
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>3rd Semester</option>
+                        <option>4th Semester</option>
+                        <option>5th Semester</option>
+                        <option>6th Semester</option>
+                        <option>7th Semester</option>
+                        <option>8th Semester</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="branch">Branch / Major <span class="required">*</span></label>
+                    <select id="branch" formControlName="branch">
+                        <option value="" disabled selected>Select Branch</option>
+                        <option>B.Tech CS</option>
+                        <option>B.Sc Physics</option>
+                        <option>BA Economics</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Visibility Setting</label>
+                    <div class="toggle-group" role="radiogroup" aria-label="Privacy level">
+                        <label class="toggle-option">
+                            <input type="radio" formControlName="privacy" value="Public">
+                            <span>Public (Campus-wide)</span>
+                        </label>
+                        <label class="toggle-option">
+                            <input type="radio" formControlName="privacy" value="Private">
+                            <span>Private (Only Me)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group span-2">
+                    <label for="tags">Keywords & Tags (Comma separated)</label>
+                    <input type="text" 
+                           id="tags" 
+                           formControlName="tags" 
+                           placeholder="e.g. algorithms, trees, sorting, exams">
+                </div>
+            </div>
+
+            <!-- Upload Progress Bar -->
+            <div class="upload-progress-wrapper" *ngIf="isUploading" aria-live="polite">
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" [style.width.%]="uploadProgress"></div>
+                </div>
+                <span class="progress-status">Uploading material... {{uploadProgress}}%</span>
+            </div>
+
+            <div *ngIf="uploadError" class="error-banner" role="alert">
+                <i data-lucide="alert-circle"></i>
+                <span>{{uploadError}}</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" (click)="cancelUpload()" [disabled]="isUploading">
+                    Cancel
+                </button>
+                <button type="submit" class="btn-primary" [disabled]="uploadForm.invalid || !selectedFile || isUploading">
+                    <i data-lucide="upload" *ngIf="!isUploading"></i>
+                    <span *ngIf="!isUploading">Publish Resource</span>
+                    <span *ngIf="isUploading">Uploading...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

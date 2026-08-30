@@ -1,0 +1,70 @@
+<div class="auth-page">
+    <div class="auth-card glass-panel animate-fade-in">
+        <div class="brand-badge">
+            <i data-lucide="graduation-cap"></i>
+            <span>CampusShare</span>
+        </div>
+
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Sign in to access your course archive, notes, and shared materials.</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="form-group">
+                <label for="login-username">Username or Email</label>
+                <div class="input-wrapper">
+                    <i data-lucide="user" class="input-icon"></i>
+                    <input type="text" 
+                           id="login-username" 
+                           formControlName="username" 
+                           placeholder="e.g. alex.cs or student@university.edu"
+                           autocomplete="username"
+                           autocapitalize="none"
+                           [class.has-error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                </div>
+                <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="field-error">
+                    Please enter a valid username or email (min 3 characters).
+                </small>
+            </div>
+
+            <div class="form-group">
+                <div class="label-row">
+                    <label for="login-password">Password</label>
+                    <a href="#" class="forgot-link" (click)="showLostPasswordHelp($event)">Forgot password?</a>
+                </div>
+                <div class="input-wrapper">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    <input [type]="showPassword ? 'text' : 'password'" 
+                           id="login-password" 
+                           formControlName="password" 
+                           placeholder="••••••••"
+                           autocomplete="current-password"
+                           [class.has-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    <button type="button" class="eye-toggle-btn" (click)="togglePasswordVisibility()" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                        <i [attr.data-lucide]="showPassword ? 'eye-off' : 'eye'"></i>
+                    </button>
+                </div>
+                <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="field-error">
+                    Password must be at least 6 characters.
+                </small>
+            </div>
+
+            <button type="submit" class="btn-primary auth-btn" [disabled]="loginForm.invalid || isLoading">
+                <span *ngIf="!isLoading">Log In to Account</span>
+                <span *ngIf="isLoading" class="btn-loader-text">Authenticating...</span>
+            </button>
+        </form>
+
+        <div class="auth-divider">
+            <span>OR</span>
+        </div>
+
+        <div class="auth-footer">
+            <p>New to CampusShare? <a routerLink="/signup" class="signup-link">Create an Account</a></p>
+            <div class="footer-links">
+                <a href="#" (click)="openUserManual($event)">Documentation</a>
+                <span>•</span>
+                <button type="button" class="link-btn" (click)="showCookiesNotice()">Privacy & Sessions</button>
+            </div>
+        </div>
+    </div>
+</div>

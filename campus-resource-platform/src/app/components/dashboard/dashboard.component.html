@@ -1,0 +1,14 @@
+<div class="dashboard-layout">
+    <app-sidebar [isMobileOpen]="isMobileDrawerOpen" 
+                 (closeMobileDrawer)="closeMobileDrawer()"></app-sidebar>
+
+    <div class="main-content-wrapper">
+        <app-navbar (toggleMobileMenu)="openMobileDrawer()"></app-navbar>
+
+        <main class="content-body" id="main-content">
+            <div class="app-container">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </div>
+</div>

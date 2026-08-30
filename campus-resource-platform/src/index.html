@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CampusShare - Academic Resource Hub</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Collaborative academic resource sharing platform for university students. Discover notes, syllabus guides, exam papers, and study archives.">
+  
+  <!-- Zero-FOUC Theme Initialization Script (Executed synchronously before render) -->
+  <script>
+    (function() {
+      try {
+        var mode = localStorage.getItem('app_theme_mode') || localStorage.getItem('theme') || 'system';
+        var isDark = true;
+        if (mode === 'light') {
+          isDark = false;
+        } else if (mode === 'dark') {
+          isDark = true;
+        } else if (window.matchMedia) {
+          isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        var root = document.documentElement;
+        if (isDark) {
+          root.classList.add('dark-theme');
+          root.classList.remove('light-theme');
+          root.setAttribute('data-theme', 'dark');
+        } else {
+          root.classList.add('light-theme');
+          root.classList.remove('dark-theme');
+          root.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {
+        console.warn('Theme init exception:', e);
+      }
+    })();
+  </script>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

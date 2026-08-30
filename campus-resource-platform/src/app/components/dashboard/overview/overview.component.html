@@ -1,0 +1,153 @@
+<div class="overview-page animate-fade-in">
+    <!-- Profile Welcome Hero Banner -->
+    <header class="profile-hero glass-panel">
+        <div class="profile-main">
+            <img [src]="'https://ui-avatars.com/api/?name=' + (userProfile.name || 'Student') + '&background=6366f1&color=fff&size=128'"
+                 [alt]="userProfile.name" 
+                 class="profile-img"
+                 width="72"
+                 height="72">
+            <div class="profile-text">
+                <h2>Welcome back, {{userProfile.name}}!</h2>
+                <p class="prose-block">{{userProfile.university}} • {{userProfile.department}} • {{userProfile.semester}}</p>
+            </div>
+        </div>
+        <button class="btn-secondary" type="button" (click)="openEditModal()">
+            <i data-lucide="edit-3"></i>
+            <span>Edit Profile</span>
+        </button>
+    </header>
+
+    <!-- Edit Profile Modal Dialog (Accessible) -->
+    <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()" role="dialog" aria-modal="true" aria-labelledby="edit-profile-title">
+        <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="edit-profile-title">Edit Profile Information</h3>
+                <button class="close-btn" type="button" (click)="closeEditModal()" aria-label="Close dialog">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-name">Full Name</label>
+                    <input type="text" id="edit-name" [(ngModel)]="editForm.name" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="edit-university">University / College</label>
+                    <input type="text" id="edit-university" [(ngModel)]="editForm.university" placeholder="e.g. Stanford University">
+                </div>
+                <div class="form-group">
+                    <label for="edit-department">Department / Branch</label>
+                    <input type="text" id="edit-department" [(ngModel)]="editForm.department" placeholder="e.g. Computer Science">
+                </div>
+                <div class="form-group">
+                    <label for="edit-semester">Current Semester</label>
+                    <select id="edit-semester" [(ngModel)]="editForm.semester">
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>3rd Semester</option>
+                        <option>4th Semester</option>
+                        <option>5th Semester</option>
+                        <option>6th Semester</option>
+                        <option>7th Semester</option>
+                        <option>8th Semester</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" type="button" (click)="closeEditModal()">Cancel</button>
+                <button class="btn-primary" type="button" [disabled]="isSaving || !editForm.name.trim()" (click)="saveProfile()">
+                    <span *ngIf="!isSaving">Save Changes</span>
+                    <span *ngIf="isSaving">Saving...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats Grid (Adaptive 1->2->4 cols) -->
+    <section class="stats-grid" aria-label="Key Statistics">
+        <div *ngFor="let stat of stats" class="stat-card glass-panel" [style.border-left-color]="stat.color">
+            <div class="stat-icon" [style.background]="stat.color + '18'">
+                <i [attr.data-lucide]="stat.icon" [style.color]="stat.color"></i>
+            </div>
+            <div class="stat-details">
+                <span class="stat-label">{{stat.label}}</span>
+                <span class="stat-value">{{stat.value}}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main 2-Column Multi-Pane Layout (Folds gracefully to single column on mobile) -->
+    <div class="overview-grid">
+        <!-- Recent Resources Section -->
+        <section class="resource-section glass-panel" aria-label="Recent Resources">
+            <div class="section-header">
+                <h3>Recent Resources</h3>
+                <a routerLink="/dashboard/search" class="btn-link">View All Catalog →</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="resource-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title & Subject</th>
+                            <th scope="col">Visibility</th>
+                            <th scope="col">Downloads</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col" class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let res of recentResources">
+                            <td>
+                                <div class="res-title-box">
+                                    <div class="res-title">{{res.title}}</div>
+                                    <div class="res-subject">{{res.subject}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge" [class.public]="res.privacy === 'Public'" [class.private]="res.privacy === 'Private'">
+                                    {{res.privacy}}
+                                </span>
+                            </td>
+                            <td>{{res.downloads}}</td>
+                            <td>
+                                <div class="rating-box">
+                                    <i data-lucide="star" class="star-icon"></i>
+                                    <span>{{res.rating}}</span>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <a [routerLink]="['/dashboard/search']" [queryParams]="{ resourceId: res.id }" class="btn-icon-sm" title="View details">
+                                    <i data-lucide="external-link"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <aside class="activity-section glass-panel" aria-label="Recent Campus Activity">
+            <div class="section-header">
+                <h3>Campus Activity</h3>
+            </div>
+            <div class="activity-list">
+                <div *ngFor="let act of activities" class="activity-item">
+                    <div class="activity-dot"></div>
+                    <div class="activity-content">
+                        <p><strong>{{act.user}}</strong> {{act.action}} <span>{{act.resource}}</span></p>
+                        <small>{{act.time}}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="quick-action-cta">
+                <a routerLink="/dashboard/upload" class="btn-primary full-width">
+                    <i data-lucide="upload-cloud"></i>
+                    <span>Share a Study Guide</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+</div>

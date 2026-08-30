@@ -1,0 +1,129 @@
+<div class="my-resources-page animate-fade-in">
+    <div class="header">
+        <div class="header-content">
+            <h1>My Uploaded Resources</h1>
+            <p class="prose-block">Manage, edit, or adjust the privacy visibility of your shared study archives.</p>
+        </div>
+        <a routerLink="/dashboard/upload" class="btn-primary">
+            <i data-lucide="plus"></i>
+            <span>Upload New Material</span>
+        </a>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="table-container glass-panel">
+        <div class="table-responsive" *ngIf="myResources.length > 0">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Resource Details</th>
+                        <th scope="col">Upload Date</th>
+                        <th scope="col">Downloads & Rating</th>
+                        <th scope="col">Visibility</th>
+                        <th scope="col" class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of myResources">
+                        <td>
+                            <div class="resource-info">
+                                <div class="resource-icon-wrap">
+                                    <i data-lucide="file-text"></i>
+                                </div>
+                                <div class="resource-text">
+                                    <div class="res-title">{{res.title}}</div>
+                                    <div class="res-subject">{{res.subject}} • {{res.semester || 'General'}}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="res-date">{{res.date}}</td>
+                        <td>
+                            <div class="res-stats">
+                                <span><i data-lucide="download"></i> {{res.downloads}}</span>
+                                <span><i data-lucide="star"></i> {{res.rating}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" 
+                                    class="visibility-toggle" 
+                                    [class.private]="res.privacy === 'Private'"
+                                    (click)="togglePrivacy(res)"
+                                    [title]="'Click to make ' + (res.privacy === 'Public' ? 'Private' : 'Public')">
+                                <i [attr.data-lucide]="res.privacy === 'Public' ? 'eye' : 'eye-off'"></i>
+                                <span>{{res.privacy}}</span>
+                            </button>
+                        </td>
+                        <td class="text-right">
+                            <div class="row-actions">
+                                <button type="button" class="icon-btn edit" (click)="openEditModal(res)" title="Edit title">
+                                    <i data-lucide="edit-3"></i>
+                                </button>
+                                <button type="button" class="icon-btn delete" (click)="promptDelete(res)" title="Delete resource">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="myResources.length === 0">
+            <div class="empty-icon-wrap">
+                <i data-lucide="folder-open"></i>
+            </div>
+            <h3>No resources uploaded yet</h3>
+            <p>Share your class notes, syllabus summaries, or solved problem sets with fellow students.</p>
+            <a routerLink="/dashboard/upload" class="btn-primary">
+                <i data-lucide="upload-cloud"></i>
+                <span>Upload First Resource</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Edit Title Modal Dialog -->
+    <div class="modal-overlay" *ngIf="editingResource" (click)="closeEditModal()" role="dialog" aria-modal="true">
+        <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Update Resource Title</h3>
+                <button class="close-btn" type="button" (click)="closeEditModal()" aria-label="Close dialog">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" [(ngModel)]="editTitleInput" placeholder="Enter updated title">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" type="button" (click)="closeEditModal()">Cancel</button>
+                <button class="btn-primary" type="button" [disabled]="!editTitleInput.trim()" (click)="saveEdit()">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal Dialog -->
+    <div class="modal-overlay" *ngIf="deleteTargetResource" (click)="cancelDelete()" role="dialog" aria-modal="true">
+        <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Confirm Deletion</h3>
+                <button class="close-btn" type="button" (click)="cancelDelete()" aria-label="Close dialog">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently delete <strong>"{{deleteTargetResource.title}}"</strong>? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" type="button" (click)="cancelDelete()">Cancel</button>
+                <button class="btn-primary danger-btn" type="button" (click)="confirmDelete()">
+                    Yes, Delete Resource
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

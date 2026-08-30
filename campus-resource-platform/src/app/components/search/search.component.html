@@ -1,0 +1,194 @@
+<div class="search-page animate-fade-in">
+    <!-- Hero Search Section -->
+    <section class="search-hero glass-panel" aria-label="Resource Search Hero">
+        <h1>Discover Campus Resources</h1>
+        <p class="prose-block">Search through verified lecture notes, previous exam papers, cheat sheets, and course guides.</p>
+
+        <div class="hero-search-bar" role="search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="search" 
+                   [(ngModel)]="searchQuery" 
+                   (input)="syncStateToUrl()"
+                   (keydown.enter)="syncStateToUrl()"
+                   placeholder="Search by topic, course title, keyword, or author..."
+                   aria-label="Search resources">
+            <button type="button" class="btn-primary" (click)="syncStateToUrl()">
+                Search
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Layout: Filters Sidebar + Results Grid (2-Pane Desktop / Stacked Mobile) -->
+    <div class="search-layout">
+        <!-- Filter Controls Panel -->
+        <aside class="filter-panel glass-panel" aria-label="Search Filters">
+            <div class="filter-header">
+                <h3>Filters</h3>
+                <button type="button" class="btn-text-sm" (click)="clearFilters()">Reset All</button>
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-subject">Subject</label>
+                <select id="filter-subject" [(ngModel)]="filters.subject" (change)="syncStateToUrl()">
+                    <option>All Subjects</option>
+                    <option>Computer Science</option>
+                    <option>Physics</option>
+                    <option>Mathematics</option>
+                    <option>Economics</option>
+                    <option>Chemistry</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-semester">Semester</label>
+                <select id="filter-semester" [(ngModel)]="filters.semester" (change)="syncStateToUrl()">
+                    <option>All Semesters</option>
+                    <option>1st Semester</option>
+                    <option>2nd Semester</option>
+                    <option>3rd Semester</option>
+                    <option>4th Semester</option>
+                    <option>5th Semester</option>
+                    <option>6th Semester</option>
+                    <option>7th Semester</option>
+                    <option>8th Semester</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-branch">Branch / Department</label>
+                <select id="filter-branch" [(ngModel)]="filters.branch" (change)="syncStateToUrl()">
+                    <option>All Branches</option>
+                    <option>B.Tech CS</option>
+                    <option>B.Sc Physics</option>
+                    <option>BA Economics</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-secondary full-width" (click)="clearFilters()">
+                <i data-lucide="rotate-ccw"></i>
+                <span>Clear Filters</span>
+            </button>
+        </aside>
+
+        <!-- Search Results Pane -->
+        <main class="results-content">
+            <div class="results-toolbar">
+                <p class="results-count">
+                    Showing <strong>{{filteredResources().length}}</strong> {{filteredResources().length === 1 ? 'resource' : 'resources'}}
+                </p>
+
+                <div class="view-toggles" role="group" aria-label="View switchers">
+                    <button type="button" 
+                            class="toggle-btn" 
+                            [class.active]="viewMode === 'grid'" 
+                            (click)="setViewMode('grid')"
+                            aria-label="Grid view">
+                        <i data-lucide="grid"></i>
+                    </button>
+                    <button type="button" 
+                            class="toggle-btn" 
+                            [class.active]="viewMode === 'list'" 
+                            (click)="setViewMode('list')"
+                            aria-label="List view">
+                        <i data-lucide="list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Adaptive Grid / List -->
+            <div class="results-grid" 
+                 [class.list-layout]="viewMode === 'list'"
+                 [class.grid-cols-adaptive]="viewMode === 'grid'"
+                 *ngIf="filteredResources().length > 0">
+                <app-resource-card *ngFor="let res of filteredResources()" 
+                                   [resource]="res"
+                                   (download)="onDownload($event)"
+                                   (selectResource)="openResourceModal($event)">
+                </app-resource-card>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state glass-panel" *ngIf="filteredResources().length === 0">
+                <i data-lucide="search-x" class="empty-icon"></i>
+                <h3>No matching resources found</h3>
+                <p>Try refining your search keyword or resetting active filters.</p>
+                <button type="button" class="btn-primary" (click)="clearFilters()">
+                    Reset All Filters
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Deep-Linked Modal Detail View (Supports Direct URL Sharing ?resourceId=...) -->
+    <div class="modal-overlay" 
+         *ngIf="activeModalResource" 
+         (click)="closeResourceModal()"
+         role="dialog" 
+         aria-modal="true" 
+         aria-labelledby="modal-resource-title">
+        <div class="modal-card detail-modal glass-panel" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <span class="badge" [class.public]="activeModalResource.privacy === 'Public'" [class.private]="activeModalResource.privacy === 'Private'">
+                        {{activeModalResource.privacy}}
+                    </span>
+                    <h3 id="modal-resource-title">{{activeModalResource.title}}</h3>
+                </div>
+                <button type="button" class="close-btn" (click)="closeResourceModal()" aria-label="Close dialog">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="detail-meta-grid">
+                    <div class="detail-meta-item">
+                        <span class="meta-label">Subject</span>
+                        <span class="meta-value">{{activeModalResource.subject}}</span>
+                    </div>
+                    <div class="detail-meta-item" *ngIf="activeModalResource.semester">
+                        <span class="meta-label">Semester</span>
+                        <span class="meta-value">{{activeModalResource.semester}}</span>
+                    </div>
+                    <div class="detail-meta-item" *ngIf="activeModalResource.branch">
+                        <span class="meta-label">Branch</span>
+                        <span class="meta-value">{{activeModalResource.branch}}</span>
+                    </div>
+                    <div class="detail-meta-item">
+                        <span class="meta-label">Uploaded</span>
+                        <span class="meta-value">{{activeModalResource.date}}</span>
+                    </div>
+                    <div class="detail-meta-item">
+                        <span class="meta-label">Downloads</span>
+                        <span class="meta-value">{{activeModalResource.downloads}}</span>
+                    </div>
+                    <div class="detail-meta-item">
+                        <span class="meta-label">Rating</span>
+                        <span class="meta-value">★ {{activeModalResource.rating}} / 5.0</span>
+                    </div>
+                </div>
+
+                <div class="detail-description" *ngIf="activeModalResource.description">
+                    <h4>Description & Overview</h4>
+                    <p>{{activeModalResource.description}}</p>
+                </div>
+
+                <div class="detail-tags" *ngIf="activeModalResource.tags">
+                    <h4>Tags & Topics</h4>
+                    <div class="tag-pills">
+                        <span class="tag-pill" *ngFor="let tag of (activeModalResource.tags | json)">
+                            {{tag}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" (click)="closeResourceModal()">Close</button>
+                <button type="button" class="btn-primary" (click)="onDownload(activeModalResource)">
+                    <i data-lucide="download"></i>
+                    <span>Download Resource</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

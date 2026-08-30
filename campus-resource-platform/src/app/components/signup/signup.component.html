@@ -1,0 +1,95 @@
+<div class="auth-page">
+    <div class="auth-card signup-card glass-panel animate-fade-in">
+        <div class="brand-badge">
+            <i data-lucide="graduation-cap"></i>
+            <span>CampusShare</span>
+        </div>
+
+        <h1>Create Student Account</h1>
+        <p class="subtitle">Join your university network to exchange lecture notes and academic study archives.</p>
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="form-grid">
+                <div class="form-group span-2">
+                    <label for="reg-fullname">Full Name</label>
+                    <input type="text" 
+                           id="reg-fullname" 
+                           formControlName="fullName" 
+                           placeholder="e.g. Alex Morgan"
+                           autocomplete="name">
+                </div>
+
+                <div class="form-group span-2">
+                    <label for="reg-email">University Email</label>
+                    <input type="email" 
+                           id="reg-email" 
+                           formControlName="email" 
+                           placeholder="student@university.edu"
+                           autocomplete="email"
+                           autocapitalize="none">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-college">College / University</label>
+                    <input type="text" 
+                           id="reg-college" 
+                           formControlName="college" 
+                           placeholder="e.g. Stanford University">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-department">Department / Branch</label>
+                    <input type="text" 
+                           id="reg-department" 
+                           formControlName="department" 
+                           placeholder="e.g. Computer Science">
+                </div>
+
+                <div class="form-group span-2">
+                    <label for="reg-semester">Current Semester</label>
+                    <select id="reg-semester" formControlName="semester">
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>3rd Semester</option>
+                        <option>4th Semester</option>
+                        <option>5th Semester</option>
+                        <option>6th Semester</option>
+                        <option>7th Semester</option>
+                        <option>8th Semester</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" 
+                           id="reg-password" 
+                           formControlName="password" 
+                           placeholder="Min 6 characters"
+                           autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-confirm">Confirm Password</label>
+                    <input type="password" 
+                           id="reg-confirm" 
+                           formControlName="confirmPassword" 
+                           placeholder="Repeat password"
+                           autocomplete="new-password">
+                </div>
+            </div>
+
+            <small *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched" class="field-error">
+                Passwords do not match.
+            </small>
+
+            <button type="submit" class="btn-primary auth-btn" [disabled]="signupForm.invalid || isLoading">
+                <span *ngIf="!isLoading">Register Student Account</span>
+                <span *ngIf="isLoading">Creating Account...</span>
+            </button>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a routerLink="/login" class="login-link">Log In</a></p>
+            </div>
+        </form>
+    </div>
+</div>

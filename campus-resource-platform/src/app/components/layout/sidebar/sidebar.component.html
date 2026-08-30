@@ -1,0 +1,57 @@
+<!-- Mobile Backdrop -->
+<div class="sidebar-backdrop" 
+     [class.open]="isMobileOpen" 
+     (click)="onBackdropClick()"
+     aria-hidden="true"></div>
+
+<!-- Sidebar Container -->
+<aside class="sidebar" 
+       [class.collapsed]="isCollapsed"
+       [class.mobile-open]="isMobileOpen"
+       aria-label="Main Sidebar Navigation">
+    <div class="sidebar-header">
+        <div class="logo">
+            <i data-lucide="graduation-cap" class="logo-icon"></i>
+            <span *ngIf="!isCollapsed" class="logo-text">CampusShare</span>
+        </div>
+        
+        <!-- Desktop Collapse Toggle -->
+        <button class="toggle-btn desktop-only" 
+                type="button" 
+                (click)="toggleSidebar()" 
+                [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+            <i [attr.data-lucide]="isCollapsed ? 'chevron-right' : 'chevron-left'"></i>
+        </button>
+
+        <!-- Mobile Drawer Close Button -->
+        <button class="toggle-btn mobile-only" 
+                type="button" 
+                (click)="onBackdropClick()" 
+                aria-label="Close sidebar">
+            <i data-lucide="x"></i>
+        </button>
+    </div>
+
+    <nav class="menu" aria-label="Sidebar Menu">
+        <a *ngFor="let item of menuItems" 
+           [routerLink]="item.path" 
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }" 
+           (click)="onNavClick()"
+           class="menu-item"
+           [title]="item.label">
+            <i [attr.data-lucide]="item.icon" class="menu-icon"></i>
+            <span *ngIf="!isCollapsed" class="menu-label">{{item.label}}</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <button type="button" 
+                class="menu-item logout" 
+                (click)="logout()" 
+                title="Sign out of your account">
+            <i data-lucide="log-out" class="menu-icon"></i>
+            <span *ngIf="!isCollapsed" class="menu-label">Logout</span>
+        </button>
+    </div>
+</aside>

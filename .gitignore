@@ -1,0 +1,53 @@
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Dependencies
+/node_modules
+/campus-resource-platform/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python & Backend
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Firebase
+.firebase/
+campus-resource-platform/.firebase/
+
+# IDEs & Editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Bundlers & Frameworks
+/.angular
+/campus-resource-platform/.angular
+.sass-cache/
+/connect.lock
+/coverage
+/typings
+__screenshots__/
+
+# OS System Files
+.DS_Store
+Thumbs.db

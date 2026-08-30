@@ -1,0 +1,167 @@
+/* ==========================================================================
+   CampusShare Enterprise Design System Tokens
+   WCAG 2.1 AA Compliant • 4px/8px Spatial Scale • Zero-FOUC CSS Variables
+   ========================================================================== */
+
+:root {
+    /* ------------------------------------------------------------------------
+       1. Spatial & Grid System (Strict 4px/8px Modular Scale)
+       ------------------------------------------------------------------------ */
+    --space-0: 0px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+
+    /* ------------------------------------------------------------------------
+       2. Fluid Typography Scale (using clamp for mobile to 4K scaling)
+       ------------------------------------------------------------------------ */
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);      /* 12px - 13px */
+    --text-sm: clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);       /* 13px - 14px */
+    --text-base: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);          /* 15px - 16px */
+    --text-md: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);            /* 16px - 18px */
+    --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);         /* 18px - 20px */
+    --text-xl: clamp(1.25rem, 1.15rem + 0.6vw, 1.5rem);           /* 20px - 24px */
+    --text-2xl: clamp(1.5rem, 1.35rem + 0.8vw, 1.875rem);         /* 24px - 30px */
+    --text-3xl: clamp(1.875rem, 1.65rem + 1.2vw, 2.375rem);       /* 30px - 38px */
+    --text-4xl: clamp(2.25rem, 1.95rem + 1.6vw, 3rem);            /* 36px - 48px */
+
+    --leading-tight: 1.2;
+    --leading-snug: 1.35;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.65;
+
+    /* Max reading width to prevent stretched 2000px paragraphs */
+    --prose-max-width: 75ch;
+
+    /* ------------------------------------------------------------------------
+       3. Container & Layout Constraints
+       ------------------------------------------------------------------------ */
+    --container-laptop: 1280px;
+    --container-desktop: 1536px;
+    --sidebar-width-desktop: 270px;
+    --sidebar-width-collapsed: 84px;
+    --navbar-height: 72px;
+
+    /* ------------------------------------------------------------------------
+       4. Border Radius Scale
+       ------------------------------------------------------------------------ */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+    --radius-full: 9999px;
+
+    /* ------------------------------------------------------------------------
+       5. Motion & Transitions
+       ------------------------------------------------------------------------ */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* ------------------------------------------------------------------------
+       6. Default Dark Theme Tokens (WCAG 2.1 AA Compliant)
+       ------------------------------------------------------------------------ */
+    --bg-base: #0a0f1d;
+    --bg-canvas: #0f172a;
+    --bg-surface: rgba(22, 32, 54, 0.72);
+    --bg-surface-elevated: rgba(30, 43, 72, 0.85);
+    --bg-surface-hover: rgba(43, 60, 98, 0.6);
+    --bg-input: rgba(15, 23, 42, 0.8);
+
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-medium: rgba(148, 163, 184, 0.22);
+    --border-focus: #6366f1;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-inverse: #0f172a;
+
+    --brand-primary: #6366f1;
+    --brand-primary-hover: #4f46e5;
+    --brand-secondary: #38bdf8;
+    --brand-accent: #f59e0b;
+    --brand-gradient: linear-gradient(135deg, #6366f1 0%, #38bdf8 55%, #f59e0b 100%);
+    --brand-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #0284c7 55%, #d97706 100%);
+
+    --color-success: #10b981;
+    --color-success-bg: rgba(16, 185, 129, 0.12);
+    --color-warning: #f59e0b;
+    --color-warning-bg: rgba(245, 158, 11, 0.12);
+    --color-error: #ef4444;
+    --color-error-bg: rgba(239, 68, 68, 0.14);
+
+    --glass-bg: rgba(20, 29, 49, 0.75);
+    --glass-blur: 16px;
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 24px rgba(99, 102, 241, 0.35);
+
+    /* Accessible focus ring */
+    --focus-ring: 0 0 0 2px #0a0f1d, 0 0 0 4px #818cf8;
+}
+
+/* ----------------------------------------------------------------------------
+   Light Theme Override Tokens (WCAG 2.1 AA Compliant High Contrast)
+   ---------------------------------------------------------------------------- */
+html.light-theme,
+body.light-theme,
+[data-theme='light'] {
+    --bg-base: #f1f5f9;
+    --bg-canvas: #f8fafc;
+    --bg-surface: rgba(255, 255, 255, 0.88);
+    --bg-surface-elevated: #ffffff;
+    --bg-surface-hover: rgba(238, 242, 255, 0.95);
+    --bg-input: #ffffff;
+
+    --border-subtle: rgba(100, 116, 139, 0.15);
+    --border-medium: rgba(71, 85, 105, 0.28);
+    --border-focus: #4f46e5;
+
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-inverse: #f8fafc;
+
+    --brand-primary: #4f46e5;
+    --brand-primary-hover: #4338ca;
+    --brand-secondary: #0284c7;
+    --brand-accent: #d97706;
+    --brand-gradient: linear-gradient(135deg, #4f46e5 0%, #0284c7 55%, #d97706 100%);
+    --brand-gradient-hover: linear-gradient(135deg, #4338ca 0%, #0369a1 55%, #b45309 100%);
+
+    --color-success: #059669;
+    --color-success-bg: rgba(5, 150, 105, 0.1);
+    --color-warning: #d97706;
+    --color-warning-bg: rgba(217, 119, 6, 0.1);
+    --color-error: #dc2626;
+    --color-error-bg: rgba(220, 38, 38, 0.1);
+
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-blur: 16px;
+    --glass-border: 1px solid rgba(99, 102, 241, 0.18);
+    --glass-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+
+    --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 20px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 16px 36px rgba(15, 23, 42, 0.1);
+    --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.25);
+
+    --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px #4f46e5;
+}

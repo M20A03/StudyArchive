@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 [Husky] Running pre-commit validation..."
+
+cd campus-resource-platform || exit 1
+node scripts/validate-env.mjs || exit 1
+npx lint-staged
+npx tsc --noEmit || exit 1
+
+echo "✅ [Husky] Pre-commit checks passed!"

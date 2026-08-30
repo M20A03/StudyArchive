@@ -1,0 +1,60 @@
+@use 'tokens' as *;
+
+// Backward compatible SCSS variables mapping directly to Design Tokens
+$primary-blue: var(--brand-primary);
+$accent-blue: var(--brand-secondary);
+$accent-yellow: var(--brand-accent);
+$success-green: var(--color-success);
+$soft-red: var(--color-error);
+
+$text-main: var(--text-primary);
+$text-secondary: var(--text-secondary);
+$text-muted: var(--text-muted);
+
+$border-radius-sm: var(--radius-sm);
+$border-radius-md: var(--radius-md);
+$border-radius-lg: var(--radius-lg);
+
+$shadow-soft: var(--shadow-sm);
+$shadow-medium: var(--shadow-md);
+$shadow-strong: var(--shadow-lg);
+
+// Mixins
+@mixin glassmorphism {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary);
+}
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin smooth-transition {
+    transition: all var(--transition-base);
+}
+
+@mixin hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@mixin touch-target {
+    min-height: 44px;
+    min-width: 44px;
+}
