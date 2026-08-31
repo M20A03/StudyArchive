@@ -2,7 +2,8 @@ import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Firestore, collection, addDoc, getDocs, query, where, updateDoc, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, query, where, updateDoc, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Auth, signInWithPopup, GoogleAuthProvider, signOut as firebaseSignOut } from '@angular/fire/auth';
 import { UserProfile } from '../core/models';
 import { ToastService } from '../core/toast.service';
 
@@ -11,6 +12,7 @@ import { ToastService } from '../core/toast.service';
 })
 export class UserService {
     private firestore = inject(Firestore);
+    private auth = inject(Auth, { optional: true });
     private platformId = inject(PLATFORM_ID);
     private toastService = inject(ToastService);
     private isBrowser = isPlatformBrowser(this.platformId);
@@ -204,8 +206,90 @@ export class UserService {
         }
     }
 
+    async loginWithGoogle(): Promise<void> {
+        if (this.isAuthOperationInProgress) {
+            throw new Error('Authentication in progress. Please wait.');
+        }
+
+        this.isAuthOperationInProgress = true;
+        try {
+            if (!this.auth) {
+                throw new Error('Firebase Auth service is not ready. Please try again.');
+            }
+
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            const result = await signInWithPopup(this.auth, provider);
+            const user = result.user;
+            const uid = user.uid;
+            const email = user.email?.toLowerCase().trim() || '';
+            const name = user.displayName || email.split('@')[0] || 'Campus Student';
+            const username = email ? email.split('@')[0] : `user_${uid.substring(0, 6)}`;
+
+            const userDocRef = doc(this.firestore, 'users', uid);
+            let profile: UserProfile;
+
+            try {
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    profile = this.fromFirestore(userDocSnap.data() as Record<string, unknown>, uid);
+                } else {
+                    const now = new Date().toISOString();
+                    const newUserData = {
+                        name,
+                        email,
+                        username,
+                        university: 'Campus Community',
+                        department: 'Academic Studies',
+                        semester: '1st Semester',
+                        createdAt: now,
+                        updatedAt: now
+                    };
+                    await setDoc(userDocRef, newUserData);
+                    profile = {
+                        id: uid,
+                        ...newUserData
+                    };
+                }
+            } catch {
+                // If firestore read fails, fallback to user profile
+                profile = {
+                    id: uid,
+                    name,
+                    email,
+                    username,
+                    university: 'Campus Community',
+                    department: 'Academic Studies',
+                    semester: '1st Semester'
+                };
+            }
+
+            this.currentUserId = uid;
+            if (this.isBrowser) {
+                localStorage.setItem(this.uidStorageKey, uid);
+                localStorage.setItem(this.profileStorageKey, JSON.stringify(profile));
+            }
+
+            this.authState.next(true);
+            this.userProfile.next(profile);
+            this.toastService.success(`Welcome, ${profile.name}!`, 'Signed In with Google');
+        } catch (err: any) {
+            if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') {
+                return; // User intentionally closed the popup
+            }
+            const message = err?.message || 'Google Sign-In failed.';
+            this.toastService.error(message, 'Google Sign-In Error');
+            throw err;
+        } finally {
+            this.isAuthOperationInProgress = false;
+        }
+    }
+
     logout() {
         this.currentUserId = null;
+        if (this.auth) {
+            firebaseSignOut(this.auth).catch(() => {});
+        }
         if (this.isBrowser) {
             localStorage.removeItem(this.uidStorageKey);
             localStorage.removeItem(this.profileStorageKey);

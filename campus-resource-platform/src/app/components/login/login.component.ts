@@ -5,6 +5,8 @@ import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ToastService } from '../../core/toast.service';
 
+declare var lucide: any;
+
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -21,6 +23,7 @@ export class LoginComponent {
 
     loginForm: FormGroup;
     isLoading = false;
+    isGoogleLoading = false;
     showPassword = false;
 
     constructor() {
@@ -30,8 +33,28 @@ export class LoginComponent {
         });
     }
 
+    ngAfterViewInit(): void {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            setTimeout(() => lucide.createIcons(), 50);
+        }
+    }
+
     togglePasswordVisibility() {
         this.showPassword = !this.showPassword;
+    }
+
+    async signInWithGoogle() {
+        if (this.isGoogleLoading || this.isLoading) return;
+        this.isGoogleLoading = true;
+        try {
+            await this.userService.loginWithGoogle();
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+            this.router.navigateByUrl(returnUrl);
+        } catch {
+            // Handled in UserService
+        } finally {
+            this.isGoogleLoading = false;
+        }
     }
 
     async onSubmit() {

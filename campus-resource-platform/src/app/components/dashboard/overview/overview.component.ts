@@ -1,10 +1,12 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { ResourceService } from '../../../services/resource.service';
 import { UserProfile, Resource } from '../../../core/models';
+
+declare var lucide: any;
 
 @Component({
     selector: 'app-overview',
@@ -13,7 +15,7 @@ import { UserProfile, Resource } from '../../../core/models';
     templateUrl: './overview.component.html',
     styleUrl: './overview.component.scss'
 })
-export class OverviewComponent {
+export class OverviewComponent implements AfterViewInit {
     private userService = inject(UserService);
     private resourceService = inject(ResourceService);
 
@@ -62,7 +64,18 @@ export class OverviewComponent {
             } else {
                 this.recentResources = this.defaultSampleResources();
             }
+            this.refreshIcons();
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.refreshIcons();
+    }
+
+    refreshIcons(): void {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            setTimeout(() => lucide.createIcons(), 50);
+        }
     }
 
     openEditModal() {

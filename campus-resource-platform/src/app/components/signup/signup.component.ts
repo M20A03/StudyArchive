@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ToastService } from '../../core/toast.service';
+
+declare var lucide: any;
 
 @Component({
     selector: 'app-signup',
@@ -12,7 +14,7 @@ import { ToastService } from '../../core/toast.service';
     templateUrl: './signup.component.html',
     styleUrl: './signup.component.scss'
 })
-export class SignupComponent {
+export class SignupComponent implements AfterViewInit {
     private fb = inject(FormBuilder);
     private router = inject(Router);
     private userService = inject(UserService);
@@ -20,6 +22,7 @@ export class SignupComponent {
 
     signupForm: FormGroup;
     isLoading = false;
+    isGoogleLoading = false;
 
     constructor() {
         this.signupForm = this.fb.group(
@@ -40,6 +43,25 @@ export class SignupComponent {
         const password = control.get('password')?.value;
         const confirm = control.get('confirmPassword')?.value;
         return password === confirm ? null : { mismatch: true };
+    }
+
+    ngAfterViewInit(): void {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            setTimeout(() => lucide.createIcons(), 50);
+        }
+    }
+
+    async signUpWithGoogle() {
+        if (this.isGoogleLoading || this.isLoading) return;
+        this.isGoogleLoading = true;
+        try {
+            await this.userService.loginWithGoogle();
+            this.router.navigate(['/dashboard']);
+        } catch {
+            // Handled in UserService
+        } finally {
+            this.isGoogleLoading = false;
+        }
     }
 
     async onSubmit() {
