@@ -44,13 +44,14 @@ $shadow-strong: var(--shadow-lg);
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(99, 102, 241, 0.22);
+            border-color: rgba(99, 102, 241, 0.45);
         }
     }
 
     &:active {
-        transform: translateY(0);
+        transform: translateY(-1px) scale(0.99);
     }
 }
 

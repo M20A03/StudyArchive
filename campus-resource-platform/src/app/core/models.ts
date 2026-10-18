@@ -24,16 +24,21 @@ export interface Resource {
     rating: number;
     semester?: string;
     branch?: string;
+    category?: 'Lecture Notes' | 'Question Papers' | 'Lab Manuals' | 'Syllabus' | 'Cheatsheets' | string;
     tags?: string | string[];
     ownerId?: string;
     uploaderCollege?: string;
+    uploaderName?: string;
     fileUrl?: string;
     fileName?: string;
     fileType?: string;
     size?: number;
+    pageCount?: number;
     description?: string;
     createdAt?: number | string;
     idempotencyKey?: string;
+    isBookmarked?: boolean;
+    userRating?: number;
 }
 
 export type ToastType = 'success' | 'info' | 'warning' | 'error';

@@ -164,7 +164,7 @@ export class ResourceService {
 
     updateResource(
         id: string,
-        changes: Partial<Pick<Resource, 'title' | 'subject' | 'semester' | 'branch' | 'tags'>>
+        changes: Partial<Pick<Resource, 'title' | 'subject' | 'semester' | 'branch' | 'tags' | 'category' | 'description'>>
     ) {
         const uid = this.requireUserId();
         const next = this.resourcesSubject.value.map((resource) => {

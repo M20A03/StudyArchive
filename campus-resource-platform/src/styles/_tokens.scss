@@ -73,48 +73,48 @@
     /* ------------------------------------------------------------------------
        6. Default Dark Theme Tokens (WCAG 2.1 AA Compliant)
        ------------------------------------------------------------------------ */
-    --bg-base: #0a0f1d;
+    --bg-base: #0b0f19;
     --bg-canvas: #0f172a;
-    --bg-surface: rgba(22, 32, 54, 0.72);
-    --bg-surface-elevated: rgba(30, 43, 72, 0.85);
-    --bg-surface-hover: rgba(43, 60, 98, 0.6);
-    --bg-input: rgba(15, 23, 42, 0.8);
+    --bg-surface: rgba(22, 30, 49, 0.75);
+    --bg-surface-elevated: rgba(30, 41, 67, 0.88);
+    --bg-surface-hover: rgba(39, 53, 86, 0.7);
+    --bg-input: rgba(15, 23, 42, 0.85);
 
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-medium: rgba(148, 163, 184, 0.22);
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-medium: rgba(148, 163, 184, 0.25);
     --border-focus: #6366f1;
 
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
-    --text-inverse: #0f172a;
+    --text-inverse: #0b0f19;
 
-    --brand-primary: #059669;
-    --brand-primary-hover: #047857;
-    --brand-secondary: #10b981;
-    --brand-accent: #FEF08A;
-    --brand-gradient: linear-gradient(135deg, #059669 0%, #10b981 55%, #FEF08A 100%);
-    --brand-gradient-hover: linear-gradient(135deg, #047857 0%, #059669 55%, #fde047 100%);
+    --brand-primary: #6366f1;
+    --brand-primary-hover: #4f46e5;
+    --brand-secondary: #14b8a6;
+    --brand-accent: #f59e0b;
+    --brand-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #14b8a6 100%);
+    --brand-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0d9488 100%);
 
     --color-success: #10b981;
-    --color-success-bg: rgba(16, 185, 129, 0.12);
+    --color-success-bg: rgba(16, 185, 129, 0.15);
     --color-warning: #f59e0b;
-    --color-warning-bg: rgba(245, 158, 11, 0.12);
+    --color-warning-bg: rgba(245, 158, 11, 0.15);
     --color-error: #ef4444;
-    --color-error-bg: rgba(239, 68, 68, 0.14);
+    --color-error-bg: rgba(239, 68, 68, 0.16);
 
-    --glass-bg: rgba(20, 29, 49, 0.75);
+    --glass-bg: rgba(15, 23, 42, 0.65);
     --glass-blur: 16px;
     --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-    --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 
-    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.4);
-    --shadow-glow: 0 0 24px rgba(99, 102, 241, 0.35);
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+    --shadow-glow: 0 0 24px rgba(99, 102, 241, 0.4);
 
     /* Accessible focus ring */
-    --focus-ring: 0 0 0 2px #0a0f1d, 0 0 0 4px #818cf8;
+    --focus-ring: 0 0 0 2px #0b0f19, 0 0 0 4px #818cf8;
 }
 
 /* ----------------------------------------------------------------------------

@@ -1,7 +1,8 @@
 <div class="upload-page animate-fade-in">
+    <!-- Header -->
     <div class="header">
-        <h1>Upload Academic Resource</h1>
-        <p class="prose-block">Contribute course notes, past exams, or study guides to help fellow campus students.</p>
+        <h1>Contribute Campus Study Material</h1>
+        <p class="prose-block">Upload your lecture notes, solved question papers, lab manuals, or syllabus guides to assist fellow students.</p>
     </div>
 
     <div class="upload-card glass-panel">
@@ -18,35 +19,45 @@
                  (keydown.enter)="fileInput.click()"
                  (keydown.space)="fileInput.click()"
                  role="button"
-                 aria-label="Click or drag file to upload">
+                 aria-label="Click or drag study file to upload">
                 <input type="file" 
                        #fileInput 
                        (change)="onFileSelected($event)" 
-                       accept=".pdf,.docx,.doc,.pptx,.png,.jpg"
+                       accept=".pdf,.docx,.doc,.pptx,.png,.jpg,.txt"
                        hidden>
                 
                 <div class="drop-icon-wrap" *ngIf="!selectedFile">
-                    <i data-lucide="upload-cloud" class="drop-icon"></i>
+                    <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+                        <path d="M12 12v9"/>
+                        <path d="m16 16-4-4-4 4"/>
+                    </svg>
                 </div>
+                
                 <div class="drop-icon-wrap success" *ngIf="selectedFile">
-                    <i data-lucide="file-check" class="drop-icon"></i>
+                    <span class="file-ext-badge">{{ getFileExtension() }}</span>
                 </div>
 
                 <div class="drop-text" *ngIf="!selectedFile">
-                    <h3>Click or drag study material here</h3>
-                    <p>PDF, DOCX, PPTX, Images (Max 25MB)</p>
+                    <h3>Drag & Drop Study Document Here</h3>
+                    <p>PDF, DOCX, PPTX, or Images • Maximum 25MB</p>
+                    <span class="btn-browse">Browse Device</span>
                 </div>
 
-                <div class="drop-text" *ngIf="selectedFile">
-                    <h3>{{selectedFile.name}}</h3>
-                    <p>{{(selectedFile.size / 1024 / 1024).toFixed(2)}} MB • Ready for publication</p>
+                <div class="drop-text file-selected-info" *ngIf="selectedFile">
+                    <h3>{{ selectedFile.name }}</h3>
+                    <p>{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB • Ready for publication</p>
+                    <button type="button" class="btn-remove-file" (click)="removeFile($event)">
+                        Change File
+                    </button>
                 </div>
             </div>
 
             <!-- Metadata Form Grid -->
             <div class="form-grid">
+                <!-- Title -->
                 <div class="form-group span-2">
-                    <label for="title">Resource Title <span class="required">*</span></label>
+                    <label for="title">Document Title <span class="required">*</span></label>
                     <input type="text" 
                            id="title" 
                            formControlName="title" 
@@ -56,18 +67,34 @@
                     </small>
                 </div>
 
+                <!-- Subject -->
                 <div class="form-group">
-                    <label for="subject">Subject <span class="required">*</span></label>
+                    <label for="subject">Department / Subject <span class="required">*</span></label>
                     <select id="subject" formControlName="subject">
-                        <option value="" disabled selected>Select Subject</option>
+                        <option value="" disabled selected>Select Department / Subject</option>
                         <option>Computer Science</option>
                         <option>Physics</option>
                         <option>Mathematics</option>
                         <option>Economics</option>
                         <option>Chemistry</option>
+                        <option>Electronics</option>
+                        <option>Mechanical</option>
                     </select>
                 </div>
 
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">Resource Category <span class="required">*</span></label>
+                    <select id="category" formControlName="category">
+                        <option>Lecture Notes</option>
+                        <option>Question Papers</option>
+                        <option>Lab Manuals</option>
+                        <option>Syllabus</option>
+                        <option>Cheatsheets</option>
+                    </select>
+                </div>
+
+                <!-- Semester -->
                 <div class="form-group">
                     <label for="semester">Semester <span class="required">*</span></label>
                     <select id="semester" formControlName="semester">
@@ -83,60 +110,109 @@
                     </select>
                 </div>
 
+                <!-- Branch -->
                 <div class="form-group">
-                    <label for="branch">Branch / Major <span class="required">*</span></label>
+                    <label for="branch">Course Branch <span class="required">*</span></label>
                     <select id="branch" formControlName="branch">
                         <option value="" disabled selected>Select Branch</option>
                         <option>B.Tech CS</option>
+                        <option>B.Tech IT</option>
                         <option>B.Sc Physics</option>
                         <option>BA Economics</option>
+                        <option>B.Tech ECE</option>
+                        <option>B.Tech Mech</option>
                     </select>
                 </div>
 
-                <div class="form-group">
+                <!-- Visibility -->
+                <div class="form-group span-2">
                     <label>Visibility Setting</label>
                     <div class="toggle-group" role="radiogroup" aria-label="Privacy level">
                         <label class="toggle-option">
                             <input type="radio" formControlName="privacy" value="Public">
-                            <span>Public (Campus-wide)</span>
+                            <span class="toggle-content">
+                                <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="2" x2="22" y1="12" y2="12"/>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                </svg>
+                                <span class="option-text">
+                                    <strong>Public</strong>
+                                    <small>Available to all university students</small>
+                                </span>
+                            </span>
                         </label>
+
                         <label class="toggle-option">
                             <input type="radio" formControlName="privacy" value="Private">
-                            <span>Private (Only Me)</span>
+                            <span class="toggle-content">
+                                <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                                <span class="option-text">
+                                    <strong>Private</strong>
+                                    <small>Only accessible by your campus profile</small>
+                                </span>
+                            </span>
                         </label>
                     </div>
                 </div>
 
+                <!-- Description -->
                 <div class="form-group span-2">
-                    <label for="tags">Keywords & Tags (Comma separated)</label>
+                    <label for="description">Summary / Overview (Optional)</label>
+                    <textarea id="description" 
+                              formControlName="description" 
+                              rows="3" 
+                              placeholder="Briefly describe the key chapters, topics, or formulas covered in this document..."></textarea>
+                </div>
+
+                <!-- Tags Input & Quick Suggestion Chips -->
+                <div class="form-group span-2">
+                    <label for="tags">Keywords & Topic Tags</label>
                     <input type="text" 
                            id="tags" 
                            formControlName="tags" 
-                           placeholder="e.g. algorithms, trees, sorting, exams">
+                           placeholder="e.g. Graph Theory, Dynamic Programming, Midterm">
+                    <div class="quick-tags-wrap">
+                        <span class="quick-tags-label">Quick Suggestions:</span>
+                        <div class="quick-tag-chips">
+                            <button type="button" 
+                                    *ngFor="let tag of suggestedTags" 
+                                    class="quick-chip"
+                                    (click)="addTag(tag)">
+                                + {{ tag }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Upload Progress Bar -->
-            <div class="upload-progress-wrapper" *ngIf="isUploading" aria-live="polite">
-                <div class="progress-bar-track">
-                    <div class="progress-bar-fill" [style.width.%]="uploadProgress"></div>
+            <!-- Upload Progress Bar (Active During Submission) -->
+            <div class="progress-wrap" *ngIf="isUploading">
+                <div class="progress-header">
+                    <span>Uploading and verifying document...</span>
+                    <span>{{ uploadProgress }}%</span>
                 </div>
-                <span class="progress-status">Uploading material... {{uploadProgress}}%</span>
+                <div class="progress-track" role="progressbar" [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+                </div>
             </div>
 
-            <div *ngIf="uploadError" class="error-banner" role="alert">
-                <i data-lucide="alert-circle"></i>
-                <span>{{uploadError}}</span>
-            </div>
-
+            <!-- Action Controls -->
             <div class="form-actions">
                 <button type="button" class="btn-secondary" (click)="cancelUpload()" [disabled]="isUploading">
-                    Cancel
+                    Reset Form
                 </button>
-                <button type="submit" class="btn-primary" [disabled]="uploadForm.invalid || !selectedFile || isUploading">
-                    <i data-lucide="upload" *ngIf="!isUploading"></i>
-                    <span *ngIf="!isUploading">Publish Resource</span>
-                    <span *ngIf="isUploading">Uploading...</span>
+                <button type="submit" class="btn-primary" [disabled]="isUploading || uploadForm.invalid || !selectedFile">
+                    <svg class="btn-icon-svg" *ngIf="!isUploading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+                        <path d="M12 12v9"/>
+                        <path d="m16 16-4-4-4 4"/>
+                    </svg>
+                    <span *ngIf="!isUploading">Publish to Campus Archive</span>
+                    <span *ngIf="isUploading">Uploading Document...</span>
                 </button>
             </div>
         </form>

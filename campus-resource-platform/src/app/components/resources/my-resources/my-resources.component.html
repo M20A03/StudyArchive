@@ -1,17 +1,48 @@
 <div class="my-resources-page animate-fade-in">
+    <!-- Page Header -->
     <div class="header">
         <div class="header-content">
-            <h1>My Uploaded Resources</h1>
-            <p class="prose-block">Manage, edit, or adjust the privacy visibility of your shared study archives.</p>
+            <h1>Academic Library & Archives</h1>
+            <p class="prose-block">Manage your contributed study archives, track peer downloads, and access your saved bookmarks.</p>
         </div>
         <a routerLink="/dashboard/upload" class="btn-primary">
-            <i data-lucide="plus"></i>
+            <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
             <span>Upload New Material</span>
         </a>
     </div>
 
-    <!-- Main Content Container -->
-    <div class="table-container glass-panel">
+    <!-- Navigation Tabs: Uploaded vs Bookmarks -->
+    <div class="library-tabs" role="tablist">
+        <button type="button" 
+                class="tab-btn" 
+                [class.active]="activeTab === 'uploads'"
+                (click)="setActiveTab('uploads')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" x2="12" y1="3" y2="15"/>
+            </svg>
+            <span>Uploaded by Me</span>
+            <span class="tab-count">{{ myResources.length }}</span>
+        </button>
+
+        <button type="button" 
+                class="tab-btn" 
+                [class.active]="activeTab === 'bookmarks'"
+                (click)="setActiveTab('bookmarks')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+            </svg>
+            <span>Saved / Bookmarked</span>
+            <span class="tab-count">{{ bookmarkedResources.length }}</span>
+        </button>
+    </div>
+
+    <!-- TAB 1: Uploaded Resources Table -->
+    <div class="table-container glass-panel" *ngIf="activeTab === 'uploads'">
         <div class="table-responsive" *ngIf="myResources.length > 0">
             <table class="premium-table">
                 <thead>
@@ -28,19 +59,36 @@
                         <td>
                             <div class="resource-info">
                                 <div class="resource-icon-wrap">
-                                    <i data-lucide="file-text"></i>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                    </svg>
                                 </div>
                                 <div class="resource-text">
-                                    <div class="res-title">{{res.title}}</div>
-                                    <div class="res-subject">{{res.subject}} • {{res.semester || 'General'}}</div>
+                                    <div class="res-title">{{ res.title }}</div>
+                                    <div class="res-subject">
+                                        <span>{{ res.subject }}</span>
+                                        <span class="dot">•</span>
+                                        <span>{{ res.semester || 'General' }}</span>
+                                        <span *ngIf="res.category" class="cat-tag">{{ res.category }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="res-date">{{res.date}}</td>
+                        <td class="res-date">{{ res.date }}</td>
                         <td>
                             <div class="res-stats">
-                                <span><i data-lucide="download"></i> {{res.downloads}}</span>
-                                <span><i data-lucide="star"></i> {{res.rating}}</span>
+                                <span title="Total downloads">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" x2="12" y1="15" y2="3"/>
+                                    </svg>
+                                    {{ res.downloads || 0 }}
+                                </span>
+                                <span title="Community rating" class="rating-stat">
+                                    ★ {{ res.rating ? res.rating.toFixed(1) : '5.0' }}
+                                </span>
                             </div>
                         </td>
                         <td>
@@ -49,17 +97,39 @@
                                     [class.private]="res.privacy === 'Private'"
                                     (click)="togglePrivacy(res)"
                                     [title]="'Click to make ' + (res.privacy === 'Public' ? 'Private' : 'Public')">
-                                <i [attr.data-lucide]="res.privacy === 'Public' ? 'eye' : 'eye-off'"></i>
-                                <span>{{res.privacy}}</span>
+                                <svg *ngIf="res.privacy === 'Public'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                <svg *ngIf="res.privacy === 'Private'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                                    <line x1="2" x2="22" y1="2" y2="22"/>
+                                </svg>
+                                <span>{{ res.privacy }}</span>
                             </button>
                         </td>
                         <td class="text-right">
                             <div class="row-actions">
-                                <button type="button" class="icon-btn edit" (click)="openEditModal(res)" title="Edit title">
-                                    <i data-lucide="edit-3"></i>
+                                <button type="button" class="icon-btn share" (click)="copyShareLink(res)" title="Copy shareable link">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                        <polyline points="16 6 12 2 8 6"/>
+                                        <line x1="12" x2="12" y1="2" y2="15"/>
+                                    </svg>
+                                </button>
+                                <button type="button" class="icon-btn edit" (click)="openEditModal(res)" title="Edit resource">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 20h9"/>
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                    </svg>
                                 </button>
                                 <button type="button" class="icon-btn delete" (click)="promptDelete(res)" title="Delete resource">
-                                    <i data-lucide="trash-2"></i>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"/>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                    </svg>
                                 </button>
                             </div>
                         </td>
@@ -68,27 +138,123 @@
             </table>
         </div>
 
-        <!-- Empty State -->
+        <!-- Empty State for Uploads -->
         <div class="empty-state" *ngIf="myResources.length === 0">
             <div class="empty-icon-wrap">
-                <i data-lucide="folder-open"></i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
             </div>
             <h3>No resources uploaded yet</h3>
-            <p>Share your class notes, syllabus summaries, or solved problem sets with fellow students.</p>
+            <p>Share your class lecture notes, past exam questions, or solved tutorials with your campus peers.</p>
             <a routerLink="/dashboard/upload" class="btn-primary">
-                <i data-lucide="upload-cloud"></i>
+                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
                 <span>Upload First Resource</span>
             </a>
         </div>
     </div>
 
-    <!-- Edit Title Modal Dialog -->
+    <!-- TAB 2: Bookmarked Resources List -->
+    <div class="table-container glass-panel" *ngIf="activeTab === 'bookmarks'">
+        <div class="table-responsive" *ngIf="bookmarkedResources.length > 0">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Saved Resource</th>
+                        <th scope="col">Department & Sem</th>
+                        <th scope="col">Rating & Downloads</th>
+                        <th scope="col" class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of bookmarkedResources">
+                        <td>
+                            <div class="resource-info">
+                                <div class="resource-icon-wrap bookmark-tint">
+                                    <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-text">
+                                    <div class="res-title">{{ res.title }}</div>
+                                    <div class="res-subject">
+                                        <span>{{ res.subject }}</span>
+                                        <span class="dot">•</span>
+                                        <span>{{ res.date }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="branch-tag">{{ res.branch || 'General' }}</div>
+                            <small class="sem-tag">{{ res.semester || 'All Semesters' }}</small>
+                        </td>
+                        <td>
+                            <div class="res-stats">
+                                <span class="rating-stat">★ {{ res.rating ? res.rating.toFixed(1) : '5.0' }}</span>
+                                <span>{{ res.downloads || 0 }} downloads</span>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <div class="row-actions">
+                                <a [routerLink]="['/dashboard/search']" [queryParams]="{ resourceId: res.id }" class="icon-btn preview" title="View Details">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
+                                <button type="button" class="icon-btn download" (click)="downloadResource(res)" title="Download">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" x2="12" y1="15" y2="3"/>
+                                    </svg>
+                                </button>
+                                <button type="button" class="icon-btn delete" (click)="removeBookmark(res)" title="Remove Bookmark">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" x2="6" y1="6" y2="18"/>
+                                        <line x1="6" x2="18" y1="6" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State for Bookmarks -->
+        <div class="empty-state" *ngIf="bookmarkedResources.length === 0">
+            <div class="empty-icon-wrap bookmark-tint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                </svg>
+            </div>
+            <h3>No saved bookmarks yet</h3>
+            <p>Save notes, syllabus guides, and past exams to your personal archive by tapping the bookmark icon on any card.</p>
+            <a routerLink="/dashboard/search" class="btn-primary">
+                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <span>Browse Resource Archive</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Edit Modal Dialog -->
     <div class="modal-overlay" *ngIf="editingResource" (click)="closeEditModal()" role="dialog" aria-modal="true">
         <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
             <div class="modal-header">
-                <h3>Update Resource Title</h3>
+                <h3>Update Resource Metadata</h3>
                 <button class="close-btn" type="button" (click)="closeEditModal()" aria-label="Close dialog">
-                    <i data-lucide="x"></i>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" x2="6" y1="6" y2="18"/>
+                        <line x1="6" x2="18" y1="6" y2="18"/>
+                    </svg>
                 </button>
             </div>
             <div class="modal-body">
@@ -96,33 +262,47 @@
                     <label for="edit-title">Title</label>
                     <input type="text" id="edit-title" [(ngModel)]="editTitleInput" placeholder="Enter updated title">
                 </div>
+                <div class="form-group">
+                    <label for="edit-subject">Subject</label>
+                    <input type="text" id="edit-subject" [(ngModel)]="editSubjectInput" placeholder="Subject or Course">
+                </div>
+                <div class="form-group">
+                    <label for="edit-cat">Category</label>
+                    <select id="edit-cat" [(ngModel)]="editCategoryInput">
+                        <option>Lecture Notes</option>
+                        <option>Question Papers</option>
+                        <option>Lab Manuals</option>
+                        <option>Syllabus</option>
+                        <option>Cheatsheets</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" type="button" (click)="closeEditModal()">Cancel</button>
-                <button class="btn-primary" type="button" [disabled]="!editTitleInput.trim()" (click)="saveEdit()">
-                    Save Changes
-                </button>
+                <button type="button" class="btn-secondary" (click)="closeEditModal()">Cancel</button>
+                <button type="button" class="btn-primary" (click)="saveEdit()">Save Changes</button>
             </div>
         </div>
     </div>
 
     <!-- Delete Confirmation Modal Dialog -->
     <div class="modal-overlay" *ngIf="deleteTargetResource" (click)="cancelDelete()" role="dialog" aria-modal="true">
-        <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
+        <div class="modal-card glass-panel danger-modal" (click)="$event.stopPropagation()">
             <div class="modal-header">
-                <h3>Confirm Deletion</h3>
+                <h3>Delete Resource?</h3>
                 <button class="close-btn" type="button" (click)="cancelDelete()" aria-label="Close dialog">
-                    <i data-lucide="x"></i>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" x2="6" y1="6" y2="18"/>
+                        <line x1="6" x2="18" y1="6" y2="18"/>
+                    </svg>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to permanently delete <strong>"{{deleteTargetResource.title}}"</strong>? This action cannot be undone.</p>
+                <p>Are you sure you want to permanently remove <strong>"{{ deleteTargetResource.title }}"</strong> from the campus archive?</p>
+                <p class="warning-text">This action cannot be undone.</p>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" type="button" (click)="cancelDelete()">Cancel</button>
-                <button class="btn-primary danger-btn" type="button" (click)="confirmDelete()">
-                    Yes, Delete Resource
-                </button>
+                <button type="button" class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+                <button type="button" class="btn-danger" (click)="confirmDelete()">Delete Permanently</button>
             </div>
         </div>
     </div>

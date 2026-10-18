@@ -26,6 +26,10 @@
     width: 100%;
     overflow-x: clip;
 
+    @media (max-width: 767px) {
+        padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    }
+
     @media (min-width: 1024px) {
         padding-top: var(--space-8);
     }
