@@ -6,6 +6,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "target": "studyarchive",
     "public": "dist/campus-resource-platform/browser",
     "ignore": [
       "firebase.json",

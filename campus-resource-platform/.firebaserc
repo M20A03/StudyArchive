@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "straw-hats-7795d"
-  }
+  },
+  "targets": {
+    "react4-eb851": {
+      "hosting": {
+        "studyarchive": [
+          "studyarchive-preview"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
