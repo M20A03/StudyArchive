@@ -3,10 +3,13 @@
     "default": "straw-hats-7795d"
   },
   "targets": {
-    "react4-eb851": {
+    "straw-hats-7795d": {
       "hosting": {
-        "studyarchive": [
-          "studyarchive-preview"
+        "main-site": [
+          "straw-hats-7795d"
+        ],
+        "moodle-site": [
+          "study-archive-moodle"
         ]
       }
     }

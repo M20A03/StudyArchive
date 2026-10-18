@@ -5,35 +5,68 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "hosting": {
-    "target": "studyarchive",
-    "public": "dist/campus-resource-platform/browser",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "**",
-        "headers": [
-          { "key": "X-Content-Type-Options", "value": "nosniff" },
-          { "key": "X-Frame-Options", "value": "DENY" },
-          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-        ]
-      },
-      {
-        "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|pdf|woff2)",
-        "headers": [
-          { "key": "Cache-Control", "value": "max-age=31536000" }
-        ]
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "main-site",
+      "public": "dist/campus-resource-platform/browser",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-Frame-Options", "value": "DENY" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+          ]
+        },
+        {
+          "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|pdf|woff2)",
+          "headers": [
+            { "key": "Cache-Control", "value": "max-age=31536000" }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "moodle-site",
+      "public": "dist/campus-resource-platform/browser",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-Frame-Options", "value": "DENY" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+          ]
+        },
+        {
+          "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|pdf|woff2)",
+          "headers": [
+            { "key": "Cache-Control", "value": "max-age=31536000" }
+          ]
+        }
+      ]
+    }
+  ]
 }
