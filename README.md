@@ -1,82 +1,81 @@
-# Campus Resource Platform (StudyArchive) — Academic Repository
+# Campus Resource Platform (StudyArchive) - Academic Repository
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Active_200_OK-00C853?style=for-the-badge&logo=vercel&logoColor=white)](https://straw-hats-7795d.web.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Active_200_OK-00C853?style=for-the-badge&logo=firebase&logoColor=white)](https://straw-hats-7795d.web.app/)
 ![Platform](https://img.shields.io/badge/Platform-Firebase_Hosting-0070F3?style=for-the-badge)
 [![Author](https://img.shields.io/badge/Author-Mayank_Raj-orange?style=for-the-badge&logo=github)](https://github.com/M20A03)
 ![Maintenance](https://img.shields.io/badge/Maintained-Yes-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 </div>
 
 ---
 
-## 📖 Overview
+## Overview
 
 Collaborative academic repository for university students to discover, upload, curate, and review study materials, question papers, lecture notes, and lab manuals.
 
-## 🚀 Live Demo & Production URL
+## Live Demo and Production URL
 
 Experience the live, active production deployment in your browser:
 
-> 🌐 **Verified Active Production Link:**  
+> **Verified Active Production Link:**  
 > **[https://straw-hats-7795d.web.app/](https://straw-hats-7795d.web.app/)**
 
-*Status:* `200 OK — Production Active & Connected`
-
-
----
-
-## ✨ Key Features
-
-- **Comprehensive academic archive organized by Course, Semester, Department, and Subject**
-- **Firebase Cloud Storage document uploads with instant PDF preview and verification**
-- **Community ratings, bookmarks, and peer discussion comments on study guides**
-- **Faceted full-text search across course codes, professors, and exam years**
-- **Secure Firebase Authentication with university email domain verification**
+*Status:* `200 OK: Production Active & Connected`
 
 ---
 
-## 📱 2026 Spatial Web & Mobile Viewport Specifications
+## Key Features
 
-- **Precision Viewport Scaling:** Engineered for student mobile use (360px–430px) with fast document browsing and desktop two-column split PDF reading.
-- **Touch Ergonomics:** Enforces standard 48px minimum interactive tap boundaries across all buttons, inputs, and navigation drawers.
-- **Hardware Acceleration:** Zero image-layout shifts, GPU-accelerated micro-animations, and fluid 60fps transitions.
-- **Notch & Safe Area Compliance:** Dynamic insets utilizing `padding-bottom: max(16px, env(safe-area-inset-bottom))`.
+- **Comprehensive academic archive:** Organized by Course, Semester, Department, and Subject.
+- **Firebase Cloud Storage:** Document uploads with instant PDF preview and verification.
+- **Community ratings and reviews:** Peer bookmarks and comments on study guides.
+- **Faceted full-text search:** Across course codes, professors, and exam years.
+- **Firebase Authentication:** University domain sign-in and profile management.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## Spatial Web and Mobile Viewport Specifications
+
+- **Precision Viewport Scaling:** Engineered for mobile browsing (360px-430px) and split desktop views.
+- **Touch Ergonomics:** Standard 48px interactive tap targets across navigation elements.
+- **Zero Layout Shifts:** Fast loading, responsive layout, fluid CSS transitions.
+- **Safe Area Inset Handling:** Dynamic padding for edge-to-edge mobile screens.
+
+---
+
+## Tech Stack and Architecture
 
 | Layer | Technology |
 | :--- | :--- |
-| **Framework / Runtime** | `React 18 / TypeScript / Firebase` |
-| **Styling & Design System** | `Modern Clean Educational UI / Tailwind CSS` |
-| **Deployment & Hosting** | `Firebase Hosting` |
+| **Framework / Runtime** | `Angular / TypeScript / Firebase` |
+| **Styling & Design** | `SCSS / Custom Theme Design System` |
+| **Deployment & Hosting** | `Firebase Hosting (straw-hats-7795d.web.app)` |
 | **Repository** | [https://github.com/M20A03/StudyArchive](https://github.com/M20A03/StudyArchive) |
 | **Author** | [Mayank Raj (@M20A03)](https://github.com/M20A03) |
 
 ---
 
-## 💻 Getting Started Locally
+## Getting Started Locally
 
 ### Prerequisites
-- Node.js (v18.0.0 or higher) / Python 3.10+ (where applicable)
-- Git installed on your system
+- Node.js (v18.0.0 or higher)
+- Angular CLI (`npm install -g @angular/cli`)
 
-### Installation & Run
+### Installation and Run
 
 ```bash
 git clone https://github.com/M20A03/StudyArchive.git
 cd StudyArchive/campus-resource-platform
 npm install
-npm run dev
+npm run start
 ```
 
 ---
 
-## 👤 Author & Maintainer
+## Author and Maintainer
 
 **Mayank Raj**  
 - **GitHub:** [@M20A03](https://github.com/M20A03)
@@ -85,5 +84,5 @@ npm run dev
 ---
 
 <div align="center">
-<sub>Crafted with precision • Production-Ready • 2026 Spatial Experience</sub>
+<sub>Crafted with precision • Production-Ready</sub>
 </div>
